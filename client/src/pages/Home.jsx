@@ -1,0 +1,240 @@
+import { useEffect, useState, useCallback } from "react";
+import { getProducts } from "../services/api";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Search } from "lucide-react";
+import p1 from "../assets/p1.png";
+import p2 from "../assets/p2.png";
+import p3 from "../assets/p3.png";
+import p4 from "../assets/p4.png";
+import bannerImage from "../assets/banner.png";
+
+// API base URL from environment variables
+const API_URL = import.meta.env.VITE_API_URL;
+
+const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  // Fetch products from the API
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data } = await getProducts(keyword ? `?keyword=${keyword}` : "");
+      setProducts(data);
+    } catch (error) {
+      toast.error("Failed to load products");
+    } finally {
+      setLoading(false);
+    }
+  }, [keyword]);
+
+  // Fetch products when keyword changes
+  useEffect(() => {
+    const timeoutId = setTimeout(fetchProducts, 300);
+    return () => clearTimeout(timeoutId);
+  }, [fetchProducts]);
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Hero Section */}
+      <div
+        className="bg-cover bg-center bg-no-repeat py-20 px-4 sm:px-6 lg:px-8 relative"
+        style={{ backgroundImage: `url(${bannerImage})` }}
+      >
+        {/* Optional overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/10"></div>
+
+        {/* Product img */}
+        <img
+          src={p1}
+          alt="Product 1"
+          className="w-42 h-auto absolute top-4 left-20 hidden md:block"
+        />
+
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-black mb-6 tracking-tight drop-shadow-[0_0_8px_white]">
+            Discover Amazing Products
+          </h1>
+          <p className="text-xl text-black/70 mb-8 max-w-2xl mx-auto">
+            Browse our curated collection of high-quality items perfect for your
+            needs.
+          </p>
+
+          {/* Search */}
+          <div className="max-w-md mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full rounded-full border border-black/20 bg-white px-6 py-4 text-lg text-black placeholder-black/50 outline-none focus:border-black focus:ring-2 focus:ring-black transition-all duration-200 shadow-lg"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-black/50">
+                <Search className="w-5 h-5" />
+              </span>
+            </div>
+              {/*some popular keyowrd */}
+              <div className="mt-2 text-sm text-black/60">
+                <button
+                  onClick={() => setKeyword("")}
+                  className="p-2 bg-black text-white rounded-full mr-2 drop-shadow-2xl"
+                >
+                  All
+                </button>
+                {" "}
+                <button
+                  onClick={() => setKeyword("laptop")}
+                  className="p-2 bg-white text-black rounded-full mr-2 drop-shadow-2xl"
+                >
+                  Laptops
+                </button>
+                {" "}
+                <button
+                  onClick={() => setKeyword("phone")}
+                  className="p-2 bg-white text-black rounded-full mr-2 drop-shadow-2xl"
+                >
+                  Phones
+                </button>
+                {" "}
+                <button
+                  onClick={() => setKeyword("headphones")}
+                  className="p-2 bg-white text-black rounded-full mr-2 drop-shadow-2xl"
+                >
+                  Headphones
+                </button>
+                {" "}
+                <button
+                  onClick={() => setKeyword("camera")}
+                  className="p-2 bg-white text-black rounded-full drop-shadow-2xl"
+                >
+                  Cameras
+                </button>
+              </div>
+          </div>
+        </div>
+
+        {/* Product img */}
+        <img
+          src={p2}
+          alt="Product 1"
+          className="w-42 h-auto absolute bottom-4 right-20 hidden md:block"
+        />
+      </div>
+
+      {/* Products Grid */}
+      <div className="px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-2xl font-semibold text-black sm:text-4xl">
+              Featured Products
+              <span className="ml-2 text-xl text-black/50">
+                ({products.length})
+              </span>
+            </h2>
+
+            {/* View All Button (link to products page) */}
+            <Link
+              to="/products"
+              className="text-black/70 hover:text-black font-medium text-sm flex items-center gap-1 hover:underline"
+            >
+              View All →
+            </Link>
+          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="bg-black/5 rounded-xl p-6 h-80"></div>
+                </div>
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-24">
+              <div className="w-24 h-24 bg-black/5 rounded-full mx-auto mb-6 flex items-center justify-center">
+                <span className="text-2xl">
+                  <Search className="w-10 h-10 text-black/30" />
+                </span>
+              </div>
+              <h3 className="text-2xl font-semibold text-black mb-2">
+                No products found
+              </h3>
+              <p className="text-black/70 mb-6">
+                Try adjusting your search or browse all products.
+              </p>
+              <Link
+                to="/products"
+                className="inline-block px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-black/90 transition-colors"
+              >
+                Browse All Products
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+              {products.map((product) => (
+                <Link
+                  key={product._id}
+                  to={`/product/${product._id}`}
+                  className="group block"
+                >
+                  <div className="bg-white border border-black/10 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden hover:border-black/20">
+                    {/* Image */}
+                    <div className="relative h-48 md:h-52 mb-4 overflow-hidden rounded-xl bg-black/5 group-hover:bg-black/10 transition-colors">
+                      <img
+                        src={`${API_URL}${product.images?.[0]}`}
+                        alt={product.name}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 p-2" //adding padding for better view
+                        loading="lazy"
+                      />
+                      <div className="absolute top-3 right-3 bg-black text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200">
+                        Quick View
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="space-y-2">
+                      <h3
+                        className="font-semibold text-lg text-black overflow-hidden text-ellipsis whitespace-nowrap max-w-full group-hover:text-black/90 transition-colors"
+                        title={product.name}
+                      >
+                        {product.name}
+                      </h3>
+
+                      <p className="text-xl font-bold text-black">
+                        ₹{product.price.toLocaleString()}
+                      </p>
+
+                      <div className="flex items-center gap-2 pt-2">
+                        <span className="text-sm text-black/70 font-medium">
+                          View Details
+                        </span>
+                        <svg
+                          className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
