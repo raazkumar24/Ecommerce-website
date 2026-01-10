@@ -150,15 +150,15 @@ const Footer = () => {
             </h4>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 mt-0.5 text-black/60 flex-shrink-0" />
+                <Phone className="w-5 h-5 mt-0.5 text-black/60 shrink-0" />
                 <span className="text-black/70">+91 98765 XXXXX</span>
               </div>
               <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 mt-0.5 text-black/60 flex-shrink-0" />
+                <Mail className="w-5 h-5 mt-0.5 text-black/60 shrink-0" />
                 <span className="text-black/70">hello@Estore.com</span>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 mt-0.5 text-black/60 flex-shrink-0" />
+                <MapPin className="w-5 h-5 mt-0.5 text-black/60 shrink-0" />
                 <span className="text-black/70">
                   123 Shopping Street, Chandigarh, India
                 </span>

@@ -12,9 +12,9 @@ const About = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative bg-gradient-to-br from-black/5 to-transparent py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="relative bg-linear-to-br from-black/5 to-transparent py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-black to-black/60 bg-clip-text text-transparent mb-6">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-linear-to-r from-black to-black/60 bg-clip-text text-transparent mb-6">
             About E-Store
           </h1>
           <p className="text-xl md:text-2xl text-black/80 max-w-2xl mx-auto leading-relaxed">
@@ -69,7 +69,7 @@ const About = () => {
         </section>
 
         {/* Creator */}
-        <section className="bg-gradient-to-r from-black/5 to-black/5 rounded-3xl p-12 lg:p-16 mb-24">
+        <section className="bg-linear-to-r from-black/5 to-black/5 rounded-3xl p-12 lg:p-16 mb-24">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-2xl border border-black/20 mb-8">
               <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center">
