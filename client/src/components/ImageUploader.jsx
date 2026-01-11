@@ -1,4 +1,4 @@
-// src/components/ImageUploader.jsx - Complete mobile-friendly version
+
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -7,7 +7,8 @@ import {
   X,
   GripVertical,
   Replace,
-} from "lucide-react";
+ from "lucide-react";
+}
 
 const API_URL = import.meta.env.VITE_API_URL;
 
