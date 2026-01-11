@@ -11,6 +11,8 @@ import p3 from "../assets/p3.png";
 import p4 from "../assets/p4.png";
 import bannerImage from "../assets/banner.png";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [keyword, setKeyword] = useState("");
