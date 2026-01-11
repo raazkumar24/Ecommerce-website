@@ -9,6 +9,8 @@ import {
   Replace,
 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const useImageHandling = (generateId) => {
   const [images, setImages] = useState([]); // {id, file, preview, type: 'new' | 'old', url?}
   const [dragging, setDragging] = useState(false); // for dropzone state
