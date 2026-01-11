@@ -19,6 +19,8 @@ const ProductDetails = () => {
   const [activeImg, setActiveImg] = useState(0); // active image index
   const [loadingProduct, setLoadingProduct] = useState(true); // loading state
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const [expandDescription, setExpandDescription] = useState(false);
+
 
   // Handle responsive breakpoints
   useEffect(() => {
@@ -239,7 +241,7 @@ const ProductDetails = () => {
           {/* Product Details */}
           <div className="space-y-4 sm:space-y-6 lg:sticky lg:top-24">
             <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black mb-3 sm:mb-4 leading-tight">
+              <h1 className="text-2xl sm:text-2xl font-bold text-black mb-3 sm:mb-4 leading-tight">
                 {product.name}
               </h1>
               <p className="text-xl sm:text-2xl lg:text-3xl font-semibold text-black mb-4 sm:mb-6">
@@ -247,8 +249,19 @@ const ProductDetails = () => {
               </p>
             </div>
 
+            {/* Product Description with see more toggle btn*/}
             <div className="prose prose-sm max-w-none text-black/80 leading-relaxed text-sm sm:text-base">
-              <p>{product.description}</p>
+              <p className={expandDescription ? "" : "line-clamp-4"}>
+                {product.description}
+              </p>
+              {product.description.length > 300 && (
+                <button
+                  onClick={() => setExpandDescription(!expandDescription)}
+                  className="text-sm sm:text-base font-semibold text-black/80 hover:text-black transition-all duration-200"
+                >
+                  {expandDescription ? "See less" : "See more"}
+                </button>
+              )}
             </div>
 
             {/* Stock Status - Mobile only */}

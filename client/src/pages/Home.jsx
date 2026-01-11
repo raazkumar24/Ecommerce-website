@@ -78,45 +78,45 @@ const Home = () => {
         <input
           type="text"
           placeholder="Search products..."
-          className="w-full rounded-full border-2 border-white/30 bg-white/95 px-6 py-4 text-lg text-gray-900 placeholder-gray-600 outline-none focus:border-white focus:bg-white transition-all duration-200 shadow-xl"
+          className="w-full rounded-full border-2 border-white/30 bg-white/95 px-4 sm:px-6 py-3 sm:py-4 text-base sm:text-lg text-gray-900 placeholder-gray-600 outline-none focus:border-white focus:bg-white transition-all duration-200 shadow-xl"
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
         />
-        <button className="absolute right-4 top-1/2 -translate-y-1/2 bg-black text-white p-3 rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg">
-          <Search className="w-5 h-5" />
+        <button className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black text-white p-2 sm:p-3 rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg">
+          <Search className="w-4 sm:w-5 h-4 sm:h-5" />
         </button>
       </div>
 
       {/* Popular keywords - simple black and white style */}
-      <div className="flex flex-wrap justify-center gap-3">
-        <span className="text-white text-sm font-medium self-center">Popular:</span>
+      <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3">
+        {/* <span className="text-white text-xs sm:text-sm font-medium self-center">Popular:</span> */}
         <button
           onClick={() => setKeyword("")}
-          className="px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg border border-white/20"
+          className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-black text-white rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg border border-white/20"
         >
           All
         </button>
         <button
           onClick={() => setKeyword("laptop")}
-          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+          className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
         >
           Laptops
         </button>
         <button
           onClick={() => setKeyword("phone")}
-          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+          className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
         >
           Phones
         </button>
         <button
           onClick={() => setKeyword("headphones")}
-          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+          className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
         >
           Headphones
         </button>
         <button
           onClick={() => setKeyword("camera")}
-          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+          className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
         >
           Cameras
         </button>
