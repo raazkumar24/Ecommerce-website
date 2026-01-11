@@ -6,9 +6,9 @@ import {
   Upload,
   X,
   GripVertical,
-  Replace,
+  Replace,}
  from "lucide-react";
-}
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
