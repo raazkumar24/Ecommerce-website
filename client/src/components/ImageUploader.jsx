@@ -10,10 +10,10 @@ import {
 } from "lucide-react";
 
 export const useImageHandling = (generateId) => {
-  const [images, setImages] = useState([]);
-  const [dragging, setDragging] = useState(false);
-  const [draggedItem, setDraggedItem] = useState(null);
-  const [dragOverItem, setDragOverItem] = useState(null);
+  const [images, setImages] = useState([]); // {id, file, preview, type: 'new' | 'old', url?}
+  const [dragging, setDragging] = useState(false); // for dropzone state
+  const [draggedItem, setDraggedItem] = useState(null); // for reordering
+  const [dragOverItem, setDragOverItem] = useState(null); // for reordering
 
   // ADD NEW IMAGES
   const handleFiles = useCallback(
