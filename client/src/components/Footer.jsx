@@ -15,7 +15,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-black">YourStore</h3>
+            <h3 className="text-2xl font-bold text-black">E-Storel</h3>
             <p className="text-black/60 leading-relaxed">
               Your trusted destination for premium products at unbeatable
               prices. Fast delivery nationwide.
@@ -170,7 +170,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-black/10 pt-8 mt-12">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm text-black/50">
-            <p>&copy; 2026 YourStore. All rights reserved.</p>
+            <p>&copy; 2026 E-Storel. All rights reserved.</p>
             <div className="flex flex-wrap gap-4">
               <a href="#" className="hover:text-black transition">
                 Terms of Service
