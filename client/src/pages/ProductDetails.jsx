@@ -241,7 +241,7 @@ const ProductDetails = () => {
           {/* Product Details */}
           <div className="space-y-4 sm:space-y-6 lg:sticky lg:top-24">
             <div>
-              <h1 className="text-2xl sm:text-2xl font-bold text-black mb-3 sm:mb-4 leading-tight">
+              <h1 className="text-xl sm:text-2xl font-bold text-black mb-3 sm:mb-4 leading-tight">
                 {product.name}
               </h1>
               <p className="text-xl sm:text-2xl lg:text-3xl font-semibold text-black mb-4 sm:mb-6">
