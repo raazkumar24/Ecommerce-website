@@ -27,12 +27,12 @@ const Footer = () => {
               >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="w-10 h-10 rounded-full border border-black/20 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
               >
                 <Twitter className="w-5 h-5" />
-              </a>
+              </a> */}
               <a
                 href="#"
                 className="w-10 h-10 rounded-full border border-black/20 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"

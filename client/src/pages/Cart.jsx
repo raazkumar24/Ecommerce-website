@@ -1,12 +1,13 @@
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom"; // Add this import
 import { Search, ShoppingCart, Plus, Minus, X } from "lucide-react";
 
 // API base URL from environment variables
 const API_URL = import.meta.env.VITE_API_URL;
 
-
 const Cart = () => {
   const { cart, updateQuantity, removeItem } = useCart();
+  const navigate = useNavigate(); // Initialize navigate
 
   if (!cart || cart.products.length === 0) {
     return (
@@ -38,6 +39,20 @@ const Cart = () => {
     0
   );
 
+  // Handle product click
+  const handleProductClick = (productId, e) => {
+    // Don't navigate if the click was on a button (quantity controls or remove button)
+    if (
+      e.target.closest('button') || 
+      e.target.tagName === 'BUTTON' ||
+      e.target.closest('button[aria-label*="quantity"]') ||
+      e.target.closest('button[aria-label*="Remove"]')
+    ) {
+      return;
+    }
+    navigate(`/product/${productId}`);
+  };
+
   return (
     <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -57,7 +72,8 @@ const Cart = () => {
             {cart.products.map((item) => (
               <div
                 key={item.product._id}
-                className="group flex flex-col lg:flex-row lg:items-center gap-6 p-6 border border-black/10 rounded-2xl hover:shadow-xl hover:border-black/20 transition-all duration-300 hover:-translate-y-1"
+                onClick={(e) => handleProductClick(item.product._id, e)}
+                className="group flex flex-col lg:flex-row lg:items-center gap-6 p-6 border border-black/10 rounded-2xl hover:shadow-xl hover:border-black/20 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               >
                 {/* Image */}
                 <div className="relative w-full lg:w-32 lg:shrink-0 aspect-square rounded-xl overflow-hidden bg-black/5 group-hover:bg-black/10 transition-colors">
@@ -84,7 +100,8 @@ const Cart = () => {
                 {/* Quantity Controls */}
                 <div className="flex items-center justify-center lg:justify-end gap-3 mb-4 lg:mb-0">
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering product click
                       if (item.quantity > 1) {
                         updateQuantity(item.product._id, item.quantity - 1);
                       }
@@ -101,7 +118,10 @@ const Cart = () => {
                   </span>
 
                   <button
-                    onClick={() => updateQuantity(item.product._id, item.quantity + 1)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering product click
+                      updateQuantity(item.product._id, item.quantity + 1);
+                    }}
                     className="w-12 h-12 flex items-center justify-center rounded-xl bg-black hover:bg-black/90 text-white border border-black shadow-sm hover:shadow-black/30 transition-all duration-200 hover:scale-105"
                     aria-label="Increase quantity"
                   >
@@ -115,7 +135,10 @@ const Cart = () => {
                     ₹{((item.product.price || 0) * (item.quantity || 0)).toLocaleString()}
                   </p>
                   <button
-                    onClick={() => removeItem(item.product._id)}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering product click
+                      removeItem(item.product._id);
+                    }}
                     className="text-black/70 hover:text-black group/remove hover:bg-black/5 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 group/remove:hover:scale-105"
                     aria-label={`Remove ${item.product.name} from cart`}
                   >

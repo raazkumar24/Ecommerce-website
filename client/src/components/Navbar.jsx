@@ -42,9 +42,9 @@ const Navbar = () => {
             className="flex items-center gap-2"
             onClick={() => setIsMenuOpen(false)}
           >
-            <div className="p-2 border border-black rounded-lg">
+            {/* <div className="p-2 border border-black rounded-lg">
               <ShoppingBag className="w-5 h-5 text-black" />
-            </div>
+            </div> */}
             <span className="text-xl font-semibold tracking-tight text-black">
               E-Shop
             </span>
@@ -55,6 +55,12 @@ const Navbar = () => {
             <Link to="/" className={navLinkClass}>
               <Home className="w-4 h-4" />
               <span>Home</span>
+            </Link>
+
+            {/* About Link */}
+            <Link to="/about" className={navLinkClass}>
+              <FileSpreadsheet className="w-4 h-4" />
+              <span>About</span>
             </Link>
 
             {user && (
@@ -70,11 +76,6 @@ const Navbar = () => {
                 </div>
               </Link>
             )}
-            {/* About Link */}
-            <Link to="/about" className={navLinkClass}>
-              <FileSpreadsheet className="w-4 h-4" />
-              <span>About</span>
-            </Link>
 
             {/* Admin Dashboard Link */}
             {user?.role === "admin" && (
@@ -124,18 +125,37 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-black/5 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <X className="w-6 h-6 text-black" />
-            ) : (
-              <Menu className="w-6 h-6 text-black" />
+          {/* Mobile Navigation Buttons */}
+          <div className="flex md:hidden items-center gap-2">
+            {/* Cart Button (Mobile) - Visible when user is logged in */}
+            {user && (
+              <Link
+                to="/cart"
+                className="relative p-2 rounded-lg hover:bg-black/5 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <ShoppingCart className="w-6 h-6 text-black" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
             )}
-          </button>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-lg hover:bg-black/5 transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6 text-black" />
+              ) : (
+                <Menu className="w-6 h-6 text-black" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation Menu */}
@@ -151,28 +171,12 @@ const Navbar = () => {
                 <span>Home</span>
               </Link>
 
-              {user && (
-                <Link
-                  to="/cart"
-                  className={mobileNavLinkClass}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-3">
-                      <ShoppingCart className="w-5 h-5" />
-                      <span>Cart</span>
-                    </div>
-                    {cartCount > 0 && (
-                      <span className="bg-black text-white text-xs font-semibold rounded-full w-6 h-6 flex items-center justify-center">
-                        {cartCount}
-                      </span>
-                    )}
-                  </div>
-                </Link>
-              )}
-
               {/* About Link */}
-              <Link to="/about" className={navLinkClass}>
+              <Link
+                to="/about"
+                className={mobileNavLinkClass}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 <FileSpreadsheet className="w-5 h-5" />
                 <span>About</span>
               </Link>

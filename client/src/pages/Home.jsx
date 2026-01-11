@@ -40,89 +40,108 @@ const Home = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div
-        className="bg-cover bg-center bg-no-repeat py-20 px-4 sm:px-6 lg:px-8 relative"
-        style={{ backgroundImage: `url(${bannerImage})` }}
-      >
-        {/* Optional overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/10"></div>
+  className="bg-cover bg-center bg-no-repeat py-20 px-4 sm:px-6 lg:px-8 relative"
+  style={{ backgroundImage: `url(${bannerImage})` }}
+>
+  {/* Clean black overlay */}
+  <div className="absolute inset-0 bg-black/40"></div>
 
-        {/* Product img */}
-        <img
-          src={p1}
-          alt="Product 1"
-          className="w-42 h-auto absolute top-4 left-20 hidden md:block"
+  {/* Product images with subtle shadow */}
+  <img
+    src={p1}
+    alt="Product 1"
+    className="w-40 h-auto absolute top-6 left-6 lg:left-16 hidden md:block rounded-lg shadow-2xl hover:scale-105 transition-transform duration-300"
+  />
+
+  <img
+    src={p2}
+    alt="Product 2"
+    className="w-40 h-auto absolute bottom-6 right-6 lg:right-16 hidden md:block rounded-lg shadow-2xl hover:scale-105 transition-transform duration-300"
+  />
+
+  <div className="max-w-4xl mx-auto text-center relative z-10">
+    {/* Title with subtle text shadow */}
+    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+      Discover Amazing Products
+    </h1>
+    
+    {/* Subtle divider */}
+    <div className="w-20 h-1 bg-white mx-auto mb-8"></div>
+    
+    <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed">
+      Browse our curated collection of high-quality items perfect for your needs.
+    </p>
+
+    {/* Search section */}
+    <div className="max-w-2xl mx-auto">
+      <div className="relative mb-8">
+        <input
+          type="text"
+          placeholder="Search products..."
+          className="w-full rounded-full border-2 border-white/30 bg-white/95 px-6 py-4 text-lg text-gray-900 placeholder-gray-600 outline-none focus:border-white focus:bg-white transition-all duration-200 shadow-xl"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
         />
-
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-black mb-6 tracking-tight drop-shadow-[0_0_8px_white]">
-            Discover Amazing Products
-          </h1>
-          <p className="text-xl text-black/70 mb-8 max-w-2xl mx-auto">
-            Browse our curated collection of high-quality items perfect for your
-            needs.
-          </p>
-
-          {/* Search */}
-          <div className="max-w-md mx-auto">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full rounded-full border border-black/20 bg-white px-6 py-4 text-lg text-black placeholder-black/50 outline-none focus:border-black focus:ring-2 focus:ring-black transition-all duration-200 shadow-lg"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-              />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-black/50">
-                <Search className="w-5 h-5" />
-              </span>
-            </div>
-              {/*some popular keyowrd */}
-              <div className="mt-2 text-sm text-black/60">
-                <button
-                  onClick={() => setKeyword("")}
-                  className="p-2 bg-black text-white rounded-full mr-2 drop-shadow-2xl"
-                >
-                  All
-                </button>
-                {" "}
-                <button
-                  onClick={() => setKeyword("laptop")}
-                  className="p-2 bg-white text-black rounded-full mr-2 drop-shadow-2xl"
-                >
-                  Laptops
-                </button>
-                {" "}
-                <button
-                  onClick={() => setKeyword("phone")}
-                  className="p-2 bg-white text-black rounded-full mr-2 drop-shadow-2xl"
-                >
-                  Phones
-                </button>
-                {" "}
-                <button
-                  onClick={() => setKeyword("headphones")}
-                  className="p-2 bg-white text-black rounded-full mr-2 drop-shadow-2xl"
-                >
-                  Headphones
-                </button>
-                {" "}
-                <button
-                  onClick={() => setKeyword("camera")}
-                  className="p-2 bg-white text-black rounded-full drop-shadow-2xl"
-                >
-                  Cameras
-                </button>
-              </div>
-          </div>
-        </div>
-
-        {/* Product img */}
-        <img
-          src={p2}
-          alt="Product 1"
-          className="w-42 h-auto absolute bottom-4 right-20 hidden md:block"
-        />
+        <button className="absolute right-4 top-1/2 -translate-y-1/2 bg-black text-white p-3 rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg">
+          <Search className="w-5 h-5" />
+        </button>
       </div>
+
+      {/* Popular keywords - simple black and white style */}
+      <div className="flex flex-wrap justify-center gap-3">
+        <span className="text-white text-sm font-medium self-center">Popular:</span>
+        <button
+          onClick={() => setKeyword("")}
+          className="px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg border border-white/20"
+        >
+          All
+        </button>
+        <button
+          onClick={() => setKeyword("laptop")}
+          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+        >
+          Laptops
+        </button>
+        <button
+          onClick={() => setKeyword("phone")}
+          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+        >
+          Phones
+        </button>
+        <button
+          onClick={() => setKeyword("headphones")}
+          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+        >
+          Headphones
+        </button>
+        <button
+          onClick={() => setKeyword("camera")}
+          className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 active:scale-95 transition-all duration-200 shadow-lg border border-black/20"
+        >
+          Cameras
+        </button>
+      </div>
+
+      {/* Simple stats */}
+      <div className="mt-12 flex justify-center items-center gap-6 text-white/80">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-white rounded-full"></div>
+          <span className="text-sm">500+ Products</span>
+        </div>
+        <div className="w-1 h-4 bg-white/50 rounded-full"></div>
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-white rounded-full"></div>
+          <span className="text-sm">Free Shipping</span>
+        </div>
+        <div className="w-1 h-4 bg-white/50 rounded-full"></div>
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-white rounded-full"></div>
+          <span className="text-sm">24/7 Support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* Products Grid */}
       <div className="px-4 sm:px-6 lg:px-8 py-12">
