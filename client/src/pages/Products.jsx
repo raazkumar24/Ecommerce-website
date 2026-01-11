@@ -5,6 +5,8 @@ import ProductCard from "../components/ProductCard";
 import ProductGrid from "../components/ProductGrid";
 import { Search, Filter } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
