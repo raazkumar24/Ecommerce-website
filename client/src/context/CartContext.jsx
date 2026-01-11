@@ -35,7 +35,7 @@ export const CartProvider = ({ children }) => {
   try {
     await addToCartApi({ productId, quantity });
 
-    // 🔑 THIS IS THE KEY
+    // THIS IS THE KEY
     await fetchCart();
 
     toast.success("Added to cart");
@@ -75,6 +75,7 @@ export const CartProvider = ({ children }) => {
   const cartCount =
     cart?.products.length || 0;
     
+  // Fetch cart on user change 
   useEffect(() => {
     fetchCart();
   }, [user]);

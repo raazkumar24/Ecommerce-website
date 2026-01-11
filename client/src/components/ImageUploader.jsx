@@ -1,4 +1,4 @@
-// src/components/ImageUploader.jsx
+// src/components/ImageUploader.jsx - Complete mobile-friendly version
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -175,6 +175,14 @@ export const ImageUploader = ({
   const oldImagesCount = images.filter(img => img.type === 'old').length;
   const newImagesCount = images.filter(img => img.type === 'new').length;
 
+  // Handle click on mobile to show/hide controls (optional enhancement)
+  const handleMobileClick = (e, imgId) => {
+    // You can add mobile-specific behavior here if needed
+    if (onImageClick) {
+      onImageClick({id: imgId});
+    }
+  };
+
   return (
     <div className="space-y-4 sm:space-y-6">
       <label className="flex items-center gap-2 text-base sm:text-lg font-semibold text-black">
@@ -211,6 +219,7 @@ export const ImageUploader = ({
               onDragOver={(e) => onDragOverReordering(e, index)}
               onDrop={(e) => onDropReordering(e, index)}
               onDragEnd={onDragEnd}
+              onClick={(e) => handleMobileClick(e, img.id)}
               className={`relative group rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-move ${
                 dragOverItem === index
                   ? "ring-2 ring-blue-500 ring-offset-1 sm:ring-offset-2"
@@ -218,7 +227,7 @@ export const ImageUploader = ({
               }`}
             >
               {/* Drag Handle */}
-              <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-white/80 hover:bg-white p-1 sm:p-1.5 rounded-full shadow-sm sm:shadow-md opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-move z-10">
+              <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-white/90 hover:bg-white p-1 sm:p-1.5 rounded-full shadow-sm sm:shadow-md opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-move z-10">
                 <GripVertical className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-black/70" />
               </div>
 
@@ -226,8 +235,7 @@ export const ImageUploader = ({
               <img
                 src={img.type === 'old' && img.url ? `${API_URL}${img.url}` : (img.preview || URL.createObjectURL(img.file))}
                 alt={`Preview ${index + 1}`}
-                className="w-full h-24 sm:h-28 md:h-32 object-cover cursor-pointer"
-                onClick={() => onImageClick && onImageClick(img)}
+                className="w-full h-24 sm:h-28 md:h-32 object-cover"
               />
 
               {/* Image Type Badge (for edit mode) */}
@@ -241,7 +249,7 @@ export const ImageUploader = ({
 
               {/* Replace Button (only for old images in edit mode) */}
               {showReplace && img.type === 'old' && (
-                <label className="absolute bottom-8 left-0 right-0 mx-1 bg-white/90 hover:bg-white text-black text-xs p-1.5 rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer z-10">
+                <label className="absolute bottom-8 left-0 right-0 mx-1 bg-white/90 hover:bg-white text-black text-xs p-1.5 rounded-lg shadow-md opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer z-10">
                   <input
                     type="file"
                     accept="image/*"
@@ -261,21 +269,24 @@ export const ImageUploader = ({
                 </label>
               )}
 
-              {/* File Name (hover only) */}
+              {/* File Name (always visible on mobile, hover only on desktop) */}
               {img.file?.name && (
-                <div className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-xs px-1.5 py-1 rounded opacity-0 group-hover:opacity-100 transition-all truncate">
+                <div className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-xs px-1.5 py-1 rounded opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-all truncate">
                   {img.file.name.length > 20 ? `${img.file.name.substring(0, 20)}...` : img.file.name}
                 </div>
               )}
 
-              {/* Remove Button */}
+              {/* Remove Button - ALWAYS VISIBLE ON MOBILE */}
               <button
                 type="button"
-                onClick={() => onRemoveImage && onRemoveImage(img.id)}
-                className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-red-500/90 hover:bg-red-600 p-1 sm:p-2 rounded-full shadow-sm sm:shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 z-10"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering parent click
+                  onRemoveImage && onRemoveImage(img.id);
+                }}
+                className="absolute top-1 right-1 sm:top-2 sm:right-2 bg-red-500 hover:bg-red-600 p-1.5 sm:p-2 rounded-full shadow-sm sm:shadow-lg opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 z-20"
                 title="Remove image"
               >
-                <X className="w-3 h-3 sm:w-3 sm:h-3 text-white" />
+                <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
               </button>
             </div>
           ))}
@@ -335,6 +346,7 @@ export const ImageUploader = ({
             <li>Drag images to reorder. The order will be preserved when saved</li>
             <li>First image will be used as the main product image</li>
             {showReplace && <li>Click "Replace" on current images to update them while keeping the same position</li>}
+            <li>Tap the X button to remove images on mobile</li>
             <li>Images will be uploaded in the order shown above</li>
           </ul>
         </div>
