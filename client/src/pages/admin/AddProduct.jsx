@@ -13,6 +13,12 @@ import {
 } from "lucide-react";
 import { useImageHandling, ImageUploader } from "../../components/ImageUploader";
 
+if (!import.meta.env.VITE_API_URL) {
+  console.error("VITE_API_URL is missing");
+}
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AddProduct = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
@@ -299,6 +305,7 @@ const AddProduct = () => {
               draggedItem={draggedItem}
               dragOverItem={dragOverItem}
               showReplace={false}
+              API_URL={API_URL}
             />
 
             {/* Submit Button */}

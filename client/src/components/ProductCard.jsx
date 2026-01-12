@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+if (!import.meta.env.VITE_API_URL) {
+  console.error("VITE_API_URL is missing");
+}
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductCard = ({ product, index }) => {

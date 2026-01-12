@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Plus, Minus, X, ArrowLeft } from "lucide-react";
 
 // API base URL from environment variables
+if (!import.meta.env.VITE_API_URL) {
+  console.error("VITE_API_URL is missing");
+}
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Cart = () => {

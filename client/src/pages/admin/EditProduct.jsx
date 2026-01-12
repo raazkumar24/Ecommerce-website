@@ -13,6 +13,10 @@ import {
 } from "lucide-react";
 import { useImageHandling, ImageUploader } from "../../components/ImageUploader";
 
+if (!import.meta.env.VITE_API_URL) {
+  console.error("VITE_API_URL is missing");
+}
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const EditProduct = () => {

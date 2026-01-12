@@ -13,8 +13,11 @@ import {
 } from "lucide-react";
 
 // API base URL from environment variables
-const API_URL = import.meta.env.VITE_API_URL;
+if (!import.meta.env.VITE_API_URL) {
+  console.error("VITE_API_URL is missing");
+}
 
+const API_URL = import.meta.env.VITE_API_URL;
 const Dashboard = () => {
   const [products, setProducts] = useState([]); // all products
   const [loading, setLoading] = useState(true); // loading state 
