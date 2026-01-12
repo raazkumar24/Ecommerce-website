@@ -5,16 +5,22 @@ import Product from "../models/Product.js";
 ================================ */
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock, brand } = req.body;
+    const {
+      name,
+      price,
+      category,
+      description,
+      stock,
+      brand
+    } = req.body;
 
-    if (!name || !price || !category || !stock || !brand) {
+    if (!name || !price || !category) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
-    // MULTI IMAGES
-    const images = req.files
-      ? req.files.map((file) => `/uploads/${file.filename}`)
-      : [];
+    const images = (req.files || []).map(
+      (file) => `/uploads/${file.filename}`
+    );
 
     if (images.length === 0) {
       return res.status(400).json({ message: "At least one image required" });
@@ -22,16 +28,17 @@ export const createProduct = async (req, res) => {
 
     const product = await Product.create({
       name,
-      description,
       price,
       category,
+      description,
       stock,
-      images,
       brand,
+      images
     });
 
     res.status(201).json(product);
   } catch (error) {
+    console.error("CREATE PRODUCT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -43,10 +50,6 @@ export const getAllProducts = async (req, res) => {
   try {
     const { keyword, category } = req.query;
     let filter = {};
-
-    // if (keyword) {
-    //   filter.name = { $regex: keyword, $options: "i" };
-    // }
 
     if (category) {
       filter.category = category;
@@ -92,54 +95,77 @@ export const getSingleProduct = async (req, res) => {
   }
 };
 
-/* ===============================
+/* =============================== 
    UPDATE PRODUCT (ADMIN)
 ================================ */
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    //  IMAGE ORDER FROM FRONTEND
-    const imageOrder = req.body.imageOrder
-      ? JSON.parse(req.body.imageOrder)
-      : [];
+    const {
+      name,
+      price,
+      category,
+      description,
+      stock,
+      brand,
+      imageOrder,
+      existingImages
+    } = req.body;
 
-    // NEW / REPLACED IMAGES (FILES)
-    const uploadedImages = req.files
-      ? req.files.map((file) => `/uploads/${file.filename}`)
-      : [];
+    // Update fields
+    product.name = name ?? product.name;
+    product.price = price ?? product.price;
+    product.category = category ?? product.category;
+    product.description = description ?? product.description;
+    product.stock = stock ?? product.stock;
+    product.brand = brand ?? product.brand;
 
-    let uploadIndex = 0;
+    // New uploaded images
+    const newImages = (req.files || []).map(
+      (file) => `/uploads/${file.filename}`
+    );
 
-    //  REBUILD IMAGE ARRAY EXACTLY AS FRONTEND ORDER
-    const finalImages = imageOrder.map((item) => {
-      if (item.type === "old") {
-        return item.url; // keep existing image
-      } else {
-        return uploadedImages[uploadIndex++]; // replaced or new image
-      }
-    });
+    // Existing images (keep)
+    let oldImages = [];
+    if (existingImages) {
+      oldImages = Array.isArray(existingImages)
+        ? existingImages
+        : [existingImages];
+    }
 
-    product.images = finalImages;
+    // Apply ordering
+    if (imageOrder) {
+      const order = JSON.parse(imageOrder);
 
-    // UPDATE OTHER FIELDS
-    product.name = req.body.name || product.name;
-    product.price = req.body.price || product.price;
-    product.category = req.body.category || product.category;
-    product.description = req.body.description || product.description;
-    product.stock = req.body.stock ?? product.stock;
-    product.brand = req.body.brand || product.brand;
+      const finalImages = [];
+
+      order.forEach((item) => {
+        if (item.type === "old" && oldImages.includes(item.url)) {
+          finalImages.push(item.url);
+        }
+        if (item.type === "new" && newImages.length > 0) {
+          finalImages.push(newImages.shift());
+        }
+      });
+
+      product.images = finalImages;
+    } else {
+      // fallback (safe)
+      product.images = [...oldImages, ...newImages];
+    }
 
     const updated = await product.save();
     res.json(updated);
   } catch (error) {
+    console.error("UPDATE PRODUCT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 /* ===============================
