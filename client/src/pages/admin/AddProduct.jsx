@@ -1,4 +1,4 @@
-// AddProduct.jsx
+// AddProduct.jsx - COMPLETE FIXED VERSION
 import { useState, useEffect, useCallback } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
@@ -75,10 +75,10 @@ const AddProduct = () => {
     [form]
   );
 
-  // Handle file change
+  // Handle file change - ADDED THIS FUNCTION
   const handleFileChange = useCallback(
     (e) => {
-      if (e.target.files) {
+      if (e.target.files && e.target.files.length > 0) {
         const validFiles = Array.from(e.target.files).filter(
           (file) => file.type.startsWith("image/") && file.size < 5 * 1024 * 1024
         );
@@ -121,7 +121,6 @@ const AddProduct = () => {
       !form.name ||
       !form.price ||
       !form.category ||
-      // !form.stock ||
       !form.brand ||
       !form.description ||
       images.length === 0
@@ -316,7 +315,7 @@ const AddProduct = () => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              onFileChange={handleFileChange}
+              onFileChange={handleFileChange} // Added this prop
               onRemoveImage={removeImage}
               onDragStart={handleDragStart}
               onDragOverReordering={handleDragOverReordering}

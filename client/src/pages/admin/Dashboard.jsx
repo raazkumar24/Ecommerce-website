@@ -2,15 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../../services/api";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { 
-  Plus, 
-  Edit3, 
-  Trash2, 
-  Search, 
-  Eye, 
-  Package, 
-  Grid, 
-} from "lucide-react";
+import { Plus, Edit3, Trash2, Search, Eye, Package, Grid } from "lucide-react";
 
 // API base URL from environment variables
 if (!import.meta.env.VITE_API_URL) {
@@ -20,7 +12,7 @@ if (!import.meta.env.VITE_API_URL) {
 const API_URL = import.meta.env.VITE_API_URL;
 const Dashboard = () => {
   const [products, setProducts] = useState([]); // all products
-  const [loading, setLoading] = useState(true); // loading state 
+  const [loading, setLoading] = useState(true); // loading state
   const [searchTerm, setSearchTerm] = useState(""); // search term
 
   // Fetch products from API
@@ -50,11 +42,12 @@ const Dashboard = () => {
   };
 
   // Filter products
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.category?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.brand?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.brand?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
@@ -87,13 +80,25 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <Link
-            to="/admin/add-product"
-            className="group flex items-center gap-3 bg-black hover:bg-black/90 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-xl hover:shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] self-start lg:self-auto"
-          >
-            <Plus className="w-5 h-5 group-hover:scale-110 transition-transform" />
-            Add New Product
-          </Link>
+          <div className="flex items-center gap-4 flex-wrap">
+            {/* Add Catergory Link */}
+            <Link
+              to="/admin/categories"
+              className="group flex items-center gap-3 bg-black hover:bg-black/90 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-xl hover:shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] self-start lg:self-auto"
+            >
+              <Plus className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              Add Category
+            </Link>
+
+            {/* Add Product Button */}
+            <Link
+              to="/admin/add-product"
+              className="group flex items-center gap-3 bg-black hover:bg-black/90 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-xl hover:shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] self-start lg:self-auto"
+            >
+              <Plus className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              Add New Product
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -107,8 +112,12 @@ const Dashboard = () => {
                 <Package className="w-8 h-8 text-black/60" />
               </div>
               <div>
-                <p className="text-sm font-medium text-black/70 uppercase tracking-wide">Total Products</p>
-                <p className="text-3xl font-bold text-black">{products.length}</p>
+                <p className="text-sm font-medium text-black/70 uppercase tracking-wide">
+                  Total Products
+                </p>
+                <p className="text-3xl font-bold text-black">
+                  {products.length}
+                </p>
               </div>
             </div>
           </div>
@@ -120,8 +129,12 @@ const Dashboard = () => {
                 <Grid className="w-8 h-8 text-black/60" />
               </div>
               <div>
-                <p className="text-sm font-medium text-black/70 uppercase tracking-wide">Showing</p>
-                <p className="text-3xl font-bold text-black">{filteredProducts.length}</p>
+                <p className="text-sm font-medium text-black/70 uppercase tracking-wide">
+                  Showing
+                </p>
+                <p className="text-3xl font-bold text-black">
+                  {filteredProducts.length}
+                </p>
               </div>
             </div>
           </div>
@@ -148,9 +161,13 @@ const Dashboard = () => {
           {filteredProducts.length === 0 ? (
             <div className="text-center py-24">
               <Package className="w-24 h-24 text-black/20 mx-auto mb-8" />
-              <h3 className="text-2xl font-bold text-black mb-4">No products found</h3>
+              <h3 className="text-2xl font-bold text-black mb-4">
+                No products found
+              </h3>
               <p className="text-lg text-black/60 mb-8">
-                {searchTerm ? "Try a different search term." : "No products available."}
+                {searchTerm
+                  ? "Try a different search term."
+                  : "No products available."}
               </p>
               <Link
                 to="/admin/add-product"
@@ -202,7 +219,10 @@ const Dashboard = () => {
                               <h4 className="font-semibold text-black text-lg line-clamp-2 group-hover:text-black/90">
                                 {product.name}
                               </h4>
-                              <p className="text-sm text-black/60">{product._id.slice(-6)}</p> {/* Show last 6 chars of ID */}
+                              <p className="text-sm text-black/60">
+                                {product._id.slice(-6)}
+                              </p>{" "}
+                              {/* Show last 6 chars of ID */}
                             </div>
                           </div>
                         </td>
@@ -213,7 +233,9 @@ const Dashboard = () => {
                         </td>
                         <td className="px-6 py-6 hidden md:table-cell">
                           <span className="inline-flex items-center gap-2 px-3 py-1 bg-black/10 text-black/80 text-sm rounded-full font-medium">
-                            {product.category?.name || product.category || "Uncategorized"}
+                            {product.category?.name ||
+                              product.category ||
+                              "Uncategorized"}
                           </span>
                         </td>
                         <td className="px-6 py-6 text-right">

@@ -12,6 +12,7 @@ import AddProduct from "../pages/admin/AddProduct";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import About from "../pages/About";
+import Categories from "../pages/admin/Categories";
 
 const AppRoutes = () => {
   return (
@@ -39,6 +40,7 @@ const AppRoutes = () => {
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/add-product" element={<AddProduct />} />
         <Route path="/admin/edit-product/:id" element={<EditProduct />} />
+        <Route path="/admin/categories" element={<Categories />} />
       </Route>
     </Routes>
   );

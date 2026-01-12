@@ -1,4 +1,4 @@
-// EditProduct.jsx
+// EditProduct.jsx - COMPLETE FIXED VERSION
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
@@ -66,6 +66,8 @@ const EditProduct = () => {
   const fetchProduct = async () => {
     try {
       const { data } = await api.get(`/products/${id}`);
+      console.log("Product data:", data);
+      console.log("Product images:", data.images);
 
       setForm({
         name: data.name || "",
@@ -77,15 +79,20 @@ const EditProduct = () => {
       });
 
       // Initialize images with unique IDs and track original order
-      const initialImages = (data.images || []).map((img, index) => ({
-        id: `old-${index}-${Date.now()}`,
-        url: img,
-        type: 'old',
-        originalIndex: index,
-        file: null
-      }));
+      const initialImages = (data.images || []).map((img, index) => {
+        console.log(`Image ${index}:`, img);
+        return {
+          id: `old-${index}-${Date.now()}`,
+          url: img,
+          type: 'old',
+          originalIndex: index,
+          file: null
+        };
+      });
+      console.log("Initial images:", initialImages);
       setImages(initialImages);
     } catch (error) {
+      console.error("Failed to load product:", error);
       toast.error("Failed to load product");
       navigate("/admin/dashboard");
     }
@@ -107,10 +114,10 @@ const EditProduct = () => {
     [form]
   );
 
-  // Handle file change
+  // Handle file change - ADDED THIS FUNCTION
   const handleFileChange = useCallback(
     (e) => {
-      if (e.target.files) {
+      if (e.target.files && e.target.files.length > 0) {
         const validFiles = Array.from(e.target.files).filter(
           (file) => file.type.startsWith("image/") && file.size < 5 * 1024 * 1024
         );
@@ -290,7 +297,6 @@ const EditProduct = () => {
                 </select>
               </div>
 
-              
               {/* Brand */}
               <div className="space-y-1 sm:space-y-2">
                 <label className="flex items-center gap-2 text-sm sm:text-base lg:text-lg font-semibold text-black">
@@ -350,7 +356,7 @@ const EditProduct = () => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
-              onFileChange={handleFileChange}
+              onFileChange={handleFileChange} // Added this prop
               onReplaceImage={replaceImage}
               onRemoveImage={removeImage}
               onDragStart={handleDragStart}
