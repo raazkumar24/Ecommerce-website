@@ -114,7 +114,7 @@ const Categories = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-linear-to-b from-gray-50 to-white flex items-center justify-center p-4">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
           <p className="text-black/60">Loading categories...</p>
@@ -124,7 +124,7 @@ const Categories = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white p-4 sm:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8 sm:mb-10 lg:mb-12">
@@ -158,7 +158,7 @@ const Categories = () => {
             {/* Add Category Card */}
             <div className="bg-white border border-black/10 rounded-2xl shadow-lg p-6 sticky top-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-black to-gray-800 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-linear-to-br from-black to-gray-800 rounded-xl flex items-center justify-center">
                   <Plus className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -186,7 +186,7 @@ const Categories = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-black to-gray-800 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-black/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full bg-linear-to-r from-black to-gray-800 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-black/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   <Plus className="w-4 h-4" />
                   Add Category
@@ -329,7 +329,7 @@ const Categories = () => {
                         // View Mode
                         <div className="flex items-center justify-between gap-4">
                           <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 bg-gradient-to-br from-black/5 to-black/10 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-linear-to-br from-black/5 to-black/10 rounded-xl flex items-center justify-center">
                               <span className="text-lg font-bold text-black/60">
                                 {category.name.charAt(0).toUpperCase()}
                               </span>

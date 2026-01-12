@@ -361,7 +361,7 @@ const ProductDetails = () => {
                 style={{ transform: `translateX(-${activeImg * 100}%)` }}
               >
                 {product.images?.map((img, index) => (
-                  <div key={index} className="w-full h-full flex-shrink-0 flex items-center justify-center p-4 sm:p-8">
+                  <div key={index} className="w-full h-full shrink-0 flex items-center justify-center p-4 sm:p-8">
                     <img
                       src={`${API_URL}${img}`}
                       alt={`${product.name} - ${index + 1}`}
@@ -433,7 +433,7 @@ const ProductDetails = () => {
                   <button
                     key={i}
                     onClick={() => setActiveImg(i)}
-                    className={`relative flex-shrink-0 w-20 aspect-square rounded-xl border-2 transition-all duration-200 overflow-hidden group ${
+                    className={`relative shrink-0 w-20 aspect-square rounded-xl border-2 transition-all duration-200 overflow-hidden group ${
                       activeImg === i
                         ? "border-black shadow-md"
                         : "border-black/20 hover:border-black/40"

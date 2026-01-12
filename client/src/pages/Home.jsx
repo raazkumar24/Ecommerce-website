@@ -133,7 +133,7 @@ const Home = () => {
 
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
-                  <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                  <div className="text-center p-2 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
                     <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
                       {allProducts.length || 0}
                     </div>
@@ -141,7 +141,7 @@ const Home = () => {
                       Products
                     </div>
                   </div>
-                  <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                  <div className="text-center p-2 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
                     <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
                       24/7
                     </div>
@@ -149,7 +149,7 @@ const Home = () => {
                       Support
                     </div>
                   </div>
-                  <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                  <div className="text-center p-2 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
                     <div className="text-2xl sm:text-3xl font-bold text-white mb-1">
                       Free
                     </div>
@@ -174,7 +174,7 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute -bottom-30 -right-4 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32  animate-float z-20"
+                    className="absolute bottom-10 -right-4 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32  animate-float z-20"
                     style={{ animationDelay: "1.5s" }}
                   >
                     <img
@@ -185,7 +185,7 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute top-2/4 -left-8 w-16 h-16 sm:w-20 sm:h-20 animate-float z-10"
+                    className="absolute top-2/4 -left-4 w-16 h-16 sm:w-25 sm:h-25 animate-float z-10"
                     style={{ animationDelay: "2.5s" }}
                   >
                     <img
@@ -196,7 +196,7 @@ const Home = () => {
                   </div>
 
                   <div
-                    className="absolute bottom-2/4 -right-2 w-16 h-16 sm:w-25 sm:h-25 animate-float z-10"
+                    className="absolute bottom-3/4 -right-2 w-16 h-16 sm:w-25 sm:h-25 animate-float z-10"
                     style={{ animationDelay: "3s" }}
                   >
                     <img
@@ -239,7 +239,7 @@ const Home = () => {
                 </div>
 
                 {/* Search Bar */}
-                <div className="absolute -bottom-6 left-0 right-0 mx-auto max-w-xl px-4">
+                <div className="absolute -bottom-6 left-0 right-0 mx-auto max-w-xl px-4 z-50">
                   <div className="relative group">
                     <input
                       type="text"
