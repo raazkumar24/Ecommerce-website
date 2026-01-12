@@ -287,6 +287,24 @@ const EditProduct = () => {
                 </select>
               </div>
 
+              
+              {/* Brand */}
+              <div className="space-y-1 sm:space-y-2">
+                <label className="flex items-center gap-2 text-sm sm:text-base lg:text-lg font-semibold text-black">
+                  <Tag className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                  Brand
+                </label>
+                <input
+                  name="brand"
+                  type="text"
+                  placeholder="Enter brand name"
+                  className="w-full px-4 sm:px-5 md:px-6 py-3 sm:py-4 md:py-5 rounded-lg sm:rounded-xl md:rounded-2xl border-2 border-black/20 bg-white text-base sm:text-lg md:text-xl font-semibold focus:outline-none focus:border-black focus:ring-2 sm:focus:ring-4 focus:ring-black/10 transition-all duration-200 hover:border-black/30 sm:hover:border-black/40 shadow-md sm:shadow-lg"
+                  value={form.brand}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
               {/* Stock */}
               <div className="space-y-1 sm:space-y-2">
                 <label className="flex items-center gap-2 text-sm sm:text-base lg:text-lg font-semibold text-black">

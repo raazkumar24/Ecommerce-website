@@ -27,6 +27,7 @@ export const createProduct = async (req, res) => {
       category,
       stock,
       images,
+      brand,
     });
 
     res.status(201).json(product);
@@ -55,6 +56,8 @@ export const getAllProducts = async (req, res) => {
       filter.$or = [
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
+        { category: { $regex: keyword, $options: "i" } },
+        { brand: { $regex: keyword, $options: "i" } },
       ];
     }
 
@@ -100,19 +103,19 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    // 🔑 IMAGE ORDER FROM FRONTEND
+    //  IMAGE ORDER FROM FRONTEND
     const imageOrder = req.body.imageOrder
       ? JSON.parse(req.body.imageOrder)
       : [];
 
-    // 🔑 NEW / REPLACED IMAGES (FILES)
+    // NEW / REPLACED IMAGES (FILES)
     const uploadedImages = req.files
       ? req.files.map((file) => `/uploads/${file.filename}`)
       : [];
 
     let uploadIndex = 0;
 
-    // 🔥 REBUILD IMAGE ARRAY EXACTLY AS FRONTEND ORDER
+    //  REBUILD IMAGE ARRAY EXACTLY AS FRONTEND ORDER
     const finalImages = imageOrder.map((item) => {
       if (item.type === "old") {
         return item.url; // keep existing image
@@ -129,6 +132,7 @@ export const updateProduct = async (req, res) => {
     product.category = req.body.category || product.category;
     product.description = req.body.description || product.description;
     product.stock = req.body.stock ?? product.stock;
+    product.brand = req.body.brand || product.brand;
 
     const updated = await product.save();
     res.json(updated);

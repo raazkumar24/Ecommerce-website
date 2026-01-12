@@ -105,13 +105,13 @@ const ProductCard = ({ product, index }) => {
 
           {/* Product Name */}
           <h3
-            className="font-semibold text-base sm:text-lg text-black mb-2 line-clamp-2 group-hover:text-black/80 transition-colors min-h-[3.5rem]"
+            className="font-semibold text-base sm:text-lg text-black mb-2 line-clamp-2 group-hover:text-black/80 transition-colors min-h-12"
             title={product.name}
           >
             {product.name}
           </h3>
 
-          {/* Rating (if available) */}
+          {/* Rating (abhi jaruri nahi)
           {product.rating && (
             <div className="flex items-center gap-1 mb-3">
               <div className="flex">
@@ -134,7 +134,7 @@ const ProductCard = ({ product, index }) => {
                 {product.rating} ({product.reviewCount || 0})
               </span>
             </div>
-          )}
+          )} */}
 
           {/* Price Section */}
           <div className="mt-auto pt-3 border-t border-black/5">
