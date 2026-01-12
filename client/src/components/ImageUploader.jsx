@@ -1,4 +1,4 @@
-// src/components/ImageUploader.jsx - Complete mobile-friendly version
+
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -6,8 +6,11 @@ import {
   Upload,
   X,
   GripVertical,
-  Replace,
-} from "lucide-react";
+  Replace,}
+ from "lucide-react";
+
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const useImageHandling = (generateId) => {
   const [images, setImages] = useState([]); // {id, file, preview, type: 'new' | 'old', url?}
