@@ -146,6 +146,16 @@ const Dashboard = () => {
                   <h1 className="text-2xl font-bold text-black">Dashboard</h1>
                   <p className="text-sm text-black/60 mt-1">{totalProducts} products</p>
                 </div>
+
+                {/* Categories Link */}
+                <Link
+                  to="/admin/categories"
+                  className="group flex items-center gap-3 text-black text-sm font-medium hover:text-black/80 transition-all duration-200"
+                >
+                  <span>Categories</span>
+                </Link>
+
+                {/* Add Product Button */}
                 <Link
                   to="/admin/add-product"
                   className="bg-black text-white p-3 rounded-xl shadow-lg"
