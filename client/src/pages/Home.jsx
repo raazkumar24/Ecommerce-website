@@ -1,154 +1,196 @@
 import { useEffect, useState, useCallback } from "react";
 import { getProducts } from "../services/api";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
-import { Search } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import ProductGrid from "../components/ProductGrid";
+import { Search } from "lucide-react";
 import p1 from "../assets/p1.png";
 import p2 from "../assets/p2.png";
 import p3 from "../assets/p3.png";
 import p4 from "../assets/p4.png";
 import bannerImage from "../assets/banner.png";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [keyword, setKeyword] = useState("");
+  const [allProducts, setAllProducts] = useState([]); // All products
+  const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products
+  const [keyword, setKeyword] = useState(""); // Search keyword
   const [loading, setLoading] = useState(false);
 
+  // Fetch all products once
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await getProducts(keyword ? `?keyword=${keyword}` : "");
-      setProducts(data);
+      const { data } = await getProducts(""); // Get all products
+      setAllProducts(data || []);
+      setFilteredProducts(data || []); // Initially show all
     } catch (error) {
-      toast.error("Failed to load products");
+      console.error("Error fetching products:", error);
+      setAllProducts([]);
+      setFilteredProducts([]);
     } finally {
       setLoading(false);
     }
-  }, [keyword]);
+  }, []);
 
+  // Filter products based on keyword
   useEffect(() => {
-    const timeoutId = setTimeout(fetchProducts, 300);
-    return () => clearTimeout(timeoutId);
+    if (!keyword.trim()) {
+      setFilteredProducts(allProducts);
+      return;
+    }
+
+    const searchTerm = keyword.toLowerCase().trim();
+    const filtered = allProducts.filter(product =>
+      product.name?.toLowerCase().includes(searchTerm) ||
+      product.description?.toLowerCase().includes(searchTerm) ||
+      product.category?.name?.toLowerCase().includes(searchTerm) ||
+      product.brand?.toLowerCase().includes(searchTerm)
+    );
+    
+    setFilteredProducts(filtered);
+  }, [keyword, allProducts]);
+
+  // Fetch products on mount
+  useEffect(() => {
+    fetchProducts();
   }, [fetchProducts]);
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div
-        className="bg-cover bg-center bg-no-repeat py-12 sm:py-16 md:py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
-        style={{ backgroundImage: `url(${bannerImage})` }}
+        className="relative min-h-[90vh] sm:min-h-screen overflow-hidden"
       >
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/20"></div>
+        {/* Background with your banner image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${bannerImage})` }}
+        >
+          {/* Dark overlay for better text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"></div>
+        </div>
 
-        {/* Floating Product Images */}
-        {/* <img
-          src={p1}
-          alt="Product 1"
-          className="w-32 h-auto absolute top-6 left-4 md:left-10 lg:left-16 hidden md:block rounded-lg shadow-2xl animate-float"
-          style={{ animationDelay: "0s" }}
-        />
-        <img
-          src={p2}
-          alt="Product 2"
-          className="w-32 h-auto absolute bottom-6 right-4 md:right-10 lg:right-16 hidden md:block rounded-lg shadow-2xl animate-float"
-          style={{ animationDelay: "1s" }}
-        />
-        <img
-          src={p3}
-          alt="Product 3"
-          className="w-28 h-auto absolute top-1/4 right-8 hidden lg:block rounded-lg shadow-2xl animate-float"
-          style={{ animationDelay: "2s" }}
-        />
-        <img
-          src={p4}
-          alt="Product 4"
-          className="w-28 h-auto absolute bottom-1/4 left-8 hidden lg:block rounded-lg shadow-2xl animate-float"
-          style={{ animationDelay: "3s" }}
-        /> */}
+        {/* Main Content */}
+        <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-24">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              
+              {/* Left Column - Text Content */}
+              <div className="text-center lg:text-left animate-fade-in-up">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-900 to-black text-white px-4 py-2 rounded-full mb-6 shadow-xl border border-white/20">
+                  <span className="text-xs font-semibold uppercase tracking-wider">🎯 Premium Collection</span>
+                </div>
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          {/* Title */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 tracking-tight leading-tight">
-            Discover Amazing
-            <span className="block mt-2">Products</span>
-          </h1>
-          
-          {/* Divider */}
-          <div className="w-16 h-1 bg-white/60 mx-auto mb-6 sm:mb-8 rounded-full"></div>
-          
-          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-4">
-            Browse our curated collection of high-quality items perfect for your needs.
-          </p>
+                {/* Main Heading */}
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                  <span className="block bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                    Elevate Your
+                  </span>
+                  <span className="block bg-gradient-to-r from-white via-gray-200 to-gray-300 bg-clip-text text-transparent">
+                    Tech Experience
+                  </span>
+                </h1>
 
-          {/* Search Section */}
-          <div className="max-w-2xl mx-auto px-4">
-            <div className="relative mb-6 sm:mb-8">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full rounded-full border-2 border-white/30 bg-white/95 px-4 sm:px-6 py-3 text-sm sm:text-base text-gray-900 placeholder-gray-600 outline-none focus:border-white focus:bg-white transition-all duration-300 shadow-2xl focus:shadow-white/20"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-              />
-              <button className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black text-white p-2 sm:p-3 rounded-full hover:bg-gray-800 active:scale-95 transition-all duration-200 shadow-lg">
-                <Search className="w-4 sm:w-5 h-4 sm:h-5" />
-              </button>
-            </div>
+                {/* Subheading */}
+                <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  Discover premium electronics with sleek design, superior performance, and exceptional quality.
+                </p>
 
-            {/* Popular Keywords */}
-            <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3">
-              <button
-                onClick={() => setKeyword("")}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white/95 text-black rounded-full hover:bg-white active:scale-95 transition-all duration-200 shadow-lg backdrop-blur-sm"
-              >
-                All Products
-              </button>
-              <button
-                onClick={() => setKeyword("laptop")}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 active:scale-95 transition-all duration-200 shadow-lg"
-              >
-                Laptops
-              </button>
-              <button
-                onClick={() => setKeyword("phone")}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 active:scale-95 transition-all duration-200 shadow-lg"
-              >
-                Phones
-              </button>
-              <button
-                onClick={() => setKeyword("headphones")}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 active:scale-95 transition-all duration-200 shadow-lg"
-              >
-                Headphones
-              </button>
-              <button
-                onClick={() => setKeyword("camera")}
-                className="px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 active:scale-95 transition-all duration-200 shadow-lg"
-              >
-                Cameras
-              </button>
-            </div>
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 mb-10 sm:mb-12 justify-center lg:justify-start">
+                  <Link
+                    to="/products"
+                    className="group relative px-8 py-4 bg-gradient-to-r from-black to-gray-900 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gray-800/50 border border-white/20 text-center"
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      <span>Shop Now</span>
+                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
+                  </Link>
+                </div>
 
-            {/* Stats */}
-            <div className="mt-8 sm:mt-12 flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-white/80">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-xs sm:text-sm">500+ Products</span>
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0">
+                  <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                    <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{allProducts.length || 0}</div>
+                    <div className="text-xs sm:text-sm text-gray-300">Products</div>
+                  </div>
+                  <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                    <div className="text-2xl sm:text-3xl font-bold text-white mb-1">24/7</div>
+                    <div className="text-xs sm:text-sm text-gray-300">Support</div>
+                  </div>
+                  <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105">
+                    <div className="text-2xl sm:text-3xl font-bold text-white mb-1">Free</div>
+                    <div className="text-xs sm:text-sm text-gray-300">Shipping</div>
+                  </div>
+                </div>
               </div>
-              <div className="w-1 h-4 bg-white/50 rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: "0.5s" }}></div>
-                <span className="text-xs sm:text-sm">Free Shipping</span>
-              </div>
-              <div className="w-1 h-4 bg-white/50 rounded-full hidden sm:block"></div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
-                <span className="text-xs sm:text-sm">24/7 Support</span>
+
+              {/* Right Column - Product Showcase */}
+              <div className="relative mt-12 lg:mt-0">
+                {/* Main Product Display */}
+                <div className="relative max-w-lg mx-auto">
+                  {/* Floating Product Cards */}
+                  <div className="absolute -top-4 -left-4 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white rounded-2xl p-2 shadow-2xl animate-float z-20 border-4 border-black">
+                    <img src={p1} alt="Product 1" className="w-full h-full object-contain rounded-lg" />
+                  </div>
+                  
+                  <div className="absolute -bottom-4 -right-4 w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white rounded-2xl p-2 shadow-2xl animate-float z-20 border-4 border-black" style={{ animationDelay: '1.5s' }}>
+                    <img src={p2} alt="Product 2" className="w-full h-full object-contain rounded-lg" />
+                  </div>
+                  
+                  <div className="absolute top-1/4 -left-8 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl p-2 shadow-xl animate-float z-10 border-2 border-black" style={{ animationDelay: '2.5s' }}>
+                    <img src={p3} alt="Product 3" className="w-full h-full object-contain rounded" />
+                  </div>
+                  
+                  <div className="absolute bottom-1/4 -right-8 w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl p-2 shadow-xl animate-float z-10 border-2 border-black" style={{ animationDelay: '3s' }}>
+                    <img src={p4} alt="Product 4" className="w-full h-full object-contain rounded" />
+                  </div>
+
+                  {/* Central Featured Product */}
+                  <div className="relative aspect-square rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border-2 border-white/30">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent z-10"></div>
+                    <img
+                      src={bannerImage}
+                      alt="Featured Product"
+                      className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700"
+                    />
+                  </div>
+                </div>
+
+                {/* Search Bar */}
+                <div className="absolute -bottom-6 left-0 right-0 mx-auto max-w-xl px-4">
+                  <div className="relative group">
+                    <input
+                      type="text"
+                      placeholder="Search for products..."
+                      value={keyword}
+                      onChange={(e) => setKeyword(e.target.value)}
+                      className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-full px-6 py-4 pl-14 text-white placeholder-gray-400 outline-none focus:border-white focus:bg-white/15 transition-all duration-300 shadow-2xl focus:shadow-white/20"
+                    />
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-black text-white px-6 py-2.5 rounded-full font-medium hover:bg-gray-900 transition-all duration-300 hover:scale-105 border border-white/20">
+                      Search
+                    </button>
+                  </div>
+                  
+                  {/* Quick Search Tags */}
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
+                    {['Laptops', 'Phones', 'Headphones', 'Cameras'].map((tag, index) => (
+                      <button
+                        key={tag}
+                        onClick={() => setKeyword(tag.toLowerCase())}
+                        className="px-3 py-1.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-xs text-gray-300 hover:bg-white/10 hover:border-white/20 hover:text-white transition-all duration-300 hover:scale-105"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -162,10 +204,13 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 sm:mb-12 gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-1">
-                Featured Products
+                {keyword ? `Search Results for "${keyword}"` : "Featured Products"}
               </h2>
               <p className="text-black/60 text-sm sm:text-base">
-                Handpicked collection of our best products
+                {keyword 
+                  ? `Found ${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`
+                  : "Handpicked collection of our best products"
+                }
               </p>
             </div>
             <Link
@@ -180,14 +225,18 @@ const Home = () => {
           </div>
 
           {/* Products Grid */}
-          <ProductGrid loading={loading} empty={products.length === 0 && !loading}>
-            {products.map((product, index) => (
+          <ProductGrid 
+            loading={loading} 
+            empty={filteredProducts.length === 0 && !loading}
+            gridCols="grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+          >
+            {filteredProducts.map((product, index) => (
               <ProductCard key={product._id} product={product} index={index} />
             ))}
           </ProductGrid>
 
           {/* View All Button (Mobile Bottom) */}
-          {products.length > 0 && (
+          {filteredProducts.length > 0 && (
             <div className="mt-12 text-center lg:hidden">
               <Link
                 to="/products"
@@ -200,23 +249,31 @@ const Home = () => {
               </Link>
             </div>
           )}
+
+          {/* Search Results Empty State */}
+          {keyword && filteredProducts.length === 0 && !loading && (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-black/5 flex items-center justify-center">
+                <Search className="w-12 h-12 text-black/30" />
+              </div>
+              <h3 className="text-2xl font-semibold text-black mb-3">
+                No products found for "{keyword}"
+              </h3>
+              <p className="text-black/60 mb-6">
+                Try a different search term or browse all products.
+              </p>
+              <button
+                onClick={() => setKeyword("")}
+                className="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-black/90 transition-colors"
+              >
+                Clear Search
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
-
-// Add CSS for floating animation
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-`;
-document.head.appendChild(style);
 
 export default Home;

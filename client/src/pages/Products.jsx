@@ -1,36 +1,86 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import api from "../services/api";
+import { getProducts } from "../services/api";
 import ProductCard from "../components/ProductCard";
 import ProductGrid from "../components/ProductGrid";
-import { Search, Filter } from "lucide-react";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { Search, Filter, X } from "lucide-react";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); // All products
+  const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [keyword, setKeyword] = useState("");
   const [category, setCategory] = useState("");
   const [sortBy, setSortBy] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
 
-  const fetchProducts = useCallback(async () => {
+  // Fetch all products once
+  const fetchAllProducts = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await api.get(
-        `/products?keyword=${keyword}&category=${category}&sort=${sortBy}`
-      );
-      setProducts(data);
-    } catch {
-      setProducts([]);
+      const { data } = await getProducts(""); // Get all products
+      setAllProducts(data || []);
+      setFilteredProducts(data || []);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setAllProducts([]);
+      setFilteredProducts([]);
     } finally {
       setLoading(false);
     }
-  }, [keyword, category, sortBy]);
+  }, []);
 
-  const fetchCategories = useCallback(async () => {
+  // Apply filters locally
+  const applyFilters = useCallback(() => {
+    let result = [...allProducts];
+
+    // Apply keyword filter
+    if (keyword.trim()) {
+      const searchTerm = keyword.toLowerCase().trim();
+      result = result.filter(product => 
+        product.name?.toLowerCase().includes(searchTerm) ||
+        product.description?.toLowerCase().includes(searchTerm) ||
+        product.category?.name?.toLowerCase().includes(searchTerm) ||
+        product.brand?.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Apply category filter
+    if (category) {
+      result = result.filter(product => 
+        product.category?._id === category || product.category === category
+      );
+    }
+
+    // Apply sorting
+    if (sortBy) {
+      result.sort((a, b) => {
+        switch (sortBy) {
+          case 'price': 
+            return (a.price || 0) - (b.price || 0);
+          case '-price': 
+            return (b.price || 0) - (a.price || 0);
+          case 'name': 
+            return (a.name || '').localeCompare(b.name || '');
+          case '-name': 
+            return (b.name || '').localeCompare(a.name || '');
+          case '-createdAt': 
+            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+          case 'createdAt': 
+            return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+          default: 
+            return 0;
+        }
+      });
+    }
+
+    setFilteredProducts(result);
+  }, [allProducts, keyword, category, sortBy]);
+
+  // Fetch categories
+   const fetchCategories = useCallback(async () => {
     try {
       const { data } = await api.get("/categories");
       setCategories(data);
@@ -40,34 +90,83 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
+    fetchAllProducts();
     fetchCategories();
-  }, [fetchCategories]);
+  }, [fetchAllProducts, fetchCategories]);
 
+  // Apply filters when they change
   useEffect(() => {
-    const timeout = setTimeout(fetchProducts, 300);
+    applyFilters();
+  }, [applyFilters]);
+
+  // Handle search with debounce
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setKeyword(searchInput);
+    }, 300);
     return () => clearTimeout(timeout);
-  }, [fetchProducts]);
+  }, [searchInput]);
+
+  // Clear all filters
+  const clearFilters = () => {
+    setKeyword("");
+    setSearchInput("");
+    setCategory("");
+    setSortBy("");
+  };
+
+  // Get active filters count
+  const activeFiltersCount = [
+    keyword ? 1 : 0,
+    category ? 1 : 0,
+    sortBy ? 1 : 0
+  ].reduce((a, b) => a + b, 0);
 
   return (
     <div className="min-h-screen bg-white px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-2">
-            All Products
-          </h1>
-          <p className="text-black/60 text-sm sm:text-base">
-            Browse our complete collection of products
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-2">
+                All Products
+              </h1>
+              <p className="text-black/60 text-sm sm:text-base">
+                {allProducts.length} products available
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              {activeFiltersCount > 0 && (
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="bg-black text-white px-2 py-1 rounded-full text-xs">
+                    {activeFiltersCount}
+                  </span>
+                  <span className="text-black/60">active filters</span>
+                </div>
+              )}
+              <Link
+                to="/"
+                className="text-sm font-medium text-black hover:text-black/70 transition-colors"
+              >
+                ← Back to Home
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* Mobile Filter Toggle */}
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="lg:hidden w-full flex items-center justify-center gap-2 mb-6 px-4 py-3 bg-black text-white rounded-xl font-medium"
+          className="lg:hidden w-full flex items-center justify-center gap-2 mb-6 px-4 py-3 bg-black text-white rounded-xl font-medium hover:bg-black/90 transition-colors"
         >
           <Filter className="w-4 h-4" />
           {showFilters ? "Hide Filters" : "Show Filters"}
+          {activeFiltersCount > 0 && (
+            <span className="ml-1 bg-white text-black text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              {activeFiltersCount}
+            </span>
+          )}
         </button>
 
         <div className="lg:grid lg:grid-cols-4 lg:gap-8">
@@ -77,37 +176,73 @@ const Products = () => {
             lg:block lg:col-span-1 mb-8 lg:mb-0
           `}>
             <div className="bg-white border border-black/10 rounded-2xl shadow-lg p-6 sticky top-6">
-              <h3 className="text-lg font-bold text-black mb-6 flex items-center gap-2">
-                <Filter className="w-5 h-5" />
-                Filters
-              </h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-bold text-black flex items-center gap-2">
+                  <Filter className="w-5 h-5" />
+                  Filters
+                </h3>
+                {activeFiltersCount > 0 && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-sm text-black/60 hover:text-black flex items-center gap-1"
+                  >
+                    <X className="w-4 h-4" />
+                    Clear all
+                  </button>
+                )}
+              </div>
 
               {/* Search */}
               <div className="mb-6">
                 <label className="block text-sm font-semibold text-black mb-2">
-                  Search
+                  Search Products
                 </label>
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Search products..."
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                    className="w-full rounded-xl border border-black/20 bg-white px-4 py-3 pl-10 text-sm text-black placeholder-black/40 outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition"
+                    placeholder="Type product name..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="w-full rounded-xl border border-black/20 bg-white px-4 py-3 pl-10 pr-10 text-sm text-black placeholder-black/40 outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition"
                   />
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translateY-1/2 text-black/40" />
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
+                  {searchInput && (
+                    <button
+                      onClick={() => {
+                        setSearchInput("");
+                        setKeyword("");
+                      }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-black/40 hover:text-black"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
 
               {/* Category */}
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-black mb-2">
-                  Category
-                </label>
-                <div className="space-y-2">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-semibold text-black">
+                    Category
+                  </label>
+                  {category && (
+                    <button
+                      onClick={() => setCategory("")}
+                      className="text-xs text-black/60 hover:text-black"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
                   <button
                     onClick={() => setCategory("")}
-                    className={`w-full text-left px-4 py-2 rounded-lg transition-all ${category === "" ? "bg-black text-white" : "bg-black/5 hover:bg-black/10"}`}
+                    className={`w-full text-left px-4 py-2 rounded-lg transition-all text-sm ${
+                      category === "" 
+                        ? "bg-black text-white" 
+                        : "bg-black/5 hover:bg-black/10 text-black"
+                    }`}
                   >
                     All Categories
                   </button>
@@ -115,7 +250,11 @@ const Products = () => {
                     <button
                       key={c._id}
                       onClick={() => setCategory(c._id)}
-                      className={`w-full text-left px-4 py-2 rounded-lg transition-all ${category === c._id ? "bg-black text-white" : "bg-black/5 hover:bg-black/10"}`}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-all text-sm ${
+                        category === c._id 
+                          ? "bg-black text-white" 
+                          : "bg-black/5 hover:bg-black/10 text-black"
+                      }`}
                     >
                       {c.name}
                     </button>
@@ -125,9 +264,19 @@ const Products = () => {
 
               {/* Sort */}
               <div className="mb-6">
-                <label className="block text-sm font-semibold text-black mb-2">
-                  Sort By
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-semibold text-black">
+                    Sort By
+                  </label>
+                  {sortBy && (
+                    <button
+                      onClick={() => setSortBy("")}
+                      className="text-xs text-black/60 hover:text-black"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -139,21 +288,70 @@ const Products = () => {
                   <option value="name">Name: A to Z</option>
                   <option value="-name">Name: Z to A</option>
                   <option value="-createdAt">Newest First</option>
+                  <option value="createdAt">Oldest First</option>
                 </select>
               </div>
 
-              {/* Reset Filters */}
+              {/* Active Filters Summary */}
               {(keyword || category || sortBy) && (
-                <button
-                  onClick={() => {
-                    setKeyword("");
-                    setCategory("");
-                    setSortBy("");
-                  }}
-                  className="w-full py-3 text-center text-black/70 hover:text-black border border-black/20 hover:border-black/40 rounded-xl font-medium transition-all hover:scale-[1.02]"
-                >
-                  Clear All Filters
-                </button>
+                <div className="border-t border-black/10 pt-6">
+                  <h4 className="text-sm font-semibold text-black mb-3">Active Filters</h4>
+                  <div className="space-y-2">
+                    {keyword && (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-black/70">Search:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">"{keyword}"</span>
+                          <button
+                            onClick={() => {
+                              setKeyword("");
+                              setSearchInput("");
+                            }}
+                            className="text-black/40 hover:text-black ml-1"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    {category && categories.find(c => c._id === category) && (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-black/70">Category:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">
+                            {categories.find(c => c._id === category)?.name}
+                          </span>
+                          <button
+                            onClick={() => setCategory("")}
+                            className="text-black/40 hover:text-black ml-1"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    {sortBy && (
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-black/70">Sort:</span>
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium">
+                            {sortBy === "price" ? "Price: Low to High" :
+                             sortBy === "-price" ? "Price: High to Low" :
+                             sortBy === "name" ? "Name: A to Z" :
+                             sortBy === "-name" ? "Name: Z to A" :
+                             sortBy === "-createdAt" ? "Newest First" : "Oldest First"}
+                          </span>
+                          <button
+                            onClick={() => setSortBy("")}
+                            className="text-black/40 hover:text-black ml-1"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -161,37 +359,86 @@ const Products = () => {
           {/* Products Grid */}
           <div className="lg:col-span-3">
             {/* Results Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-2">
                 <span className="text-black/60">Showing</span>
-                <span className="font-bold text-black">{products.length}</span>
-                <span className="text-black/60">products</span>
+                <span className="font-bold text-black">{filteredProducts.length}</span>
+                <span className="text-black/60">of {allProducts.length} products</span>
               </div>
-              <div className="hidden lg:block text-sm text-black/60">
-                {category && `Category: ${categories.find(c => c._id === category)?.name}`}
+              <div className="flex flex-wrap gap-2">
+                {category && (
+                  <div className="inline-flex items-center gap-1 bg-black/5 px-3 py-1 rounded-full text-sm">
+                    <span className="text-black/60">Category:</span>
+                    <span className="font-medium">
+                      {categories.find(c => c._id === category)?.name || "Selected"}
+                    </span>
+                    <button
+                      onClick={() => setCategory("")}
+                      className="text-black/40 hover:text-black ml-1"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
+                {keyword && (
+                  <div className="inline-flex items-center gap-1 bg-black/5 px-3 py-1 rounded-full text-sm">
+                    <span className="text-black/60">Search:</span>
+                    <span className="font-medium">"{keyword}"</span>
+                    <button
+                      onClick={() => {
+                        setKeyword("");
+                        setSearchInput("");
+                      }}
+                      className="text-black/40 hover:text-black ml-1"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Products */}
             <ProductGrid 
               loading={loading} 
-              empty={products.length === 0 && !loading}
+              empty={filteredProducts.length === 0 && !loading}
               gridCols="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             >
-              {products.map((product, index) => (
+              {filteredProducts.map((product, index) => (
                 <ProductCard key={product._id} product={product} index={index} />
               ))}
             </ProductGrid>
 
-            {/* Empty State with Browse Button */}
-            {products.length === 0 && !loading && (
-              <div className="text-center py-12">
-                <Link
-                  to="/"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-black/90 transition-colors"
-                >
-                  Browse Homepage
-                </Link>
+            {/* Empty State */}
+            {filteredProducts.length === 0 && !loading && (
+              <div className="text-center py-16">
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-black/5 flex items-center justify-center">
+                  <Search className="w-12 h-12 text-black/30" />
+                </div>
+                <h3 className="text-2xl font-semibold text-black mb-3">
+                  No products found
+                </h3>
+                <p className="text-black/60 mb-6 max-w-md mx-auto">
+                  {keyword || category || sortBy 
+                    ? "Try adjusting your search or filters to find what you're looking for."
+                    : "There are currently no products available."}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  {(keyword || category || sortBy) && (
+                    <button
+                      onClick={clearFilters}
+                      className="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-black/90 transition-colors"
+                    >
+                      Clear All Filters
+                    </button>
+                  )}
+                  <Link
+                    to="/"
+                    className="px-6 py-3 border border-black text-black rounded-xl font-medium hover:bg-black hover:text-white transition-colors"
+                  >
+                    Back to Homepage
+                  </Link>
+                </div>
               </div>
             )}
           </div>

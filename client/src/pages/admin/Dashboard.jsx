@@ -51,7 +51,10 @@ const Dashboard = () => {
 
   // Filter products
   const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.category?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.brand?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   useEffect(() => {
