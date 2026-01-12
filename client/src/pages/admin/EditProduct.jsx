@@ -30,6 +30,7 @@ const EditProduct = () => {
     category: "",
     description: "",
     stock: "",
+    brand: "",
   });
 
   // Generate unique ID for images
@@ -72,6 +73,7 @@ const EditProduct = () => {
         category: data.category?._id || data.category || "",
         description: data.description || "",
         stock: data.stock || "",
+        brand: data.brand || "",
       });
 
       // Initialize images with unique IDs and track original order
@@ -161,6 +163,7 @@ const EditProduct = () => {
     formData.append("category", form.category);
     formData.append("description", form.description);
     formData.append("stock", form.stock);
+    formData.append("brand", form.brand);
 
     // Append images in their current order
     images.forEach((img) => {

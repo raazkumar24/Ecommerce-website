@@ -30,6 +30,7 @@ const AddProduct = () => {
     category: "",
     description: "",
     stock: "",
+    brand: "",
   });
 
   // Generate unique ID for images
@@ -120,7 +121,7 @@ const AddProduct = () => {
       !form.name ||
       !form.price ||
       !form.category ||
-      !form.stock ||
+      // !form.stock ||
       !form.brand ||
       !form.description ||
       images.length === 0
