@@ -23,10 +23,34 @@ const Products = () => {
       const { data } = await getProducts(""); // Get all products
       setAllProducts(data || []);
       setFilteredProducts(data || []);
+      
+      // Extract unique categories from products (like in dashboard)
+      const uniqueCategories = [];
+      const categoryMap = new Map();
+      
+      (data || []).forEach(product => {
+        const cat = product.category;
+        if (cat) {
+          // Handle both object and string formats
+          const categoryId = cat._id || cat;
+          const categoryName = cat.name || cat;
+          
+          if (categoryId && categoryName && !categoryMap.has(categoryId)) {
+            categoryMap.set(categoryId, categoryName);
+            uniqueCategories.push({
+              _id: categoryId,
+              name: categoryName
+            });
+          }
+        }
+      });
+      
+      setCategories(uniqueCategories);
     } catch (error) {
       console.error("Error fetching products:", error);
       setAllProducts([]);
       setFilteredProducts([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
@@ -42,16 +66,25 @@ const Products = () => {
       result = result.filter(product => 
         product.name?.toLowerCase().includes(searchTerm) ||
         product.description?.toLowerCase().includes(searchTerm) ||
-        product.category?.name?.toLowerCase().includes(searchTerm) ||
+        // product.category?.name?.toLowerCase().includes(searchTerm) ||
+        // product.category?.toLowerCase().includes(searchTerm) || // Handle string category
         product.brand?.toLowerCase().includes(searchTerm)
       );
     }
 
     // Apply category filter
     if (category) {
-      result = result.filter(product => 
-        product.category?._id === category || product.category === category
-      );
+      result = result.filter(product => {
+        const productCategory = product.category;
+        if (!productCategory) return false;
+        
+        // Check both object and string formats
+        if (typeof productCategory === 'object') {
+          return productCategory._id === category || productCategory === category;
+        } else {
+          return productCategory === category;
+        }
+      });
     }
 
     // Apply sorting
@@ -79,20 +112,9 @@ const Products = () => {
     setFilteredProducts(result);
   }, [allProducts, keyword, category, sortBy]);
 
-  // Fetch categories
-   const fetchCategories = useCallback(async () => {
-    try {
-      const { data } = await api.get("/categories");
-      setCategories(data);
-    } catch {
-      setCategories([]);
-    }
-  }, []);
-
   useEffect(() => {
     fetchAllProducts();
-    fetchCategories();
-  }, [fetchAllProducts, fetchCategories]);
+  }, [fetchAllProducts]);
 
   // Apply filters when they change
   useEffect(() => {
@@ -121,6 +143,12 @@ const Products = () => {
     category ? 1 : 0,
     sortBy ? 1 : 0
   ].reduce((a, b) => a + b, 0);
+
+  // Get category name for display
+  const getCategoryName = (categoryId) => {
+    const foundCategory = categories.find(c => c._id === categoryId);
+    return foundCategory?.name || "Selected";
+  };
 
   return (
     <div className="min-h-screen bg-white px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-10">
@@ -246,19 +274,29 @@ const Products = () => {
                   >
                     All Categories
                   </button>
-                  {categories.map((c) => (
-                    <button
-                      key={c._id}
-                      onClick={() => setCategory(c._id)}
-                      className={`w-full text-left px-4 py-2 rounded-lg transition-all text-sm ${
-                        category === c._id 
-                          ? "bg-black text-white" 
-                          : "bg-black/5 hover:bg-black/10 text-black"
-                      }`}
-                    >
-                      {c.name}
-                    </button>
-                  ))}
+                  {loading ? (
+                    <div className="text-center py-4 text-black/60 text-sm">
+                      Loading categories...
+                    </div>
+                  ) : categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <button
+                        key={cat._id}
+                        onClick={() => setCategory(cat._id)}
+                        className={`w-full text-left px-4 py-2 rounded-lg transition-all text-sm ${
+                          category === cat._id 
+                            ? "bg-black text-white" 
+                            : "bg-black/5 hover:bg-black/10 text-black"
+                        }`}
+                      >
+                        {cat.name}
+                      </button>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 text-black/60 text-sm">
+                      No categories found
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -314,12 +352,12 @@ const Products = () => {
                         </div>
                       </div>
                     )}
-                    {category && categories.find(c => c._id === category) && (
+                    {category && (
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-black/70">Category:</span>
                         <div className="flex items-center gap-1">
                           <span className="font-medium">
-                            {categories.find(c => c._id === category)?.name}
+                            {getCategoryName(category)}
                           </span>
                           <button
                             onClick={() => setCategory("")}
@@ -370,7 +408,7 @@ const Products = () => {
                   <div className="inline-flex items-center gap-1 bg-black/5 px-3 py-1 rounded-full text-sm">
                     <span className="text-black/60">Category:</span>
                     <span className="font-medium">
-                      {categories.find(c => c._id === category)?.name || "Selected"}
+                      {getCategoryName(category)}
                     </span>
                     <button
                       onClick={() => setCategory("")}

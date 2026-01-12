@@ -256,7 +256,7 @@ const Home = () => {
 
                   {/* Quick Search Tags */}
                   <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    {["Laptops", "Phones", "Headphones", "Cameras"].map(
+                    {["Laptop", "Phone", "Headphone", "Camera"].map(
                       (tag, index) => (
                         <button
                           key={tag}

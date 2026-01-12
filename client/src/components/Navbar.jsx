@@ -57,6 +57,12 @@ const Navbar = () => {
               <span>Home</span>
             </Link>
 
+            {/* product link */}
+            <Link to="/products" className={navLinkClass}>
+              <ShoppingBag className="w-4 h-4" />
+              <span>Products</span>
+            </Link>
+
             {/* About Link */}
             <Link to="/about" className={navLinkClass}>
               <FileSpreadsheet className="w-4 h-4" />
