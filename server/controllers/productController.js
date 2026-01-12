@@ -5,9 +5,9 @@ import Product from "../models/Product.js";
 ================================ */
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock } = req.body;
+    const { name, description, price, category, stock, brand } = req.body;
 
-    if (!name || !price || !category || !stock) {
+    if (!name || !price || !category || !stock || !brand) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 

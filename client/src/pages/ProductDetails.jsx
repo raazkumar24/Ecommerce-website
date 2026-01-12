@@ -232,6 +232,7 @@ const ProductDetails = () => {
 
   const safeCategory = product.category?.name || product.category || "Uncategorized";
   const stockStatus = product.stock > 0 ? "In Stock" : "Out of Stock";
+  const brand = product.brand || "N/A";
 
   return (
     <div className="min-h-screen bg-white">
@@ -645,7 +646,7 @@ const ProductDetails = () => {
                 </div>
                 <div>
                   <p className="text-black/60 mb-1">Brand</p>
-                  <p className="font-medium">{product.brand || "N/A"}</p>
+                  <p className="font-medium">{brand}</p>
                 </div>
                 <div>
                   <p className="text-black/60 mb-1">Weight</p>
