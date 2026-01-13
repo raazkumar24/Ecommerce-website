@@ -1,12 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-if (!import.meta.env.VITE_API_URL) {
-  console.error("VITE_API_URL is missing");
-}
-
-const API_URL = import.meta.env.VITE_API_URL;
-
 const ProductCard = ({ product, index }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -51,7 +45,7 @@ const ProductCard = ({ product, index }) => {
             src={
               imageError || !product.images?.[0]
                 ? "/placeholder-image.jpg"
-                : `${API_URL}${product.images[0]}`
+                : product.images[0]
             }
             alt={product.name}
             className={`w-full h-full object-contain transition-all duration-700 group-hover:scale-110 ${

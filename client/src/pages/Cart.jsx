@@ -2,13 +2,6 @@ import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Plus, Minus, X, ArrowLeft } from "lucide-react";
 
-// API base URL from environment variables
-if (!import.meta.env.VITE_API_URL) {
-  console.error("VITE_API_URL is missing");
-}
-
-const API_URL = import.meta.env.VITE_API_URL;
-
 const Cart = () => {
   const { cart, updateQuantity, removeItem } = useCart();
   const navigate = useNavigate();
@@ -98,7 +91,7 @@ const Cart = () => {
                 <div className="flex items-start gap-4 sm:hidden">
                   <div className="relative w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-black/5 group-hover:bg-black/10 transition-colors">
                     <img
-                      src={`${API_URL}${item.product.images?.[0]}`}
+                      src={item.product.images?.[0]}
                       alt={item.product.name}
                       className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => {
@@ -165,7 +158,7 @@ const Cart = () => {
                 {/* Image - Desktop Layout */}
                 <div className="hidden sm:block relative w-24 lg:w-32 shrink-0 aspect-square rounded-xl overflow-hidden bg-black/5 group-hover:bg-black/10 transition-colors">
                   <img
-                    src={`${API_URL}${item.product.images?.[0]}`}
+                    src={item.product.images?.[0]}
                     alt={item.product.name}
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                     onError={(e) => {
@@ -249,7 +242,7 @@ const Cart = () => {
 
           {/* Order Summary */}
           <div className="lg:sticky lg:top-6">
-            <div className="bg-gradient-to-br from-white to-black/5 border border-black/10 rounded-2xl p-6 sm:p-8 shadow-lg">
+            <div className="bg-linear-to-br from-white to-black/5 border border-black/10 rounded-2xl p-6 sm:p-8 shadow-lg">
               <h3 className="text-xl sm:text-2xl font-bold text-black mb-6 sm:mb-8 text-center">
                 Order Summary
               </h3>
@@ -296,7 +289,7 @@ const Cart = () => {
 
               {/* Desktop Checkout Button */}
               <div className="hidden lg:block space-y-4">
-                <button className="w-full bg-gradient-to-r from-black to-black/90 hover:from-black/90 hover:to-black text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-xl hover:shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+                <button className="w-full bg-linear-to-r from-black to-black/90 hover:from-black/90 hover:to-black text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-xl hover:shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
                   Proceed to Checkout
                 </button>
 

@@ -1,13 +1,7 @@
 // components/ImageUploader.jsx - COMPLETE FIXED VERSION
 import { useCallback, useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import {
-  ImagePlus,
-  Upload,
-  X,
-  GripVertical,
-  Replace,
-} from "lucide-react";
+import { ImagePlus, Upload, X, GripVertical, Replace } from "lucide-react";
 
 export const useImageHandling = (generateId) => {
   const [images, setImages] = useState([]);
@@ -34,34 +28,34 @@ export const useImageHandling = (generateId) => {
     (files) => {
       if (!files || files.length === 0) return;
 
-      const validFiles = Array.from(files).filter(
-        (file) => {
-          if (!file || !file.type) {
-            console.error("Invalid file:", file);
-            return false;
-          }
-          return file.type.startsWith("image/") && file.size < 5 * 1024 * 1024;
+      const validFiles = Array.from(files).filter((file) => {
+        if (!file || !file.type) {
+          console.error("Invalid file:", file);
+          return false;
         }
-      );
+        return file.type.startsWith("image/") && file.size < 5 * 1024 * 1024;
+      });
 
       if (validFiles.length === 0) {
         toast.error("No valid image files selected (must be image and < 5MB)");
         return;
       }
 
-      const newImagesWithIds = validFiles.map((file) => {
-        const preview = createPreviewUrl(file);
-        if (!preview) {
-          console.error("Failed to create preview for file:", file.name);
-          return null;
-        }
-        return {
-          id: `new-${generateId()}`,
-          file: file,
-          preview: preview,
-          type: 'new'
-        };
-      }).filter(img => img !== null);
+      const newImagesWithIds = validFiles
+        .map((file) => {
+          const preview = createPreviewUrl(file);
+          if (!preview) {
+            console.error("Failed to create preview for file:", file.name);
+            return null;
+          }
+          return {
+            id: `new-${generateId()}`,
+            file: file,
+            preview: preview,
+            type: "new",
+          };
+        })
+        .filter((img) => img !== null);
 
       if (newImagesWithIds.length === 0) {
         toast.error("Failed to process images");
@@ -106,7 +100,11 @@ export const useImageHandling = (generateId) => {
   const removeImage = useCallback((id) => {
     setImages((prev) => {
       const imageToRemove = prev.find((img) => img.id === id);
-      if (imageToRemove && imageToRemove.preview && imageToRemove.preview.startsWith('blob:')) {
+      if (
+        imageToRemove &&
+        imageToRemove.preview &&
+        imageToRemove.preview.startsWith("blob:")
+      ) {
         try {
           URL.revokeObjectURL(imageToRemove.preview);
         } catch (error) {
@@ -118,47 +116,55 @@ export const useImageHandling = (generateId) => {
   }, []);
 
   // REPLACE IMAGE
-  const replaceImage = useCallback((imageId, file) => {
-    if (!file || !file.type || !file.type.startsWith("image/") || file.size >= 5 * 1024 * 1024) {
-      toast.error("Please select a valid image file (max 5MB)");
-      return;
-    }
-
-    const newPreview = createPreviewUrl(file);
-    if (!newPreview) {
-      toast.error("Failed to create preview for the new image");
-      return;
-    }
-
-    setImages((prev) => {
-      const imageIndex = prev.findIndex((img) => img.id === imageId);
-      if (imageIndex === -1) return prev;
-
-      const oldImage = prev[imageIndex];
-      
-      // Revoke old preview URL if it exists
-      if (oldImage.preview && oldImage.preview.startsWith('blob:')) {
-        try {
-          URL.revokeObjectURL(oldImage.preview);
-        } catch (error) {
-          console.error("Error revoking old URL:", error);
-        }
+  const replaceImage = useCallback(
+    (imageId, file) => {
+      if (
+        !file ||
+        !file.type ||
+        !file.type.startsWith("image/") ||
+        file.size >= 5 * 1024 * 1024
+      ) {
+        toast.error("Please select a valid image file (max 5MB)");
+        return;
       }
-      
-      const updatedImages = [...prev];
-      updatedImages[imageIndex] = {
-        ...oldImage,
-        type: 'new',
-        file: file,
-        url: null,
-        preview: newPreview
-      };
-      
-      return updatedImages;
-    });
-    
-    toast.success("Image replaced successfully");
-  }, [createPreviewUrl]);
+
+      const newPreview = createPreviewUrl(file);
+      if (!newPreview) {
+        toast.error("Failed to create preview for the new image");
+        return;
+      }
+
+      setImages((prev) => {
+        const imageIndex = prev.findIndex((img) => img.id === imageId);
+        if (imageIndex === -1) return prev;
+
+        const oldImage = prev[imageIndex];
+
+        // Revoke old preview URL if it exists
+        if (oldImage.preview && oldImage.preview.startsWith("blob:")) {
+          try {
+            URL.revokeObjectURL(oldImage.preview);
+          } catch (error) {
+            console.error("Error revoking old URL:", error);
+          }
+        }
+
+        const updatedImages = [...prev];
+        updatedImages[imageIndex] = {
+          ...oldImage,
+          type: "new",
+          file: file,
+          url: null,
+          preview: newPreview,
+        };
+
+        return updatedImages;
+      });
+
+      toast.success("Image replaced successfully");
+    },
+    [createPreviewUrl]
+  );
 
   /* ================= DRAG & DROP REORDERING ================= */
   const handleDragStart = useCallback((e, index) => {
@@ -206,7 +212,7 @@ export const useImageHandling = (generateId) => {
   useEffect(() => {
     return () => {
       images.forEach((img) => {
-        if (img.preview && img.preview.startsWith('blob:')) {
+        if (img.preview && img.preview.startsWith("blob:")) {
           try {
             URL.revokeObjectURL(img.preview);
           } catch (error) {
@@ -232,7 +238,7 @@ export const useImageHandling = (generateId) => {
     handleDragStart,
     handleDragOverReordering,
     handleDropReordering,
-    handleDragEnd
+    handleDragEnd,
   };
 };
 
@@ -254,41 +260,41 @@ export const ImageUploader = ({
   draggedItem,
   dragOverItem,
   showReplace = false,
-  API_URL = ""
 }) => {
   const [imageErrors, setImageErrors] = useState({});
 
-  const oldImagesCount = images.filter(img => img.type === 'old').length;
-  const newImagesCount = images.filter(img => img.type === 'new').length;
+  const oldImagesCount = images.filter((img) => img.type === "old").length;
+  const newImagesCount = images.filter((img) => img.type === "new").length;
 
   // Get image source URL safely
   const getImageSrc = useCallback((img) => {
-    if (img.type === 'old' && img.url) {
-      // For existing images from server
-      const url = img.url.startsWith('/') ? img.url : `/${img.url}`;
-      return `${API_URL}${url}`;
+    // OLD image from DB (Cloudinary)
+    if (img.type === "old" && img.url) {
+      return img.url;
     }
-    if (img.preview && img.preview.startsWith('blob:')) {
-      // For new images with preview
+
+    // NEW image preview
+    if (img.preview && img.preview.startsWith("blob:")) {
       return img.preview;
     }
+
+    // Fallback (rare case)
     if (img.file) {
-      // Fallback for new images without preview
       try {
         return URL.createObjectURL(img.file);
       } catch (error) {
         console.error("Error creating object URL:", error);
-        return "/placeholder-image.jpg";
       }
     }
-    // Fallback placeholder
+
+    // Placeholder
     return "/placeholder-image.jpg";
-  }, [API_URL]);
+  }, []);
 
   // Handle image loading error
   const handleImageError = useCallback((e, imgId) => {
     console.error(`Image failed to load: ${imgId}`, e);
-    setImageErrors(prev => ({ ...prev, [imgId]: true }));
+    setImageErrors((prev) => ({ ...prev, [imgId]: true }));
     e.target.src = "/placeholder-image.jpg";
     // Prevent infinite loop
     e.target.onerror = null;
@@ -325,13 +331,15 @@ export const ImageUploader = ({
           {images.map((img, index) => {
             const imageSrc = getImageSrc(img);
             const hasError = imageErrors[img.id];
-            
+
             return (
               <div
                 key={`${img.id}-${index}`}
                 draggable
                 onDragStart={(e) => onDragStart && onDragStart(e, index)}
-                onDragOver={(e) => onDragOverReordering && onDragOverReordering(e, index)}
+                onDragOver={(e) =>
+                  onDragOverReordering && onDragOverReordering(e, index)
+                }
                 onDrop={(e) => onDropReordering && onDropReordering(e, index)}
                 onDragEnd={() => onDragEnd && onDragEnd()}
                 className={`relative group rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-move min-h-24 sm:min-h-28 md:min-h-32 ${
@@ -359,22 +367,28 @@ export const ImageUploader = ({
                   ) : (
                     <div className="flex flex-col items-center justify-center w-full h-full bg-gray-200">
                       <span className="text-gray-400 text-sm mb-1">Image</span>
-                      <span className="text-gray-400 text-xs">Not available</span>
+                      <span className="text-gray-400 text-xs">
+                        Not available
+                      </span>
                     </div>
                   )}
                 </div>
 
                 {/* Image Type Badge (for edit mode) */}
                 {showReplace && !hasError && (
-                  <div className={`absolute top-1 right-1 sm:top-2 sm:right-2 px-2 py-1 rounded-full text-xs font-semibold ${
-                    img.type === 'old' ? 'bg-blue-500 text-white' : 'bg-green-500 text-white'
-                  }`}>
-                    {img.type === 'old' ? 'Current' : 'New'}
+                  <div
+                    className={`absolute top-1 right-1 sm:top-2 sm:right-2 px-2 py-1 rounded-full text-xs font-semibold ${
+                      img.type === "old"
+                        ? "bg-blue-500 text-white"
+                        : "bg-green-500 text-white"
+                    }`}
+                  >
+                    {img.type === "old" ? "Current" : "New"}
                   </div>
                 )}
 
                 {/* Replace Button (only for old images in edit mode) */}
-                {showReplace && img.type === 'old' && !hasError && (
+                {showReplace && img.type === "old" && !hasError && (
                   <label className="absolute bottom-2 left-2 right-2 bg-white/90 hover:bg-white text-black text-xs p-1.5 rounded-lg shadow-md opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-200 cursor-pointer z-10">
                     <input
                       type="file"
@@ -384,7 +398,7 @@ export const ImageUploader = ({
                         if (file && onReplaceImage) {
                           onReplaceImage(img.id, file);
                         }
-                        e.target.value = '';
+                        e.target.value = "";
                       }}
                       className="hidden"
                     />
@@ -398,7 +412,9 @@ export const ImageUploader = ({
                 {/* File Name (always visible on mobile, hover only on desktop) */}
                 {img.file?.name && !hasError && (
                   <div className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-xs px-1.5 py-1 rounded opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-all truncate">
-                    {img.file.name.length > 20 ? `${img.file.name.substring(0, 20)}...` : img.file.name}
+                    {img.file.name.length > 20
+                      ? `${img.file.name.substring(0, 20)}...`
+                      : img.file.name}
                   </div>
                 )}
 
@@ -478,7 +494,7 @@ export const ImageUploader = ({
               onFileChange(e);
             }
             // Reset input to allow selecting same file again
-            e.target.value = '';
+            e.target.value = "";
           }}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
         />
@@ -491,9 +507,16 @@ export const ImageUploader = ({
             <span className="font-semibold">Tips:</span>
           </p>
           <ul className="text-xs sm:text-sm text-gray-500 space-y-0.5 sm:space-y-1 pl-3 sm:pl-4 list-disc">
-            <li>Drag images to reorder. The order will be preserved when saved</li>
+            <li>
+              Drag images to reorder. The order will be preserved when saved
+            </li>
             <li>First image will be used as the main product image</li>
-            {showReplace && <li>Click "Replace" on current images to update them while keeping the same position</li>}
+            {showReplace && (
+              <li>
+                Click "Replace" on current images to update them while keeping
+                the same position
+              </li>
+            )}
             <li>Tap the X button to remove images on mobile</li>
             <li>Images will be uploaded in the order shown above</li>
           </ul>

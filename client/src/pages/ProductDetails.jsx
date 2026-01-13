@@ -19,9 +19,6 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-// API base URL from environment variables
-const API_URL = import.meta.env.VITE_API_URL;
-
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -314,7 +311,7 @@ const ProductDetails = () => {
             </button>
             
             <img
-              src={`${API_URL}${product.images?.[activeImg]}`}
+              src={product.images?.[activeImg]}
               alt={product.name}
               className="max-w-full max-h-full object-contain"
             />
@@ -363,7 +360,7 @@ const ProductDetails = () => {
                 {product.images?.map((img, index) => (
                   <div key={index} className="w-full h-full shrink-0 flex items-center justify-center p-4 sm:p-8">
                     <img
-                      src={`${API_URL}${img}`}
+                      src={img}
                       alt={`${product.name} - ${index + 1}`}
                       className="w-full h-full object-contain"
                       draggable="false"
@@ -440,7 +437,7 @@ const ProductDetails = () => {
                     }`}
                   >
                     <img
-                      src={`${API_URL}${img}`}
+                      src={img}
                       alt={`Thumbnail ${i + 1}`}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                     />

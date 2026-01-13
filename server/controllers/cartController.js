@@ -42,7 +42,7 @@ export const getUserCart = async (req, res) => {
       return res.json({ products: [] });
     }
 
-    // 🔑 REMOVE NULL PRODUCTS
+    // REMOVE NULL PRODUCTS
     cart.products = cart.products.filter(
       (item) => item.product !== null
     );

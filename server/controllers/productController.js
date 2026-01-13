@@ -18,9 +18,8 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
-    const images = (req.files || []).map(
-      (file) => `/uploads/${file.filename}`
-    );
+   const images = (req.files || []).map((file) => file.path);
+
 
     if (images.length === 0) {
       return res.status(400).json({ message: "At least one image required" });
@@ -125,9 +124,8 @@ export const updateProduct = async (req, res) => {
     product.brand = brand ?? product.brand;
 
     // New uploaded images
-    const newImages = (req.files || []).map(
-      (file) => `/uploads/${file.filename}`
-    );
+  const newImages = (req.files || []).map((file) => file.path);
+
 
     // Existing images (keep)
     let oldImages = [];

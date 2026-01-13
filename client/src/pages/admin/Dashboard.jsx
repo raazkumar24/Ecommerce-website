@@ -20,13 +20,6 @@ import {
   BarChart3
 } from "lucide-react";
 
-// API base URL from environment variables
-if (!import.meta.env.VITE_API_URL) {
-  console.error("VITE_API_URL is missing");
-}
-
-const API_URL = import.meta.env.VITE_API_URL;
-
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -420,7 +413,7 @@ const Dashboard = () => {
                     {/* Image */}
                     <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-black/5 shrink-0">
                       <img
-                        src={`${API_URL}${product.images?.[0]}`}
+                        src={product.images?.[0]}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                         onError={(e) => {
@@ -521,7 +514,7 @@ const Dashboard = () => {
                           <div className="flex items-center gap-4">
                             <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-black/5 group-hover:bg-black/10 transition-colors">
                               <img
-                                src={`${API_URL}${product.images?.[0]}`}
+                                src={product.images?.[0]}
                                 alt={product.name}
                                 className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
                                 onError={(e) => {

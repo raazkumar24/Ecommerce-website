@@ -8,7 +8,7 @@ import {
 } from "../controllers/productController.js";
 
 import  protect  from "../middlewares/authMiddleware.js";
-import upload from "../middlewares/uploadMiddleware.js";
+import upload from "../middlewares/cloudinaryUpload.js";
 import admin from "../middlewares/adminMiddleware.js";
 
 const router = express.Router();

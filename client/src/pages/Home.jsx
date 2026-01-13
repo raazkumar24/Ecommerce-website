@@ -10,12 +10,6 @@ import p3 from "../assets/p3.png";
 import p4 from "../assets/p4.png";
 import bannerImage from "../assets/banner.png";
 
-if (!import.meta.env.VITE_API_URL) {
-  console.error("VITE_API_URL is missing");
-}
-
-const API_URL = import.meta.env.VITE_API_URL;
-
 const Home = () => {
   const [allProducts, setAllProducts] = useState([]); // All products
   const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products
@@ -218,7 +212,7 @@ const Home = () => {
                                 transition-transform duration-500 hover:scale-105"
                       >
                         <img
-                          src={`${API_URL}${featuredProduct.images?.[0]}`}
+                          src={featuredProduct.images?.[0]}
                           alt={featuredProduct.name}
                           className="w-full h-full object-contain"
                         />
