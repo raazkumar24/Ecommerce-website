@@ -4,7 +4,7 @@ const ProductGrid = ({ children, loading, empty, gridCols = "grid-cols-1 sm:grid
       <div className={`grid ${gridCols} gap-4 sm:gap-6 md:gap-8`}>
         {[...Array(8)].map((_, i) => (
           <div key={i} className="animate-pulse">
-            <div className="bg-linear-to-br from-black/5 to-black/10 rounded-2xl h-[400px]"></div>
+            <div className="bg-linear-to-br from-black/5 to-black/10 rounded-2xl h-100"></div>
           </div>
         ))}
       </div>
@@ -14,7 +14,7 @@ const ProductGrid = ({ children, loading, empty, gridCols = "grid-cols-1 sm:grid
   if (empty) {
     return (
       <div className="text-center py-12 md:py-20">
-        <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-black/5 to-black/10 flex items-center justify-center">
+        <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-6 rounded-full bg-linear-to-br from-black/5 to-black/10 flex items-center justify-center">
           <svg
             className="w-10 h-10 md:w-12 md:h-12 text-black/30"
             fill="none"

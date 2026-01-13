@@ -34,7 +34,7 @@ const ProductCard = ({ product, index }) => {
         )}
 
         {/* Image Container */}
-        <div className="relative h-48 sm:h-52 md:h-56 lg:h-60 mb-4 sm:mb-5 md:mb-6 overflow-hidden rounded-xl bg-gradient-to-br from-black/5 to-black/10 group-hover:from-black/10 group-hover:to-black/20 transition-all duration-500">
+        <div className="relative h-48 sm:h-52 md:h-56 lg:h-60 mb-4 sm:mb-5 md:mb-6 overflow-hidden rounded-xl bg-linear-to-br from-black/5 to-black/10 group-hover:from-black/10 group-hover:to-black/20 transition-all duration-500">
           {/* Loading Skeleton */}
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 animate-pulse bg-black/10" />

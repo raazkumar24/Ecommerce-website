@@ -14,7 +14,7 @@ const Home = () => {
   const [allProducts, setAllProducts] = useState([]); // All products
   const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products
   const [keyword, setKeyword] = useState(""); // Search keyword
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // Loading state
 
   // Fetch all products once
   const fetchProducts = useCallback(async () => {
@@ -25,8 +25,8 @@ const Home = () => {
       setFilteredProducts(data || []); // Initially show all
     } catch (error) {
       console.error("Error fetching products:", error);
-      setAllProducts([]);
-      setFilteredProducts([]);
+      setAllProducts([]); // Clear all products
+      setFilteredProducts([]); // Clear filtered products
     } finally {
       setLoading(false);
     }
@@ -34,8 +34,8 @@ const Home = () => {
 
   // Filter products based on keyword
   useEffect(() => {
-    if (!keyword.trim()) {
-      setFilteredProducts(allProducts);
+    if (!keyword.trim()) { // If no keyword, show all
+      setFilteredProducts(allProducts); // Reset to all products
       return;
     }
 
@@ -48,8 +48,8 @@ const Home = () => {
         product.brand?.toLowerCase().includes(searchTerm)
     );
 
-    setFilteredProducts(filtered);
-  }, [keyword, allProducts]);
+    setFilteredProducts(filtered); // Update filtered products
+  }, [keyword, allProducts]); // Re-run when keyword or allProducts change
 
   // Fetch products on mount
   useEffect(() => {
