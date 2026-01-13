@@ -5,20 +5,22 @@ import Product from "../models/Product.js";
 ================================ */
 export const createProduct = async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+    console.log("FILES:", req.files);
+
     const { name, price, category, description, stock, brand } = req.body;
 
     if (!name || !price || !category) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
-    // MULTIPLE IMAGES
-    const images = req.files?.map(
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No images uploaded" });
+    }
+
+    const images = req.files.map(
       (file) => `/uploads/${file.filename}`
     );
-
-    if (!images || images.length === 0) {
-      return res.status(400).json({ message: "At least one image required" });
-    }
 
     const product = await Product.create({
       name,
@@ -32,7 +34,7 @@ export const createProduct = async (req, res) => {
 
     res.status(201).json(product);
   } catch (error) {
-    console.error("Create product error:", error);
+    console.error("CREATE PRODUCT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };

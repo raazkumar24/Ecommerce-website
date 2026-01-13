@@ -15,6 +15,12 @@ connectDB();
 
 const app = express();
 
+const __dirname = path.resolve();
+const uploadDir = path.join(__dirname, "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 // Middlewares
 app.use(express.json());
 app.use(cors());
