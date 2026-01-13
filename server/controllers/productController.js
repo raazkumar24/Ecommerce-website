@@ -22,9 +22,9 @@ export const createProduct = async (req, res) => {
       (file) => `/uploads/${file.filename}`
     );
 
-    if (images.length === 0) {
-      return res.status(400).json({ message: "At least one image required" });
-    }
+    // if (images.length === 0) {
+    //   return res.status(400).json({ message: "At least one image required" });
+    // }
 
     const product = await Product.create({
       name,
