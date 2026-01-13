@@ -114,47 +114,54 @@ const AddProduct = () => {
 
   // Form Submit Handler
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  if (
-    !form.name ||
-    !form.price ||
-    !form.category ||
-    !form.brand ||
-    !form.description ||
-    images.length === 0
-  ) {
-    toast.error("Please fill all fields and add at least one image");
-    setLoading(false);
-    return;
-  }
-
-  const formData = new FormData();
-
-  Object.entries(form).forEach(([key, value]) => {
-    formData.append(key, value);
-  });
-
-  images.forEach((imgObj) => {
-    if (imgObj?.file instanceof File) {
-      formData.append("images", imgObj.file);
+    if (
+      !form.name ||
+      !form.price ||
+      !form.category ||
+      !form.brand ||
+      !form.description ||
+      images.length === 0
+    ) {
+      toast.error("Please fill all fields and add at least one image");
+      setLoading(false);
+      return;
     }
-  });
 
-  try {
-    await api.post("/products", formData);
+    // Prepare form data
+    const formData = new FormData();
+    Object.keys(form).forEach((key) => formData.append(key, form[key]));
 
-    toast.success("Product added successfully!");
-    navigate("/admin/dashboard");
-  } catch (error) {
-    console.error("Add product error:", error);
-    toast.error(error.response?.data?.message || "Failed to add product");
-  } finally {
-    setLoading(false);
-  }
-};
+    // Add images in their current order
+    images.forEach((imgObj) => {
+      formData.append("images", imgObj.file);
+    });
 
+    formData.append(
+      "imageOrder",
+      JSON.stringify(
+        images.map((img) => ({
+          type: img.type,
+          url: img.url || null,
+        }))
+      )
+    );
+
+    try {
+      await api.post("/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      toast.success("Product added successfully!");
+      navigate("/admin/dashboard");
+    } catch (error) {
+      console.error("Add product error:", error);
+      toast.error(error.response?.data?.message || "Failed to add product");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">

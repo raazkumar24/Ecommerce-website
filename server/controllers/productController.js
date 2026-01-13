@@ -5,22 +5,26 @@ import Product from "../models/Product.js";
 ================================ */
 export const createProduct = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILES:", req.files);
-
-    const { name, price, category, description, stock, brand } = req.body;
+    const {
+      name,
+      price,
+      category,
+      description,
+      stock,
+      brand
+    } = req.body;
 
     if (!name || !price || !category) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
-    if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "No images uploaded" });
-    }
-
-    const images = req.files.map(
+    const images = (req.files || []).map(
       (file) => `/uploads/${file.filename}`
     );
+
+    if (images.length === 0) {
+      return res.status(400).json({ message: "At least one image required" });
+    }
 
     const product = await Product.create({
       name,
@@ -29,7 +33,7 @@ export const createProduct = async (req, res) => {
       description,
       stock,
       brand,
-      images,
+      images
     });
 
     res.status(201).json(product);
@@ -55,6 +59,7 @@ export const getAllProducts = async (req, res) => {
       filter.$or = [
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
+        { category: { $regex: keyword, $options: "i" } },
         { brand: { $regex: keyword, $options: "i" } },
       ];
     }
