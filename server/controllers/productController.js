@@ -55,7 +55,6 @@ export const getAllProducts = async (req, res) => {
       filter.$or = [
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
-        { category: { $regex: keyword, $options: "i" } },
         { brand: { $regex: keyword, $options: "i" } },
       ];
     }
