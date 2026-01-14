@@ -406,7 +406,7 @@ const Navbar = () => {
 
       {/* --- MOBILE OVERLAY MENU --- */}
       {isMenuOpen && (
-        <div className="md:hidden fixed right-0 top-20 border-2 border-gray-50 rounded-2xl bg-white z-90 px-6 py-8 flex flex-col animate-in animate-slide-in-from-right duration-300">
+        <div className="md:hidden fixed right-0 top-20 border-2 border-gray-300 rounded-tl-2xl rounded-bl-2xl bg-white z-90 px-6 py-8 flex flex-col animate-in animate-slide-in-from-right duration-300">
           <form onSubmit={handleSearch} className="relative mb-8">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
             <input
@@ -418,17 +418,17 @@ const Navbar = () => {
           </form>
 
           <div className="flex flex-col gap-2">
-            <Link to="/" className="flex items-center justify-between py-4 text-xl font-bold border-b border-gray-50">
+            <Link to="/" className="flex items-center justify-between py-4 text-base font-bold border-b border-gray-50">
               Home <ChevronRight className="text-gray-300" />
             </Link>
-            <Link to="/products" className="flex items-center justify-between py-4 text-xl font-bold border-b border-gray-50">
+            <Link to="/products" className="flex items-center justify-between py-4 text-base font-bold border-b border-gray-50">
               Products <ChevronRight className="text-gray-300" />
             </Link>
-            <Link to="/about" className="flex items-center justify-between py-4 text-xl font-bold border-b border-gray-50">
+            <Link to="/about" className="flex items-center justify-between py-4 text-base font-bold border-b border-gray-50">
               About <ChevronRight className="text-gray-300" />
             </Link>
             {user?.role === "admin" && (
-              <Link to="/admin/dashboard" className="flex items-center justify-between py-4 text-xl font-bold border-b border-gray-50">
+              <Link to="/admin/dashboard" className="flex items-center justify-between py-4 text-base font-bold border-b border-gray-50">
                 Admin Dashboard <Shield size={24} />
               </Link>
             )}
