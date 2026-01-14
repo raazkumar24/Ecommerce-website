@@ -1,187 +1,114 @@
 import {
   Facebook,
-  Twitter,
   Instagram,
   Youtube,
   Phone,
   Mail,
   MapPin,
+  ShoppingBag,
+  ArrowUpRight,
+  Globe,
+  ShieldCheck
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-white border-t border-black/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Brand */}
-          <div className="space-y-4">
-            <h3 className="text-2xl font-bold text-black">E-Storel</h3>
-            <p className="text-black/60 leading-relaxed">
-              Your trusted destination for premium products at unbeatable
-              prices. Fast delivery nationwide.
+    <footer className="bg-white border-t border-gray-100">
+      {/* --- TOP BRANDING BAR --- */}
+      <div className="bg-black py-10 lg:py-16 rounded-t-[3rem] lg:rounded-t-[5rem]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center">
+              <ShoppingBag className="text-black w-6 h-6" />
+            </div>
+            <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">E-Store</h2>
+          </div>
+          <div className="flex flex-wrap justify-center gap-6 text-white/50 text-[10px] font-bold uppercase tracking-[0.2em]">
+             <span className="flex items-center gap-2"><Globe size={14}/> Pan India</span>
+             <span className="flex items-center gap-2"><ShieldCheck size={14}/> Secure Checkout</span>
+             <span className="flex items-center gap-2">Premium Quality</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
+          
+          {/* Brand Info */}
+          <div className="space-y-6">
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">About Our Vision</h4>
+            <p className="text-gray-600 font-medium leading-relaxed">
+              We architect premium shopping experiences by combining minimalist design with high-performance digital ecosystems.
             </p>
-            <div className="flex space-x-3">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-black/20 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              {/* <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-black/20 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
-              >
-                <Twitter className="w-5 h-5" />
-              </a> */}
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-black/20 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full border border-black/20 hover:border-black hover:bg-black hover:text-white flex items-center justify-center transition-all"
-              >
-                <Youtube className="w-5 h-5" />
-              </a>
+            <div className="flex gap-3">
+              {[Facebook, Instagram, Youtube].map((Icon, i) => (
+                <a key={i} href="#" className="w-10 h-10 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-500 shadow-sm">
+                  <Icon size={16} />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Navigation */}
           <div>
-            <h4 className="text-lg font-semibold text-black mb-6">
-              Quick Links
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="/home"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/products"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Products
-                </a>
-              </li>
-              {/* <li>
-                <a href="#" className="text-black/70 hover:text-black hover:underline block transition">Categories</a>
-              </li> */}
-              <li>
-                <a
-                  href="/about"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:raazverma625@gmail.com?subject=Contact from Your Website&body=Hello Raaz,%0D%0A%0D%0AI am reaching out from your website.%0D%0A%0D%0ABest regards,"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Contact
-                </a>
-              </li>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-8">Navigation</h4>
+            <ul className="space-y-4 font-bold text-sm">
+              {["Home", "Products", "About"].map((link) => (
+                <li key={link}>
+                  <Link to={`/${link.toLowerCase()}`} className="flex items-center justify-between group hover:text-gray-500 transition-colors">
+                    {link} <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 transition-all" />
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Customer Service */}
+          {/* Support */}
           <div>
-            <h4 className="text-lg font-semibold text-black mb-6">
-              Customer Service
-            </h4>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Track Order
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Returns
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Shipping Info
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-black/70 hover:text-black hover:underline block transition"
-                >
-                  Privacy Policy
-                </a>
-              </li>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-8">Service</h4>
+            <ul className="space-y-4 font-bold text-sm">
+              {["Help Center", "Order Tracking", "Return Policy", "Privacy"].map((item) => (
+                <li key={item}>
+                  <a href="#" className="hover:text-gray-500 transition-colors block">{item}</a>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact Details */}
           <div>
-            <h4 className="text-lg font-semibold text-black mb-6">
-              Contact Us
-            </h4>
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 mt-0.5 text-black/60 shrink-0" />
-                <span className="text-black/70">+91 98765 XXXXX</span>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-8">Contact</h4>
+            <div className="space-y-4 text-sm font-bold">
+              <div className="flex items-start gap-3 group">
+                <Mail className="w-4 h-4 text-gray-600" />
+                <a href="mailto:hello@estore.com" className="text-gray-600 hover:text-black transition-colors">hello@estore.com</a>
               </div>
               <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 mt-0.5 text-black/60 shrink-0" />
-                <span className="text-black/70">hello@Estore.com</span>
+                <Phone className="w-4 h-4 text-gray-600" />
+                <span className="text-gray-600">+91 98765 XXXXX</span>
               </div>
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 mt-0.5 text-black/60 shrink-0" />
-                <span className="text-black/70">
-                  123 Shopping Street, Chandigarh, India
+                <MapPin className="w-4 h-4 text-gray-600" />
+                <span className="text-gray-600 leading-relaxed">
+                  Chandigarh, India
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="border-t border-black/10 pt-8 mt-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm text-black/50">
-            <p>&copy; 2026 E-Storel. All rights reserved.</p>
-            <div className="flex flex-wrap gap-4">
-              <a href="#" className="hover:text-black transition">
-                Terms of Service
-              </a>
-              <a href="#" className="hover:text-black transition">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-black transition">
-                Cookie Policy
-              </a>
-            </div>
+        {/* --- BOTTOM SECTION --- */}
+        <div className="mt-20 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
+            &copy; {currentYear} E-STOREL STUDIO. ALL RIGHTS RESERVED.
+          </p>
+          <div className="flex gap-6">
+             <Link to="/terms" className="text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-black">Terms</Link>
+             <Link to="/privacy" className="text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-black">Privacy</Link>
+             <Link to="/cookies" className="text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-black">Cookies</Link>
           </div>
         </div>
       </div>
