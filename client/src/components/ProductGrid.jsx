@@ -43,20 +43,19 @@
 // };
 
 // export default ProductGrid;
-
 import { ShoppingBag } from "lucide-react";
 
-const ProductGrid = ({ children, loading, empty, gridCols = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" }) => {
+const ProductGrid = ({ children, loading, empty, gridCols = "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5" }) => {
   
   if (loading) {
     return (
-      <div className={`grid ${gridCols} gap-10`}>
-        {[...Array(8)].map((_, i) => (
-          <div key={i} className="bg-white rounded-[3rem] p-4 border border-gray-50 animate-pulse">
-            <div className="aspect-4/5 bg-gray-100 rounded-[2.5rem] mb-6" />
-            <div className="h-3 bg-gray-100 rounded-full w-1/4 mb-4" />
-            <div className="h-6 bg-gray-100 rounded-full w-3/4 mb-4" />
-            <div className="h-10 bg-gray-100 rounded-full w-1/2 mt-auto" />
+      <div className={`grid ${gridCols} gap-4 md:gap-6`}>
+        {[...Array(10)].map((_, i) => (
+          <div key={i} className="bg-white rounded-4xl p-3 border border-gray-50 animate-pulse">
+            <div className="aspect-4/5 bg-gray-100 rounded-3xl mb-4" />
+            <div className="h-2 bg-gray-100 rounded-full w-1/3 mb-3" />
+            <div className="h-4 bg-gray-100 rounded-full w-3/4 mb-3" />
+            <div className="h-8 bg-gray-100 rounded-full w-full mt-auto" />
           </div>
         ))}
       </div>
@@ -65,12 +64,12 @@ const ProductGrid = ({ children, loading, empty, gridCols = "grid-cols-1 sm:grid
 
   if (empty) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 bg-white rounded-[4rem] border border-gray-100">
-        <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-8">
-          <ShoppingBag className="w-10 h-10 text-gray-200" />
+      <div className="flex flex-col items-center justify-center py-24 bg-white rounded-[3rem] border border-gray-100">
+        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
+          <ShoppingBag className="w-8 h-8 text-gray-200" />
         </div>
-        <h2 className="text-3xl font-bold text-black tracking-tighter">No items found</h2>
-        <p className="text-gray-600 mt-2 text-center max-w-xs">
+        <h2 className="text-2xl font-bold text-black tracking-tighter">No items found</h2>
+        <p className="text-gray-500 mt-2 text-center max-w-xs text-sm">
           Try refining your search or explore our latest arrivals.
         </p>
       </div>
@@ -78,7 +77,7 @@ const ProductGrid = ({ children, loading, empty, gridCols = "grid-cols-1 sm:grid
   }
 
   return (
-    <div className={`grid ${gridCols} gap-x-8 gap-y-12`}>
+    <div className={`grid ${gridCols} gap-4 md:gap-6`}>
       {children}
     </div>
   );

@@ -534,19 +534,29 @@ const Products = () => {
     fetchData();
   }, []);
 
-  const updateFilter = (key, value) => {
-    const params = Object.fromEntries(searchParams);
-    if (!value) delete params[key];
-    else params[key] = value;
-    setSearchParams(params);
-    // Close drawer on mobile after selecting a filter
-    if (window.innerWidth < 1024) setIsMobileFilterOpen(false);
-  };
+  // inside Products.jsx
 
-  const clearFilters = () => {
-    setSearchParams({});
-    if (window.innerWidth < 1024) setIsMobileFilterOpen(false);
-  };
+const updateFilter = (key, value) => {
+  const params = Object.fromEntries(searchParams);
+  if (!value) delete params[key];
+  else params[key] = value;
+  setSearchParams(params);
+
+  // IMPROVED LOGIC: 
+  // Only close the drawer if the user is NOT typing (keyword)
+  // We want it to stay open while typing, but close when clicking Category or Sort
+  if (window.innerWidth < 1024 && key !== "keyword") {
+    setIsMobileFilterOpen(false);
+  }
+};
+
+const clearFilters = () => {
+  setSearchParams({});
+  // Close drawer on mobile when resetting
+  if (window.innerWidth < 1024) {
+    setIsMobileFilterOpen(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">

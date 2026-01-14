@@ -197,42 +197,40 @@
 // };
 
 // export default ProductCard;
-
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { ArrowUpRight, ShoppingCart, Heart } from "lucide-react";
+import { ArrowUpRight, ShoppingCart } from "lucide-react";
 
 const ProductCard = ({ product, index }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // Staggered entry animation
   const animationDelay = `${(index % 8) * 100}ms`;
 
   return (
     <Link
       to={`/product/${product._id}`}
-      className="group block h-full animate-in fade-in slide-in-from-bottom-6 duration-1000 ease-out"
+      className="group block h-full animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out"
       style={{ animationDelay }}
     >
-      <div className="relative h-full bg-white rounded-[2.5rem] p-4 pb-7 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-black/5 hover:-translate-y-2 transition-all duration-500 flex flex-col">
+      <div className="relative h-full bg-white rounded-[2rem] p-3 pb-5 border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1.5 transition-all duration-500 flex flex-col">
         
         {/* --- STATUS BADGES --- */}
-        <div className="absolute top-7 left-7 z-20 flex flex-col gap-2">
+        <div className="absolute top-5 left-5 z-20 flex flex-col gap-1.5">
           {product.discount && (
-            <span className="bg-black text-white text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-lg">
+            <span className="bg-black text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-widest shadow-sm">
               -{product.discount}%
             </span>
           )}
           {product.isNew && (
-            <span className="bg-white border border-gray-100 text-black text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-sm">
+            <span className="bg-white border border-gray-100 text-black text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-widest shadow-sm">
               New
             </span>
           )}
         </div>
 
-        {/* --- IMAGE AREA --- */}
-        <div className="relative aspect-square rounded-4xl overflow-hidden bg-[#f9f9f9] mb-6">
+        {/* --- IMAGE AREA (Compact Portrait) --- */}
+        <div className="relative aspect-square rounded-3xl overflow-hidden bg-[#f9f9f9] mb-4">
           {!imageLoaded && !imageError && (
             <div className="absolute inset-0 animate-pulse bg-gray-200" />
           )}
@@ -240,7 +238,7 @@ const ProductCard = ({ product, index }) => {
           <img
             src={imageError || !product.images?.[0] ? "/placeholder.jpg" : product.images[0]}
             alt={product.name}
-            className={`w-full h-full object-contain transition-all duration-1000 group-hover:scale-105 grayscale-[0.5] group-hover:grayscale-0 ${
+            className={`w-full h-full object-contain p-4 transition-all duration-1000 group-hover:scale-105 grayscale-[0.3] group-hover:grayscale-0 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
             loading="lazy"
@@ -249,54 +247,54 @@ const ProductCard = ({ product, index }) => {
           />
 
           {/* Centered Glass Button on Hover */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/5 backdrop-blur-[2px]">
-             <div className="bg-white/90 p-4 rounded-full shadow-2xl transform scale-90 group-hover:scale-100 transition-transform duration-500">
-                <ShoppingCart className="w-5 h-5 text-black" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/5 backdrop-blur-[1px]">
+             <div className="bg-white/90 p-3 rounded-full shadow-xl transform scale-90 group-hover:scale-100 transition-transform duration-500">
+                <ShoppingCart className="w-4 h-4 text-black" />
              </div>
           </div>
         </div>
 
         {/* --- CONTENT AREA --- */}
-        <div className="px-2 flex flex-col flex-1">
+        <div className="px-1 flex flex-col flex-1">
           {/* Metadata */}
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold text-gray-600 uppercase tracking-[0.15em]">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.1em] truncate max-w-[60%]">
               {product.brand || "Collection"}
             </span>
-            <span className="text-[10px] font-bold text-gray-600 capitalize">
+            <span className="text-[9px] font-bold text-gray-400 capitalize">
               {product.category?.name || "General"}
             </span>
           </div>
 
-          {/* Product Name - Semibold & Fixed Height */}
-          <h3 className="text-lg font-semibold text-gray-900 leading-tight mb-4 h-[2.8rem] line-clamp-2 overflow-hidden">
+          {/* Product Name - Balanced Size */}
+          <h3 className="text-base font-semibold text-gray-900 leading-tight mb-3 h-[2.5rem] line-clamp-2 overflow-hidden">
             {product.name}
           </h3>
 
           {/* Footer - Price & CTA */}
-          <div className="mt-auto pt-5 border-t border-gray-50 flex items-end justify-between">
-            <div className="space-y-1">
-              <div className="flex items-center gap-1.5">
-                <div className={`w-1.5 h-1.5 rounded-full ${product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
-                <span className="text-[11px] font-bold text-gray-600 uppercase tracking-tighter">
+          <div className="mt-auto pt-3 border-t border-gray-50 flex items-end justify-between">
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`w-1 h-1 rounded-full ${product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
+                <span className="text-[10px] font-medium text-gray-500 uppercase tracking-tighter">
                   {product.stock > 0 ? 'In Stock' : 'Sold Out'}
                 </span>
               </div>
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-black tracking-tight">
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-xl font-black text-black tracking-tight">
                   ₹{product.price?.toLocaleString()}
                 </span>
                 {product.originalPrice && (
-                  <span className="text-xs text-gray-300 line-through font-medium">
+                  <span className="text-[10px] text-gray-300 line-through font-medium">
                     ₹{product.originalPrice.toLocaleString()}
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Rounded Square Button */}
-            <div className="w-11 h-11 bg-black text-white rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:rounded-full group-hover:bg-gray-800 shadow-xl shadow-black/5">
-              <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            {/* Compact Action Button */}
+            <div className="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center transition-all duration-500 group-hover:rounded-full group-hover:bg-gray-800 shadow-lg shadow-black/5">
+              <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
           </div>
         </div>
