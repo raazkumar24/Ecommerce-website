@@ -494,12 +494,13 @@ import ProductGrid from "../components/ProductGrid";
 import ProductCard from "../components/ProductCard";
 import FilterSidebar from "../components/common/FilterSidebar";
 import useProductFilters from "../hooks/useProductFilters";
-import { ChevronRight, SlidersHorizontal, Package, X } from "lucide-react";
+import { ChevronRight, SlidersHorizontal, Package, X, Filter } from "lucide-react";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // 🔗 URL → filters
@@ -519,7 +520,6 @@ const Products = () => {
         const { data } = await getProducts("");
         setProducts(data || []);
 
-        // Efficient categories extract
         const uniqueCats = Array.from(
           new Map(data.map((p) => [p.category?._id, p.category])).values()
         ).filter(Boolean);
@@ -539,15 +539,20 @@ const Products = () => {
     if (!value) delete params[key];
     else params[key] = value;
     setSearchParams(params);
+    // Close drawer on mobile after selecting a filter
+    if (window.innerWidth < 1024) setIsMobileFilterOpen(false);
   };
 
-  const clearFilters = () => setSearchParams({});
+  const clearFilters = () => {
+    setSearchParams({});
+    if (window.innerWidth < 1024) setIsMobileFilterOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
         
-        {/* --- BREADCRUMBS & HEADER --- */}
+        {/* --- HEADER --- */}
         <header className="mb-12">
           <nav className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-4">
             <Link to="/" className="hover:text-black transition-colors">Home</Link>
@@ -561,40 +566,30 @@ const Products = () => {
                 All Products
               </h1>
               <p className="text-gray-500 mt-2 font-medium">
-                Showing {filteredProducts.length} results from our premium collection
+                Found {filteredProducts.length} premium items
               </p>
             </div>
 
-            {/* Active Filter Chips */}
-            {(filters.keyword || filters.category) && (
-              <div className="flex flex-wrap gap-2">
-                {filters.category && (
-                  <span className="inline-flex items-center gap-2 px-4 py-2 bg-black text-white rounded-full text-[10px] font-bold uppercase tracking-tighter">
-                    {filters.category}
-                    <button onClick={() => updateFilter("category", "")}><X size={12} /></button>
-                  </span>
-                )}
-                <button 
-                  onClick={clearFilters}
-                  className="text-[10px] font-bold uppercase tracking-widest text-gray-600 hover:text-red-500 transition-colors"
-                >
-                  Clear All
-                </button>
-              </div>
-            )}
+            {/* Mobile Filter Trigger Button */}
+            <div className="lg:hidden w-full md:w-auto">
+              <button 
+                onClick={() => setIsMobileFilterOpen(true)}
+                className="w-full md:w-auto flex items-center justify-center gap-3 bg-black text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-black/10 active:scale-95 transition-all"
+              >
+                <SlidersHorizontal size={18} /> Filters
+              </button>
+            </div>
           </div>
         </header>
 
         <div className="lg:grid lg:grid-cols-4 gap-12 items-start">
           
-          {/* --- SIDEBAR --- */}
-          {/* We wrap the sidebar in a sticky container so it stays visible while scrolling */}
-          <aside className="hidden lg:block sticky top-28 h-[calc(100vh-120px)] overflow-y-auto pr-4 scrollbar-hide">
+          {/* --- DESKTOP SIDEBAR --- */}
+          <aside className="hidden lg:block sticky top-28">
             <div className="flex items-center gap-2 mb-8 text-black">
-              <SlidersHorizontal size={18} />
+              <Filter size={18} />
               <span className="font-black uppercase tracking-widest text-xs">Refine Search</span>
             </div>
-            
             <FilterSidebar
               categories={categories}
               filters={filters}
@@ -603,15 +598,39 @@ const Products = () => {
             />
           </aside>
 
-          {/* --- MOBILE FILTER TRIGGER (Optional) --- */}
-          <div className="lg:hidden mb-8">
-            <button 
-              onClick={() => {/* Trigger Mobile Drawer */}}
-              className="w-full py-4 bg-white border border-gray-100 rounded-2xl flex items-center justify-center gap-3 font-bold shadow-sm"
-            >
-              <SlidersHorizontal size={18} /> Filters & Sorting
-            </button>
-          </div>
+          {/* --- MOBILE DRAWER OVERLAY --- */}
+          {isMobileFilterOpen && (
+            <div className="fixed inset-0 z-100 lg:hidden">
+              {/* Backdrop blurs the background */}
+              <div 
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300" 
+                onClick={() => setIsMobileFilterOpen(false)}
+              />
+              
+              {/* Drawer Content */}
+              <div className="absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white p-8 shadow-2xl animate-in animate-slide-in-from-right duration-500 overflow-y-auto rounded-l-[3rem]">
+                <div className="flex justify-between items-center mb-10">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-black rounded-xl text-white"><SlidersHorizontal size={16} /></div>
+                    <h3 className="font-black uppercase tracking-[0.2em] text-xs">Filters</h3>
+                  </div>
+                  <button 
+                    onClick={() => setIsMobileFilterOpen(false)}
+                    className="p-3 bg-gray-100 rounded-2xl hover:bg-black hover:text-white transition-all"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <FilterSidebar
+                  categories={categories}
+                  filters={filters}
+                  onChange={updateFilter}
+                  onClear={clearFilters}
+                />
+              </div>
+            </div>
+          )}
 
           {/* --- PRODUCTS GRID --- */}
           <div className="lg:col-span-3">
@@ -624,16 +643,7 @@ const Products = () => {
                 <ProductCard key={p._id} product={p} index={i} />
               ))}
             </ProductGrid>
-            
-            {/* End of results footer */}
-            {!loading && filteredProducts.length > 0 && (
-              <div className="mt-20 text-center border-t border-gray-100 pt-10">
-                <Package className="w-6 h-6 text-gray-200 mx-auto mb-2" />
-                <p className="text-xs font-bold text-gray-300 uppercase tracking-[0.3em]">End of Catalog</p>
-              </div>
-            )}
           </div>
-
         </div>
       </div>
     </div>
