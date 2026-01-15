@@ -24,7 +24,7 @@ const CartItem = ({ item }) => {
           <img
             src={product.images?.[0]}
             alt={product.name}
-            className="w-full h-full object-contain p-2 grayscale group-hover:grayscale-0 transition-all duration-700"
+            className="w-full h-full object-contain p-2" //grayscale group-hover:grayscale-0 transition-all duration-700 (if needed)
           />
         </div>
 

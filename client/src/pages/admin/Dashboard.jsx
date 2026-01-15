@@ -188,7 +188,7 @@ const Dashboard = () => {
                   <div className="w-full sm:w-28 h-28 rounded-[1.8rem] overflow-hidden bg-gray-50 shrink-0">
                     <img
                       src={p.images?.[0] || "https://via.placeholder.com/150"}
-                      className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
+                      className="w-full h-full object-contain" //grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out (if needed)
                       alt={p.name}
                     />
                   </div>

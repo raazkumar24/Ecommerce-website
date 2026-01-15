@@ -18,14 +18,20 @@ const Home = () => {
   const [featuredProduct, setFeaturedProduct] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchProducts = async () => {
+const fetchProducts = async () => {
     setLoading(true);
     try {
       const { data } = await getProducts("");
       const items = data || [];
-      setProducts(items.slice(0, 8));
-      // Set the first item as the "Hero" featured product
-      setFeaturedProduct(items[0]);
+      
+      // Filter for new items
+      const newArrivals = items.filter(product => product.isNew === true);
+      
+      // If there are new arrivals, show them. Otherwise, show all latest items.
+      const displayItems = newArrivals.length > 0 ? newArrivals : items;
+      
+      setProducts(displayItems.slice(0, 8));
+      setFeaturedProduct(displayItems[0]);
     } catch (err) {
       console.error("Failed to fetch products");
     } finally {
@@ -94,7 +100,7 @@ const Home = () => {
                   <img
                     src={featuredProduct.images[0]}
                     alt={featuredProduct.name}
-                    className="w-full h-full object-contain grayscale hover:grayscale-0 transition-all duration-1000"
+                    className="w-full h-full object-contain" //grayscale hover:grayscale-0 transition-all duration-1000 (if you want to add grayscale effect)
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-200">
