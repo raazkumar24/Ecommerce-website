@@ -226,7 +226,7 @@ const ProductDetails = () => {
       </nav>
 
       {showFullscreen && (
-        <div className="fixed inset-0 bg-black z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black z-100 flex items-center justify-center p-4">
           <div className="absolute top-6 right-6 flex gap-3">
             <button
               onClick={prevImage}
@@ -415,7 +415,7 @@ const ProductDetails = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div className="p-5 bg-gray-50 rounded-[2rem] flex items-center gap-4">
+              <div className="p-5 bg-gray-50 rounded-4xl flex items-center gap-4">
                 <div className="p-3 bg-white rounded-2xl shadow-sm">
                   <Truck size={20} />
                 </div>
@@ -428,7 +428,7 @@ const ProductDetails = () => {
                   </p>
                 </div>
               </div>
-              <div className="p-5 bg-gray-50 rounded-[2rem] flex items-center gap-4">
+              <div className="p-5 bg-gray-50 rounded-4xl flex items-center gap-4">
                 <div className="p-3 bg-white rounded-2xl shadow-sm">
                   <Shield size={20} />
                 </div>
