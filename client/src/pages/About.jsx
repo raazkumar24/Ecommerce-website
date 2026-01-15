@@ -62,7 +62,7 @@ const About = () => {
     { name: "Node.js", icon: <Server className="w-6 h-6" /> },
     { name: "MongoDB", icon: <Database className="w-6 h-6" /> },
     { name: "Express", icon: <Layers className="w-6 h-6" /> },
-    { name: "Vite", icon: <ExternalLink className="w-6 h-6" /> },
+    { name: "Vite", icon: <Star className="w-6 h-6" /> },
   ];
 
   return (

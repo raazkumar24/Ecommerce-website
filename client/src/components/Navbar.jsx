@@ -191,7 +191,7 @@ const Navbar = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Find something..."
-                className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-4xl outline-none"
+                className="w-full pl-12 pr-4 py-4 bg-gray-50 rounded-4xl outline-none shadow-2xs"
               />
             </form>
 

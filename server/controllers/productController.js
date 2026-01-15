@@ -11,7 +11,9 @@ export const createProduct = async (req, res) => {
       category,
       description,
       stock,
-      brand
+      brand,
+      discount,
+      isNew
     } = req.body;
 
     if (!name || !price || !category) {
@@ -32,7 +34,9 @@ export const createProduct = async (req, res) => {
       description,
       stock,
       brand,
-      images
+      images,
+      discount,
+      isNew
     });
 
     res.status(201).json(product);
@@ -112,16 +116,20 @@ export const updateProduct = async (req, res) => {
       stock,
       brand,
       imageOrder,
-      existingImages
+      existingImages,
+      discount,
+      isNew
     } = req.body;
 
-    // Update fields
+    // Update fields if provided
     product.name = name ?? product.name;
     product.price = price ?? product.price;
     product.category = category ?? product.category;
     product.description = description ?? product.description;
     product.stock = stock ?? product.stock;
     product.brand = brand ?? product.brand;
+    product.discount = discount ?? product.discount;
+    product.isNew = isNew ?? product.isNew;
 
     // New uploaded images
   const newImages = (req.files || []).map((file) => file.path);
