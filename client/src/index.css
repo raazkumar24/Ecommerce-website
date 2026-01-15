@@ -1,11 +1,8 @@
 @import "tailwindcss";
 body {
-  @apply bg-gray-50 text-gray-800;
+  background-color: #f9fafb;
+  color: #1f2937;
 }
-
-
-
-
 
 
 @keyframes fade-in-up {
@@ -47,12 +44,6 @@ body {
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
-}
-
-@theme {
-  --animate-slide-in-from-right: slide-in-from-right 0.4s ease-out forwards;
-  --animate-bounce-slow: bounce-slow 1s ease-in-out infinite;
-  --slide-in-from-bottom: slide-in-from-bottom 0.4s ease-out forwards;
 }
 
 @keyframes slide-in-from-right {
