@@ -142,8 +142,16 @@ const Navbar = () => {
                   to="/profile"
                   className="flex items-center gap-2 p-2 bg-gray-50 rounded-3xl shadow-2xs"
                 >
-                  <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-bold text-xl">
-                    {user.name?.charAt(0)}
+                  <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs overflow-hidden shrink-0 border border-black/5">
+                    {user.avatar ? (
+                      <img
+                        src={user.avatar}
+                        alt={user.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      user.name?.charAt(0)
+                    )}
                   </div>
                   <div>
                     <p className="font-bold text-base leading-tight">
@@ -239,8 +247,16 @@ const Navbar = () => {
               ) : (
                 <div className="bg-gray-50 p-6 rounded-4xl flex items-center justify-between shadow-2xs">
                   <Link to="/profile" className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white font-black">
-                      {user.name?.charAt(0)}
+                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-xs overflow-hidden shrink-0 border border-black/5">
+                      {user.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        user.name?.charAt(0)
+                      )}
                     </div>
                     <div>
                       <p className="font-black uppercase text-xs tracking-widest">

@@ -119,10 +119,10 @@ export const updateAvatar = async (req, res) => {
       return res.status(400).json({ message: "No image provided" });
     }
 
-    // Update the user
+    // Database mein avatar update karo
     const user = await User.findByIdAndUpdate(
       userId,
-      { avatar: req.file.path },
+      { avatar: req.file.path }, // Cloudinary URL
       { new: true }
     ).select("-password");
 
@@ -130,7 +130,6 @@ export const updateAvatar = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // RETURN THE FULL OBJECT + TOKEN
     res.json({
       _id: user._id,
       name: user.name,
@@ -142,6 +141,7 @@ export const updateAvatar = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error uploading to Cloudinary" });
   }
 };
