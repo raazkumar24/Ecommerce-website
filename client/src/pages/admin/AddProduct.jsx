@@ -12,7 +12,9 @@ import {
   Layers,
   Archive,
   ChevronDown,
-  Info
+  Info,
+  Percent,
+  Check,
 } from "lucide-react";
 
 import { useImageHandling } from "../../hooks/useImageHandling";
@@ -31,7 +33,7 @@ const AddProduct = () => {
     stock: "",
     brand: "",
     discount: 0,
-    isNew: false
+    isNew: false,
   });
 
   /* ========== IMAGE HANDLING ========== */
@@ -60,12 +62,15 @@ const AddProduct = () => {
   }, []);
 
   /* ========== FORM HANDLER ========== */
-  const handleChange = (e) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+const handleChange = (e) => {
+  const { name, value, type, checked } = e.target;
+  
+  setForm((prev) => ({
+    ...prev,
+    // Agar type checkbox hai toh boolean (true/false) lo, warna string value
+    [name]: type === "checkbox" ? checked : value,
+  }));
+};
 
   /* ========== SUBMIT ========== */
   const handleSubmit = async (e) => {
@@ -121,27 +126,32 @@ const AddProduct = () => {
       {/* --- STICKY TOP NAV --- */}
       <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 h-16 flex items-center px-6 mb-8">
         <div className="max-w-5xl mx-auto w-full flex items-center justify-between">
-          <button 
-            onClick={() => navigate("/admin/dashboard")} 
+          <button
+            onClick={() => navigate("/admin/dashboard")}
             className="flex items-center gap-2 font-bold text-xs uppercase tracking-widest hover:-translate-x-1 transition-transform"
           >
             <ArrowLeft size={16} /> Back to Dashboard
           </button>
           <div className="hidden md:flex items-center gap-2 text-gray-600">
-             <Layers size={14} />
-             <span className="text-[10px] font-black uppercase tracking-[0.2em]">Inventory Creation</span>
+            <Layers size={14} />
+            <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+              Inventory Creation
+            </span>
           </div>
         </div>
       </nav>
 
       <main className="max-w-5xl mx-auto px-6">
         <header className="mb-12">
-          <h1 className="text-5xl font-bold tracking-tighter uppercase leading-none mb-2">New Product</h1>
-          <p className="text-gray-600 font-medium">Add a new entry to your digital catalog.</p>
+          <h1 className="text-5xl font-bold tracking-tighter uppercase leading-none mb-2">
+            New Product
+          </h1>
+          <p className="text-gray-600 font-medium">
+            Add a new entry to your digital catalog.
+          </p>
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          
           {/* --- CORE DETAILS CARD --- */}
           <section className="bg-white rounded-[2.5rem] p-8 lg:p-12 border border-gray-50 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-200/50">
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-10 flex items-center gap-3">
@@ -151,9 +161,14 @@ const AddProduct = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Product Name */}
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Full Product Title</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Full Product Title
+                </label>
                 <div className="relative">
-                  <Package className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <Package
+                    className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
+                    size={18}
+                  />
                   <input
                     name="name"
                     value={form.name}
@@ -167,9 +182,13 @@ const AddProduct = () => {
 
               {/* Price */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Pricing (INR)</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Pricing (INR)
+                </label>
                 <div className="relative">
-                  <span className="absolute left-5 top-1/2 -translate-y-1/2 font-black text-gray-500 italic">₹</span>
+                  <span className="absolute left-5 top-1/2 -translate-y-1/2 font-black text-gray-500 italic">
+                    ₹
+                  </span>
                   <input
                     name="price"
                     type="number"
@@ -184,9 +203,14 @@ const AddProduct = () => {
 
               {/* Category */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Category Node</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Category Node
+                </label>
                 <div className="relative">
-                  <Tag className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <Tag
+                    className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
+                    size={18}
+                  />
                   <select
                     name="category"
                     value={form.category}
@@ -196,16 +220,23 @@ const AddProduct = () => {
                   >
                     <option value="">Select Structure...</option>
                     {categories.map((c) => (
-                      <option key={c._id} value={c._id}>{c.name}</option>
+                      <option key={c._id} value={c._id}>
+                        {c.name}
+                      </option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <ChevronDown
+                    className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500"
+                    size={18}
+                  />
                 </div>
               </div>
 
               {/* Brand */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Manufacturer</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Manufacturer
+                </label>
                 <input
                   name="brand"
                   value={form.brand}
@@ -218,9 +249,14 @@ const AddProduct = () => {
 
               {/* Stock */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Initial Stock</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Initial Stock
+                </label>
                 <div className="relative">
-                  <Archive className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <Archive
+                    className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
+                    size={18}
+                  />
                   <input
                     name="stock"
                     type="number"
@@ -233,11 +269,16 @@ const AddProduct = () => {
                 </div>
               </div>
 
-               {/* Descount */}
+              {/* Descount */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Discount Percentage</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Discount Percentage
+                </label>
                 <div className="relative">
-                  <Percent className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <Percent
+                    className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500"
+                    size={18}
+                  />
                   <input
                     name="discount"
                     type="number"
@@ -252,24 +293,54 @@ const AddProduct = () => {
 
               {/* isNew */}
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Is New</label>
-                <div className="relative">
-                  <Check className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
-                  <input
-                    name="isNew"
-                    type="checkbox"
-                    checked={form.isNew}
-                    onChange={handleChange}
-                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-black text-xl"
-                  />
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  New Collection Status
+                </label>
+                <div className="flex items-center justify-between bg-gray-50 p-5 rounded-3xl border border-transparent transition-all hover:bg-white hover:border-gray-100 group shadow-sm">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`p-2 rounded-xl transition-all ${
+                        form.isNew
+                          ? "bg-black text-white"
+                          : "bg-gray-200 text-gray-500"
+                      }`}
+                    >
+                      <CheckCircle size={18} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-black uppercase tracking-tight">
+                        Set as New Arrival
+                      </p>
+                      <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
+                        Display "New" badge on product
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Custom Toggle Switch */}
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      name="isNew"
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={form.isNew}
+                      onChange={handleChange}
+                    />
+                    <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-6 after:transition-all peer-checked:bg-black"></div>
+                  </label>
                 </div>
               </div>
 
               {/* Description */}
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Product Narrative</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Product Narrative
+                </label>
                 <div className="relative">
-                  <FileText className="absolute left-5 top-6 text-gray-500" size={18} />
+                  <FileText
+                    className="absolute left-5 top-6 text-gray-500"
+                    size={18}
+                  />
                   <textarea
                     name="description"
                     value={form.description}
@@ -286,7 +357,9 @@ const AddProduct = () => {
 
           {/* --- MEDIA UPLOAD CARD --- */}
           <section className="bg-white rounded-[2.5rem] p-8 lg:p-12 border border-gray-50 shadow-sm transition-all hover:shadow-xl hover:shadow-gray-200/50">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-8">Visual Assets</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-8">
+              Visual Assets
+            </h3>
             <ImageUploader
               images={images}
               onFiles={handleFiles}
