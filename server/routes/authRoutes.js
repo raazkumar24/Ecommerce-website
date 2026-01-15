@@ -9,5 +9,4 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.put("/profile", protect, updateProfile);
 router.put("/avatar", protect, upload.single("avatar"), updateAvatar);
-
 export default router;

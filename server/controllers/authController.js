@@ -61,6 +61,7 @@ export const loginUser = async (req, res) => {
       phone: user.phone,
       role: user.role,
       address: user.address,
+      avatar: user.avatar,
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -99,6 +100,7 @@ export const updateProfile = async (req, res) => {
       email: user.email,
       phone: user.phone,
       address: user.address,
+      avatar: user.avatar,
       role: user.role,
       token: generateToken(user._id),
     });
