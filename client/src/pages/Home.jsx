@@ -542,7 +542,7 @@ const Home = () => {
 
             <Link
               to="/products"
-              className="group flex items-center gap-3 text-sm font-bold border-b-2 border-black pb-2 transition-all"
+              className="group flex items-center gap-3 text-sm font-bold border-2 border-black pb-2 transition-all"
             >
               See All Products{" "}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

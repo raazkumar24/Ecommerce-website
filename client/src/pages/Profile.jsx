@@ -63,7 +63,7 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="text-center space-y-6">
-          <div className="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto">
+          <div className="w-20 h-20 bg-gray-50 rounded-4xl flex items-center justify-center mx-auto">
             <User className="text-gray-500 w-10 h-10" />
           </div>
           <h2 className="text-3xl font-black tracking-tighter uppercase">Access Denied</h2>
@@ -135,7 +135,7 @@ const Profile = () => {
                     <User className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                     <input 
                       name="name" value={form.name} onChange={handleChange} disabled={!isEditing}
-                      className={`w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] outline-none transition-all font-bold ${isEditing ? "focus:ring-2 ring-black/5 bg-white shadow-inner" : "opacity-60"}`}
+                      className={`w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none transition-all font-bold ${isEditing ? "focus:ring-2 ring-black/5 bg-white shadow-inner" : "opacity-60"}`}
                     />
                   </div>
                 </div>
@@ -147,7 +147,7 @@ const Profile = () => {
                     <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                     <input 
                       value={user.email} disabled
-                      className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] font-bold opacity-40 cursor-not-allowed"
+                      className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl font-bold opacity-40 cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -160,14 +160,14 @@ const Profile = () => {
                       <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                       <input 
                         name="phone" value={form.phone} onChange={handleChange} disabled={!isEditing}
-                        className={`w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] outline-none transition-all font-bold ${isEditing ? "focus:ring-2 ring-black/5 bg-white shadow-inner" : "opacity-60"}`}
+                        className={`w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none transition-all font-bold ${isEditing ? "focus:ring-2 ring-black/5 bg-white shadow-inner" : "opacity-60"}`}
                       />
                     </div>
                   </div>
                   {/* Member ID */}
                   <div className="space-y-2">
                     <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">Member ID</label>
-                    <div className="bg-gray-50 py-5 px-6 rounded-[1.5rem] font-mono text-xs font-bold text-gray-600">
+                    <div className="bg-gray-50 py-5 px-6 rounded-3xl font-mono text-xs font-bold text-gray-600">
                       ID_{user._id?.slice(-8).toUpperCase()}
                     </div>
                   </div>
@@ -180,7 +180,7 @@ const Profile = () => {
                     <MapPin className="absolute left-5 top-8 text-gray-500" size={18} />
                     <textarea 
                       name="address" value={form.address} onChange={handleChange} disabled={!isEditing} rows={4}
-                      className={`w-full bg-gray-50 border-none py-6 pl-14 pr-6 rounded-[1.5rem] outline-none transition-all font-bold resize-none ${isEditing ? "focus:ring-2 ring-black/5 bg-white shadow-inner" : "opacity-60"}`}
+                      className={`w-full bg-gray-50 border-none py-6 pl-14 pr-6 rounded-3xl outline-none transition-all font-bold resize-none ${isEditing ? "focus:ring-2 ring-black/5 bg-white shadow-inner" : "opacity-60"}`}
                     />
                   </div>
                 </div>
@@ -188,9 +188,9 @@ const Profile = () => {
                 {isEditing && (
                   <button 
                     type="submit" disabled={loading}
-                    className="w-full bg-black text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest shadow-2xl active:scale-95 transition-all flex items-center justify-center gap-3"
+                    className="w-full bg-black text-white py-5 rounded-3xl font-black uppercase tracking-widest shadow-2xl active:scale-95 transition-all flex items-center justify-center gap-3"
                   >
-                    {loading ? <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" /> : <><CheckCircle size={18} /> Save Settings</>}
+                    {loading ? <div className="w-5 h-5 border-b-2 border-white/20 border-t-white rounded-full animate-spin" /> : <><CheckCircle size={18} /> Save Settings</>}
                   </button>
                 )}
               </div>
@@ -223,7 +223,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-[2rem] p-6 border border-gray-100 text-center">
+            <div className="bg-white rounded-4xl p-6 border border-gray-100 text-center">
               <p className="text-gray-600 text-xs font-bold mb-4 uppercase tracking-widest">Account Actions</p>
               <div className="grid grid-cols-2 gap-3">
                 <button 

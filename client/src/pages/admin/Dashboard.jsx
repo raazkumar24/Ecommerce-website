@@ -728,7 +728,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-b-2 border-black border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -767,19 +767,19 @@ const Dashboard = () => {
 
         {/* --- STATS SUMMARY --- */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-          <div className="bg-white rounded-[2rem] p-5 border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-4xl p-5 border border-gray-100 shadow-sm">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-1">Total Items</p>
             <h2 className="text-2xl font-bold">{products.length}</h2>
           </div>
-          <div className="bg-white rounded-[2rem] p-5 border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-4xl p-5 border border-gray-100 shadow-sm">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-1">Value</p>
             <h2 className="text-2xl font-bold text-emerald-600">₹{(totalValue / 100000).toFixed(1)}L</h2>
           </div>
-          <div className="bg-white rounded-[2rem] p-5 border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-4xl p-5 border border-gray-100 shadow-sm">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-1">Low Stock</p>
             <h2 className="text-2xl font-bold text-red-500">{products.filter(p => p.stock < 10).length}</h2>
           </div>
-          <div className="bg-white rounded-[2rem] p-5 border border-gray-100 shadow-sm">
+          <div className="bg-white rounded-4xl p-5 border border-gray-100 shadow-sm">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-1">Active Filters</p>
             <h2 className="text-2xl font-bold">{filteredProducts.length}</h2>
           </div>
@@ -840,7 +840,7 @@ const Dashboard = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-5">
                   
                   {/* Image */}
-                  <div className="w-full sm:w-28 h-28 rounded-[1.8rem] overflow-hidden bg-gray-50 flex-shrink-0">
+                  <div className="w-full sm:w-28 h-28 rounded-[1.8rem] overflow-hidden bg-gray-50 shrink-0">
                     <img
                       src={p.images?.[0] || "https://via.placeholder.com/150"}
                       className="w-full h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
@@ -854,7 +854,7 @@ const Dashboard = () => {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest truncate max-w-[100px]">
+                          <span className="text-[9px] font-black text-gray-300 uppercase tracking-widest truncate max-w-25">
                             {p.brand || "Brand"}
                           </span>
                           <span className="w-1 h-1 bg-gray-200 rounded-full" />

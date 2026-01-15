@@ -482,7 +482,7 @@ const AddProduct = () => {
         <div className="max-w-5xl mx-auto w-full flex items-center justify-between">
           <button 
             onClick={() => navigate("/admin/dashboard")} 
-            className="flex items-center gap-2 font-bold text-xs uppercase tracking-widest hover:translate-x-[-4px] transition-transform"
+            className="flex items-center gap-2 font-bold text-xs uppercase tracking-widest hover:-translate-x-1 transition-transform"
           >
             <ArrowLeft size={16} /> Back to Dashboard
           </button>
@@ -518,7 +518,7 @@ const AddProduct = () => {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="e.g. MacBook Pro M3 Max"
-                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-lg"
+                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-lg"
                     required
                   />
                 </div>
@@ -535,7 +535,7 @@ const AddProduct = () => {
                     value={form.price}
                     onChange={handleChange}
                     placeholder="0.00"
-                    className="w-full bg-gray-50 border-none py-5 pl-12 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-black text-xl"
+                    className="w-full bg-gray-50 border-none py-5 pl-12 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-black text-xl"
                     required
                   />
                 </div>
@@ -550,7 +550,7 @@ const AddProduct = () => {
                     name="category"
                     value={form.category}
                     onChange={handleChange}
-                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-12 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold appearance-none cursor-pointer"
+                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-12 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold appearance-none cursor-pointer"
                     required
                   >
                     <option value="">Select Structure...</option>
@@ -570,7 +570,7 @@ const AddProduct = () => {
                   value={form.brand}
                   onChange={handleChange}
                   placeholder="Brand Label"
-                  className="w-full bg-gray-50 border-none py-5 px-8 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold"
+                  className="w-full bg-gray-50 border-none py-5 px-8 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold"
                   required
                 />
               </div>
@@ -586,7 +586,7 @@ const AddProduct = () => {
                     value={form.stock}
                     onChange={handleChange}
                     placeholder="0"
-                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-black text-xl"
+                    className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-black text-xl"
                     required
                   />
                 </div>
@@ -603,7 +603,7 @@ const AddProduct = () => {
                     onChange={handleChange}
                     rows={4}
                     placeholder="Describe the unique features..."
-                    className="w-full bg-gray-50 border-none py-6 pl-14 pr-6 rounded-[2rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-medium leading-relaxed resize-none"
+                    className="w-full bg-gray-50 border-none py-6 pl-14 pr-6 rounded-4xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-medium leading-relaxed resize-none"
                     required
                   />
                 </div>
@@ -632,17 +632,17 @@ const AddProduct = () => {
             <button
               type="button"
               onClick={() => navigate("/admin/dashboard")}
-              className="flex-1 bg-gray-100 text-gray-500 py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.2em] hover:bg-gray-200 transition-all active:scale-95"
+              className="flex-1 bg-gray-100 text-gray-500 py-5 rounded-3xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-gray-200 transition-all active:scale-95"
             >
               Cancel Entry
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-[2] bg-black text-white py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl shadow-black/20 hover:bg-zinc-800 transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50"
+              className="flex-2 bg-black text-white py-5 rounded-3xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl shadow-black/20 hover:bg-zinc-800 transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50"
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/20 border-t-white" />
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white/20 border-t-white" />
               ) : (
                 <>
                   <CheckCircle size={16} />

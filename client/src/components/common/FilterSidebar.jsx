@@ -1,4 +1,4 @@
-import { X, Search, ChevronDown, ListFilter, RotateCcw } from "lucide-react";
+import { X, Search, ChevronDown, RotateCcw } from "lucide-react";
 
 const FilterSidebar = ({
   categories,
@@ -21,7 +21,7 @@ const FilterSidebar = ({
             value={keyword}
             onChange={(e) => onChange("keyword", e.target.value)}
             placeholder="Search items..."
-            className="w-full bg-white border border-gray-100 py-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-black/5 transition-all text-sm font-bold"
+            className="w-full bg-white border border-gray-100 py-4 pl-12 pr-4 rounded-2xl outline-none focus:ring-2 ring-black/5 transition-all text-sm font-bold shadow-sm"
           />
         </div>
       </div>
@@ -32,23 +32,28 @@ const FilterSidebar = ({
           Collections
         </label>
         <div className="flex flex-col gap-2">
+          {/* "All" Button */}
           <button
             onClick={() => onChange("category", "")}
             className={`w-full text-left px-5 py-3 rounded-xl text-xs font-bold transition-all ${
               category === "" 
-              ? "bg-black text-white shadow-lg translate-x-1" 
+              ? "bg-black text-white shadow-lg shadow-black/10 translate-x-1" 
               : "text-gray-500 hover:bg-gray-100 hover:text-black"
             }`}
           >
             Show All
           </button>
+
+          {/* Dynamic Categories */}
           {categories.map((c) => (
             <button
               key={c._id}
-              onClick={() => onChange("category", c.name)}
+              // CRITICAL: We pass the _id here, not the name
+              onClick={() => onChange("category", c._id)}
               className={`w-full text-left px-5 py-3 rounded-xl text-xs font-bold transition-all ${
-                category === c.name
-                ? "bg-black text-white shadow-lg translate-x-1" 
+                // CRITICAL: We compare against the _id
+                category === c._id
+                ? "bg-black text-white shadow-lg shadow-black/10 translate-x-1" 
                 : "text-gray-500 hover:bg-gray-100 hover:text-black"
               }`}
             >
@@ -67,7 +72,7 @@ const FilterSidebar = ({
           <select
             value={sortBy}
             onChange={(e) => onChange("sortBy", e.target.value)}
-            className="w-full bg-white border border-gray-100 py-4 px-5 rounded-2xl outline-none appearance-none text-xs font-bold cursor-pointer hover:border-black transition-colors"
+            className="w-full bg-white border border-gray-100 py-4 px-5 rounded-2xl outline-none appearance-none text-xs font-bold cursor-pointer hover:border-black transition-colors shadow-sm"
           >
             <option value="newest">Latest Arrivals</option>
             <option value="price">Price: Low to High</option>
@@ -78,7 +83,7 @@ const FilterSidebar = ({
         </div>
       </div>
 
-      {/* --- RESET --- */}
+      {/* --- RESET ACTION --- */}
       {(keyword || category || sortBy) && (
         <button
           onClick={onClear}

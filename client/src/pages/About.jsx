@@ -71,7 +71,7 @@ const About = () => {
       {/* ================= HERO SECTION ================= */}
       <section className="relative overflow-hidden bg-black py-24 sm:py-32 px-6 lg:px-8 rounded-b-[4rem] lg:rounded-b-[6rem]">
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 blur-[120px] rounded-full" />
+          <div className="absolute top-0 right-0 w-125 h-125 bg-white/10 blur-[120px] rounded-full" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto text-center">
@@ -92,7 +92,7 @@ const About = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {[["10k+", "Inventory"], ["5k+", "Clients"], ["48h", "Shipping"], ["100%", "Safe"]].map(([val, label]) => (
-              <div key={label} className="p-6 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-sm">
+              <div key={label} className="p-6 rounded-4xl bg-white/5 border border-white/10 backdrop-blur-sm">
                 <p className="text-2xl font-black text-white">{val}</p>
                 <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mt-1">{label}</p>
               </div>
@@ -163,7 +163,7 @@ const About = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {techStack.map((tech) => (
-              <div key={tech.name} className="group bg-white/5 border border-white/10 rounded-[2rem] p-8 text-center hover:bg-white hover:text-black transition-all duration-500 hover:-translate-y-2">
+              <div key={tech.name} className="group bg-white/5 border border-white/10 rounded-4xl p-8 text-center hover:bg-white hover:text-black transition-all duration-500 hover:-translate-y-2">
                 <div className="mb-4 flex justify-center">{tech.icon}</div>
                 <h3 className="font-bold text-sm uppercase tracking-widest">{tech.name}</h3>
               </div>

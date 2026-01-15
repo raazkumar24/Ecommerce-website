@@ -430,7 +430,7 @@
 //                   <button
 //                     key={i}
 //                     onClick={() => setActiveImg(i)}
-//                     className={`relative shrink-0 w-20 aspect-square rounded-xl border-2 transition-all duration-200 overflow-hidden group ${
+//                     className={`relative shrink-0 w-20 aspect-square rounded-xl border-b-2 transition-all duration-200 overflow-hidden group ${
 //                       activeImg === i
 //                         ? "border-black shadow-md"
 //                         : "border-black/20 hover:border-black/40"
@@ -442,7 +442,7 @@
 //                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
 //                     />
 //                     {activeImg === i && (
-//                       <div className="absolute inset-0 border-2 border-black/20"></div>
+//                       <div className="absolute inset-0 border-b-2 border-black/20"></div>
 //                     )}
 //                   </button>
 //                 ))}
@@ -817,7 +817,7 @@ const ProductDetails = () => {
 
   if (loadingProduct) return (
     <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-10 h-10 border-2 border-black border-t-transparent rounded-full animate-spin" />
+      <div className="w-10 h-10 border-b-2 border-black border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
@@ -838,7 +838,7 @@ const ProductDetails = () => {
 
       {/* Fullscreen Image Modal */}
       {showFullscreen && (
-        <div className="fixed inset-0 bg-black z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black z-100 flex items-center justify-center p-4">
           <div className="absolute top-6 right-6 flex gap-3">
             <button onClick={prevImage} className="text-white p-3 bg-white/10 rounded-full backdrop-blur-md"><ChevronLeft size={20}/></button>
             <button onClick={nextImage} className="text-white p-3 bg-white/10 rounded-full backdrop-blur-md"><ChevronRight size={20}/></button>
@@ -1068,7 +1068,7 @@ const ProductDetails = () => {
               {product.description?.length > 200 && (
                 <button 
                   onClick={() => setExpandDescription(!expandDescription)}
-                  className="text-xs font-black uppercase tracking-widest border-b-2 border-black pb-1"
+                  className="text-xs font-black uppercase tracking-widest border-2 border-black pb-1"
                 >
                   {expandDescription ? 'Less -' : 'More +'}
                 </button>
@@ -1080,19 +1080,27 @@ const ProductDetails = () => {
               <button 
                 onClick={handleButtonClick}
                 disabled={loading || product.stock <= 0}
-                className={`w-full py-5 rounded-[2rem] font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-3 ${
+                className={`w-full py-5 rounded-4xl font-bold text-lg transition-all active:scale-95 flex items-center justify-center gap-3 ${
                   isInCart ? 'bg-black text-white' : 'bg-black text-white hover:bg-zinc-800'
                 } ${product.stock <= 0 ? 'bg-gray-100 text-gray-600 cursor-not-allowed shadow-none' : 'shadow-2xl shadow-black/20'}`}
               >
+             
                 {loading ? (
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Adding...
+                  </>
                 ) : isInCart ? (
                   <>
-                    <Check /> Go to Cart
+                    <Check className="w-5 h-5" />
+                    Go to Cart
                   </>
+                ) : product.stock <= 0 ? (
+                  "Out of Stock"
                 ) : (
                   <>
-                    <ShoppingCart /> Add to Bag
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
                   </>
                 )}
               </button>

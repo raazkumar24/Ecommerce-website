@@ -633,7 +633,6 @@
 // };
 
 // export default ImageUploader;
-
 import { ImagePlus, Upload, X, GripVertical, Replace, Plus } from "lucide-react";
 
 const ImageUploader = ({
@@ -680,40 +679,40 @@ const ImageUploader = ({
                   e.preventDefault();
                   onDropReordering(e);
                 }}
-                className={`relative group aspect-square rounded-[2rem] overflow-hidden bg-gray-50 transition-all duration-500 shadow-sm border ${
+                className={`relative group aspect-square rounded-4xl overflow-hidden bg-gray-50 transition-all duration-500 shadow-sm border ${
                   dragOverItem === index
                     ? "border-black ring-4 ring-black/5"
                     : "border-gray-100"
                 } ${draggedItem === index ? "opacity-20 scale-95" : "opacity-100 scale-100"}`}
               >
-                {/* Drag Handle Overlay */}
-                <div className="absolute top-3 left-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="bg-white/90 backdrop-blur-md p-1.5 rounded-full shadow-lg cursor-grab active:cursor-grabbing">
-                    <GripVertical className="w-3.5 h-3.5 text-black" />
+                {/* Drag Handle Overlay - Always visible on Mobile, hover on Desktop */}
+                <div className="absolute top-3 left-3 z-10 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="bg-white/95 backdrop-blur-md p-2 rounded-full shadow-lg border border-gray-100 cursor-grab active:cursor-grabbing">
+                    <GripVertical className="w-4 h-4 text-black" />
                   </div>
                 </div>
 
-                {/* Remove Button */}
+                {/* Remove Button - Always visible on Mobile, hover on Desktop */}
                 <button
                   type="button"
                   onClick={() => onRemoveImage(img.id)}
-                  className="absolute top-3 right-3 z-10 bg-white/90 backdrop-blur-md text-red-500 p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 hover:bg-red-500 hover:text-white transition-all"
+                  className="absolute top-3 right-3 z-10 bg-white/95 backdrop-blur-md text-red-500 p-2 rounded-full shadow-lg border border-gray-100 opacity-100 md:opacity-0 group-hover:opacity-100 hover:bg-red-500 hover:text-white transition-all active:scale-90"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
 
                 {/* The Image */}
                 <img
                   src={src}
                   alt="preview"
-                  className="w-full h-full object-contain p-4 grayscale group-hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover grayscale md:grayscale group-hover:grayscale-0 transition-all duration-700"
                 />
 
-                {/* Replace Button Overlay */}
+                {/* Replace Button Overlay - Visible on Mobile, hover on Desktop */}
                 {showReplace && img.type === "old" && (
-                  <label className="absolute inset-x-3 bottom-3 bg-black/80 backdrop-blur-md text-[9px] font-black uppercase tracking-widest py-2 rounded-xl text-white text-center cursor-pointer opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+                  <label className="absolute inset-x-3 bottom-3 bg-black/80 backdrop-blur-md text-[9px] font-black uppercase tracking-widest py-2.5 rounded-xl text-white text-center cursor-pointer opacity-100 md:opacity-0 group-hover:opacity-100 transform translate-y-0 md:translate-y-2 group-hover:translate-y-0 transition-all active:bg-black">
                     <div className="flex items-center justify-center gap-1.5">
-                      <Replace className="w-3 h-3" />
+                      <Replace className="w-3.5 h-3.5" />
                       Replace
                     </div>
                     <input
@@ -729,16 +728,16 @@ const ImageUploader = ({
                 )}
                 
                 {/* Badge for Type */}
-                <div className="absolute bottom-3 left-3 text-[8px] font-black uppercase text-gray-300 pointer-events-none group-hover:opacity-0 transition-opacity">
+                <div className="absolute bottom-3 left-3 text-[8px] font-black uppercase text-gray-400 bg-white/50 px-1.5 py-0.5 rounded pointer-events-none md:group-hover:opacity-0 transition-opacity">
                   {img.type === 'old' ? 'Stored' : 'Ready'}
                 </div>
               </div>
             );
           })}
 
-          {/* Inline Add Button (Appears if images exist) */}
-          <label className="aspect-square rounded-[2rem] border-2 border-dashed border-gray-100 flex flex-col items-center justify-center cursor-pointer hover:border-black hover:bg-gray-50 transition-all group">
-            <Plus className="w-6 h-6 text-gray-300 group-hover:text-black transition-colors" />
+          {/* Inline Add Button */}
+          <label className="aspect-square rounded-4xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center cursor-pointer hover:border-black hover:bg-gray-50 transition-all group active:scale-95">
+            <Plus className="w-6 h-6 text-gray-400 group-hover:text-black transition-colors" />
             <input
               type="file"
               multiple
@@ -750,10 +749,10 @@ const ImageUploader = ({
         </div>
       )}
 
-      {/* Main Upload Zone (Appears when no images or as a full row) */}
+      {/* Main Upload Zone */}
       {images.length === 0 && (
-        <label className="block bg-gray-50 border-2 border-dashed border-gray-200 rounded-[2.5rem] p-12 lg:p-20 text-center cursor-pointer hover:border-black hover:bg-white transition-all group">
-          <div className="w-20 h-20 bg-white rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:shadow-xl transition-all">
+        <label className="block bg-gray-50 border-2 border-dashed border-gray-200 rounded-[2.5rem] p-12 lg:p-20 text-center cursor-pointer hover:border-black hover:bg-white transition-all group active:scale-[0.99]">
+          <div className="w-20 h-20 bg-white rounded-4xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:shadow-xl transition-all">
             <Upload className="w-8 h-8 text-black" />
           </div>
           <p className="text-xl font-bold tracking-tighter uppercase mb-2">Import Discovery Assets</p>

@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { Plus, Minus, Trash2 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +14,7 @@ const CartItem = ({ item }) => {
   };
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.98 }}
+    <div
       onClick={handleNavigate}
       className="group relative cursor-pointer bg-white border border-gray-100 rounded-4xl p-4 sm:p-5 hover:shadow-xl hover:shadow-gray-200/40 transition-all duration-500"
     >
@@ -83,26 +78,25 @@ const CartItem = ({ item }) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
-/* --- Refined Quantity Button --- */
+/* --- Refined Quantity Button using standard Tailwind --- */
 const QtyButton = ({ children, isPrimary, ...props }) => (
-  <motion.button
-    whileTap={{ scale: 0.9 }}
-    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all shadow-sm
+  <button
+    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-all shadow-sm active:scale-90
       ${
         isPrimary
           ? "bg-black text-white shadow-black/10 hover:bg-zinc-800"
           : "bg-white text-black hover:bg-gray-100 border border-gray-100"
       }
-      disabled:opacity-30 disabled:cursor-not-allowed
+      disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100
     `}
     {...props}
   >
     {children}
-  </motion.button>
+  </button>
 );
 
 export default CartItem;

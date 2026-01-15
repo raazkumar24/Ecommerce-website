@@ -47,10 +47,10 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-6 py-12">
-      <div className="w-full max-w-[480px]">
+      <div className="w-full max-w-120">
         {/* Branding Icon */}
         <div className="flex justify-center mb-8">
-          <div className="w-16 h-16 bg-black rounded-[2rem] flex items-center justify-center shadow-2xl shadow-black/20 animate-in zoom-in duration-700">
+          <div className="w-16 h-16 bg-black rounded-4xl flex items-center justify-center shadow-2xl shadow-black/20 animate-in zoom-in duration-700">
             <UserPlus className="text-white w-8 h-8" />
           </div>
         </div>
@@ -77,7 +77,7 @@ const Register = () => {
                   type="text"
                   name="name"
                   placeholder="Enter your name"
-                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
+                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
                   onChange={handleChange}
                   required
                 />
@@ -95,7 +95,7 @@ const Register = () => {
                   type="email"
                   name="email"
                   placeholder="name@example.com"
-                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
+                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
                   onChange={handleChange}
                   required
                 />
@@ -113,7 +113,7 @@ const Register = () => {
                   type="text"
                   name="phone"
                   placeholder="+91 00000 00000"
-                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
+                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
                   onChange={handleChange}
                   required
                 />
@@ -131,7 +131,7 @@ const Register = () => {
                   type="password"
                   name="password"
                   placeholder="Min. 6 characters"
-                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
+                  className="w-full bg-gray-50 border-none py-4 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
                   onChange={handleChange}
                   required
                   minLength={6}
@@ -143,10 +143,10 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full mt-6 bg-black text-white py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.3em] shadow-2xl shadow-black/20 hover:bg-zinc-800 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+              className="w-full mt-6 bg-black text-white py-5 rounded-3xl font-black uppercase text-[10px] tracking-[0.3em] shadow-2xl shadow-black/20 hover:bg-zinc-800 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
             >
               {isLoading ? (
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                <div className="w-4 h-4 border-b-2 border-white/20 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
                   Register Account <ArrowRight size={14} />

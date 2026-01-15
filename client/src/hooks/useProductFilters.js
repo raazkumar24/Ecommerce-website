@@ -2,13 +2,15 @@ import { useMemo } from "react";
 
 const useProductFilters = (products, filters) => {
   return useMemo(() => {
+    // Safety check for empty products
+    if (!products) return [];
+    
     let result = [...products];
-
     const { keyword, category, sortBy } = filters;
 
-    // 🔍 Search
+    // 1. 🔍 Keyword Search
     if (keyword) {
-      const term = keyword.toLowerCase();
+      const term = keyword.toLowerCase().trim();
       result = result.filter(
         (p) =>
           p.name?.toLowerCase().includes(term) ||
@@ -17,29 +19,30 @@ const useProductFilters = (products, filters) => {
       );
     }
 
-    // 🗂 Category
+    // 2. 🗂 Category Filter (Matching by ID)
     if (category) {
       result = result.filter(
-        (p) =>
-          p.category?._id === category ||
-          p.category === category
+        (p) => {
+          // Checks if p.category is an object with _id or just a string ID
+          const productCategoryId = typeof p.category === 'object' ? p.category?._id : p.category;
+          return productCategoryId === category;
+        }
       );
     }
 
-    // ↕ Sort
+    // 3. ↕ Sort Logic
     if (sortBy) {
       result.sort((a, b) => {
         switch (sortBy) {
-          case "price":
+          case "price": // Low to High
             return (a.price || 0) - (b.price || 0);
-          case "-price":
+          case "-price": // High to Low
             return (b.price || 0) - (a.price || 0);
-          case "name":
-            return a.name.localeCompare(b.name);
-          case "-name":
-            return b.name.localeCompare(a.name);
+          case "name": // A to Z
+            return (a.name || "").localeCompare(b.name || "");
+          case "newest": // Latest Arrivals
           case "-createdAt":
-            return new Date(b.createdAt) - new Date(a.createdAt);
+            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
           default:
             return 0;
         }

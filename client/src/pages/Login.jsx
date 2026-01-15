@@ -42,10 +42,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#FAFAFA] px-6">
-      <div className="w-full max-w-[440px]">
+      <div className="w-full max-w-110">
         {/* Logo/Icon Branding */}
         <div className="flex justify-center mb-8">
-          <div className="w-16 h-16 bg-black rounded-[2rem] flex items-center justify-center shadow-2xl shadow-black/20">
+          <div className="w-16 h-16 bg-black rounded-4xl flex items-center justify-center shadow-2xl shadow-black/20">
             <ShieldCheck className="text-white w-8 h-8" />
           </div>
         </div>
@@ -72,7 +72,7 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="name@company.com"
-                  className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
+                  className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
                   onChange={handleChange}
                   required
                 />
@@ -95,7 +95,7 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="••••••••"
-                  className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-[1.5rem] outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
+                  className="w-full bg-gray-50 border-none py-5 pl-14 pr-6 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold text-sm"
                   onChange={handleChange}
                   required
                 />
@@ -106,10 +106,10 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full mt-4 bg-black text-white py-5 rounded-[1.5rem] font-black uppercase text-[10px] tracking-[0.3em] shadow-2xl shadow-black/20 hover:bg-zinc-800 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+              className="w-full mt-4 bg-black text-white py-5 rounded-3xl font-black uppercase text-[10px] tracking-[0.3em] shadow-2xl shadow-black/20 hover:bg-zinc-800 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
             >
               {isLoading ? (
-                <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                <div className="w-4 h-4 border-b-2 border-white/20 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
                   Authenticate <ArrowRight size={14} />
