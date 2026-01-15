@@ -34,4 +34,6 @@ export const removeCartItemApi = (productId) =>
   api.delete(`/cart/remove/${productId}`);
 
 
+
+
 export default api;
