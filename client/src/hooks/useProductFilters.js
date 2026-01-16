@@ -80,12 +80,21 @@ const useProductFilters = (products, filters) => {
     }
 
     // 2. 🗂 Category Filter
-    if (category) {
-      result = result.filter((p) => {
-        const productCategoryId = typeof p.category === 'object' ? p.category?._id : p.category;
-        return productCategoryId === category;
-      });
-    }
+ // 2. 🗂 Category Filter (Updated Logic)
+if (category) {
+  result = result.filter((p) => {
+    // 1. Check direct match (Agar product usi category mein hai)
+    const isDirectMatch = p.category?._id === category || p.category === category;
+
+    // 2. Check parent match (Agar product ki category ka parent selected category hai)
+    // Iske liye aapka product data populated hona chahiye backend se
+    const isSubCategoryMatch = 
+      p.category?.parent === category || 
+      p.category?.parent?._id === category;
+
+    return isDirectMatch || isSubCategoryMatch;
+  });
+}
 
     // 3. ↕ Sort Logic
     if (sortBy) {
