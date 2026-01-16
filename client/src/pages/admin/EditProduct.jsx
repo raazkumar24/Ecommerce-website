@@ -102,8 +102,9 @@ const EditProduct = () => {
         brand: data.brand || "",
         discount: data.discount || 0,
         isNew: data.isNew || false,
-        keyawords: data.keywords || [],
       });
+
+      setKeywords(data.keywords || []);
 
       const existingImages = (data.images || []).map((url, index) => ({
         id: `old-${index}-${Date.now()}`,

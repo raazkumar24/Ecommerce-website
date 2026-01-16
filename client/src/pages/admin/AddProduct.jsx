@@ -119,10 +119,12 @@ const removeTag = (tagToRemove) => {
 
     const formData = new FormData();
     Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+    formData.append("keywords", JSON.stringify(keywords));
     images.forEach((img) => {
       if (img.file) {
         formData.append("images", img.file);
       }
+
     });
 
     formData.append(
@@ -134,8 +136,6 @@ const removeTag = (tagToRemove) => {
         }))
       )
     );
-
-    formData.append("keywords", JSON.stringify(keywords));
 
     try {
       await api.post("/products", formData, {

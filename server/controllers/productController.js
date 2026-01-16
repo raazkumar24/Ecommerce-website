@@ -53,6 +53,9 @@ export const createProduct = async (req, res) => {
 /* ===============================
    GET ALL PRODUCTS (PUBLIC)
 ================================ */
+/* ===============================
+   GET ALL PRODUCTS (PUBLIC)
+================================ */
 export const getAllProducts = async (req, res) => {
   try {
     const { keyword, categoryId } = req.query;
@@ -72,18 +75,21 @@ export const getAllProducts = async (req, res) => {
 
     // --- 2. Keyword Search Logic (Fixed) ---
     if (keyword) {
+      // Step A: Pehle sirf un Categories ko dhundo jinka NAME search keyword se match ho
       const matchingCategories = await Category.find({
-        name: { $regex: keyword, $options: "i" },
-        keywords: { $in: [new RegExp(keyword, "i")] }
+        name: { $regex: keyword, $options: "i" }
       }).select("_id");
 
       const categoryIds = matchingCategories.map(c => c._id);
 
+      // Step B: Ab Product collection mein $or query chalao
       filter.$or = [
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
         { brand: { $regex: keyword, $options: "i" } },
-        { keywords: { $in: [new RegExp(keyword, "i")] } }, // Array match
+        // Naya: Keywords array ke andar check karega
+        { keywords: { $regex: keyword, $options: "i" } }, 
+        // Category IDs match karega
         { category: { $in: categoryIds } }
       ];
     }
