@@ -106,8 +106,6 @@ export const getSingleProduct = async (req, res) => {
     const product = await Product.findById(req.params.id).populate(
       "category",
       "name",
-      "slug",
-      "parent",
     );
 
     if (!product) {
