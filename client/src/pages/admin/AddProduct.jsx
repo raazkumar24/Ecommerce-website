@@ -20,13 +20,16 @@ import {
 import { useImageHandling } from "../../hooks/useImageHandling";
 import ImageUploader from "../../components/ImageUploader";
 
-const mainCategories = categories.filter(c => !c.parent);
-const getSubCategories = (parentId) => categories.filter(c => c.parent?._id === parentId || c.parent === parentId);
-
 const AddProduct = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const mainCategories = categories.filter((c) => !c.parent);
+  const getSubCategories = (parentId) =>
+    categories.filter(
+      (c) => c.parent?._id === parentId || c.parent === parentId
+    );
 
   const [form, setForm] = useState({
     name: "",
@@ -75,6 +78,26 @@ const AddProduct = () => {
     }));
   };
 
+  const [keywordInput, setKeywordInput] = useState(""); // Jo type ho raha hai
+const [keywords, setKeywords] = useState([]); // Jo tags ban chuke hain
+
+// Tag add karne ka logic
+const addTag = (e) => {
+  if (e.key === "Enter" || e.key === ",") {
+    e.preventDefault();
+    const tag = keywordInput.trim().replace(",", "");
+    if (tag && !keywords.includes(tag)) {
+      setKeywords([...keywords, tag]);
+    }
+    setKeywordInput("");
+  }
+};
+
+// Tag remove karne ka logic
+const removeTag = (tagToRemove) => {
+  setKeywords(keywords.filter((t) => t !== tagToRemove));
+};
+
   /* ========== SUBMIT ========== */
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,6 +133,8 @@ const AddProduct = () => {
         }))
       )
     );
+
+    formData.append("keywords", JSON.stringify(keywords));
 
     try {
       await api.post("/products", formData, {
@@ -205,8 +230,7 @@ const AddProduct = () => {
               </div>
 
               {/* Category */}
-              {/* Category Section Update */}
-              <div className="space-y-2 text-black">
+              <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
                   Category Node
                 </label>
@@ -222,11 +246,11 @@ const AddProduct = () => {
                     className="w-full bg-gray-50 border-none py-5 pl-14 pr-12 rounded-3xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-bold appearance-none cursor-pointer"
                     required
                   >
-                    <option value="">Select structure...</option>
+                    <option value="">Select Structure...</option>
 
                     {mainCategories.map((main) => (
                       <optgroup key={main._id} label={main.name.toUpperCase()}>
-                        {/* Main category ko select karne ka option */}
+                        {/* Main Category khud select karne ke liye */}
                         <option value={main._id}>{main.name} (Main)</option>
 
                         {/* Uske andar ki Sub-categories */}
@@ -364,6 +388,47 @@ const AddProduct = () => {
                     required
                   />
                 </div>
+              </div>
+
+              {/* keyword */}
+              <div className="md:col-span-2 space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Search Keywords (Press Enter to add)
+                </label>
+
+                <div className="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-3xl border border-transparent focus-within:bg-white focus-within:border-gray-200 transition-all">
+                  {/* Displaying Tags */}
+                  {keywords.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-2xl text-xs font-bold animate-in zoom-in duration-300"
+                    >
+                      {tag}
+                      <button type="button" onClick={() => removeTag(tag)}>
+                        <X
+                          size={14}
+                          className="hover:text-red-400 transition-colors"
+                        />
+                      </button>
+                    </span>
+                  ))}
+
+                  {/* Input Field */}
+                  <input
+                    value={keywordInput}
+                    onChange={(e) => setKeywordInput(e.target.value)}
+                    onKeyDown={addTag}
+                    placeholder={
+                      keywords.length === 0
+                        ? "e.g. gaming, wireless, portable..."
+                        : "Add more..."
+                    }
+                    className="flex-1 bg-transparent border-none outline-none py-2 px-2 text-sm font-bold min-w-37.5"
+                  />
+                </div>
+                <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest ml-4">
+                  Tip: Add synonyms or related terms to improve search results.
+                </p>
               </div>
             </div>
           </section>

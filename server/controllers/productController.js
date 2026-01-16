@@ -14,19 +14,21 @@ export const createProduct = async (req, res) => {
       stock,
       brand,
       discount,
-      isNew
+      isNew,
+      keywords // 'keyword' ko 'keywords' kar diya
     } = req.body;
 
     if (!name || !price || !category) {
       return res.status(400).json({ message: "Required fields missing" });
     }
 
-   const images = (req.files || []).map((file) => file.path);
-
-
+    const images = (req.files || []).map((file) => file.path);
     if (images.length === 0) {
       return res.status(400).json({ message: "At least one image required" });
     }
+
+    // Parsing keywords string back to array
+    const parsedKeywords = keywords ? JSON.parse(keywords) : [];
 
     const product = await Product.create({
       name,
@@ -37,7 +39,8 @@ export const createProduct = async (req, res) => {
       brand,
       images,
       discount,
-      isNew
+      isNew,
+      keywords: parsedKeywords // Correct field name as per model
     });
 
     res.status(201).json(product);
@@ -79,6 +82,7 @@ export const getAllProducts = async (req, res) => {
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
         { brand: { $regex: keyword, $options: "i" } },
+        { keywords: { $in: [new RegExp(keyword, "i")] } }, // Array match
         { category: { $in: categoryIds } }
       ];
     }
@@ -124,19 +128,11 @@ export const updateProduct = async (req, res) => {
     }
 
     const {
-      name,
-      price,
-      category,
-      description,
-      stock,
-      brand,
-      imageOrder,
-      existingImages,
-      discount,
-      isNew
+      name, price, category, description,
+      stock, brand, discount, isNew, keywords, imageOrder, existingImages
     } = req.body;
 
-    // Update fields if provided
+    // Basic fields update
     product.name = name ?? product.name;
     product.price = price ?? product.price;
     product.category = category ?? product.category;
@@ -146,48 +142,33 @@ export const updateProduct = async (req, res) => {
     product.discount = discount ?? product.discount;
     product.isNew = isNew ?? product.isNew;
 
-    // New uploaded images
-  const newImages = (req.files || []).map((file) => file.path);
-
-
-    // Existing images (keep)
-    let oldImages = [];
-    if (existingImages) {
-      oldImages = Array.isArray(existingImages)
-        ? existingImages
-        : [existingImages];
+    // Keywords update logic
+    if (keywords) {
+      product.keywords = JSON.parse(keywords);
     }
 
-    // Apply ordering
+    // --- Image Handling Logic (Wahi purana wala hi rahega) ---
+    const newImages = (req.files || []).map((file) => file.path);
+    let oldImages = existingImages ? (Array.isArray(existingImages) ? existingImages : [existingImages]) : [];
+
     if (imageOrder) {
       const order = JSON.parse(imageOrder);
-
       const finalImages = [];
-
       order.forEach((item) => {
-        if (item.type === "old" && oldImages.includes(item.url)) {
-          finalImages.push(item.url);
-        }
-        if (item.type === "new" && newImages.length > 0) {
-          finalImages.push(newImages.shift());
-        }
+        if (item.type === "old" && oldImages.includes(item.url)) finalImages.push(item.url);
+        if (item.type === "new" && newImages.length > 0) finalImages.push(newImages.shift());
       });
-
       product.images = finalImages;
     } else {
-      // fallback (safe)
       product.images = [...oldImages, ...newImages];
     }
 
     const updated = await product.save();
     res.json(updated);
   } catch (error) {
-    console.error("UPDATE PRODUCT ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 };
-
-
 
 /* ===============================
    DELETE PRODUCT (ADMIN)

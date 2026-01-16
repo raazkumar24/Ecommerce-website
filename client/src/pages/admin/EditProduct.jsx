@@ -36,6 +36,27 @@ const EditProduct = () => {
     brand: "",
   });
 
+  // Keywords
+  const [keywordInput, setKeywordInput] = useState(""); // Jo type ho raha hai
+  const [keywords, setKeywords] = useState([]); // Jo tags ban chuke hain
+
+  // Tag add karne ka logic
+  const addTag = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      const tag = keywordInput.trim().replace(",", "");
+      if (tag && !keywords.includes(tag)) {
+        setKeywords([...keywords, tag]);
+      }
+      setKeywordInput("");
+    }
+  };
+
+  // Tag remove karne ka logic
+  const removeTag = (tagToRemove) => {
+    setKeywords(keywords.filter((t) => t !== tagToRemove));
+  };
+
   /* ========== IMAGE HANDLING ========== */
   const generateId = useCallback(
     () => Date.now() + Math.random().toString(36).slice(2),
@@ -80,6 +101,7 @@ const EditProduct = () => {
         brand: data.brand || "",
         discount: data.discount || 0,
         isNew: data.isNew || false,
+        keyawords: data.keywords || [],
       });
 
       const existingImages = (data.images || []).map((url, index) => ({
@@ -403,6 +425,46 @@ const EditProduct = () => {
                     className="w-full bg-gray-50 border-none py-6 pl-14 pr-6 rounded-4xl outline-none focus:bg-white focus:ring-2 ring-black/5 transition-all font-medium leading-relaxed resize-none"
                   />
                 </div>
+              </div>
+              {/* keyowrd */}
+              <div className="md:col-span-2 space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
+                  Search Keywords (Press Enter to add)
+                </label>
+
+                <div className="flex flex-wrap gap-2 p-4 bg-gray-50 rounded-3xl border border-transparent focus-within:bg-white focus-within:border-gray-200 transition-all">
+                  {/* Displaying Tags */}
+                  {keywords.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-2xl text-xs font-bold animate-in zoom-in duration-300"
+                    >
+                      {tag}
+                      <button type="button" onClick={() => removeTag(tag)}>
+                        <X
+                          size={14}
+                          className="hover:text-red-400 transition-colors"
+                        />
+                      </button>
+                    </span>
+                  ))}
+
+                  {/* Input Field */}
+                  <input
+                    value={keywordInput}
+                    onChange={(e) => setKeywordInput(e.target.value)}
+                    onKeyDown={addTag}
+                    placeholder={
+                      keywords.length === 0
+                        ? "e.g. gaming, wireless, portable..."
+                        : "Add more..."
+                    }
+                    className="flex-1 bg-transparent border-none outline-none py-2 px-2 text-sm font-bold min-w-37.5"
+                  />
+                </div>
+                <p className="text-[9px] text-gray-400 font-bold uppercase tracking-widest ml-4">
+                  Tip: Add synonyms or related terms to improve search results.
+                </p>
               </div>
             </div>
           </section>
