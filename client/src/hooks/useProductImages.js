@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export const useProductImages = () => {
   const [images, setImages] = useState([]);
@@ -14,6 +15,12 @@ export const useProductImages = () => {
   };
 
   const addFiles = (files) => {
+    // 1. Check karein ki total 20 se zyada na ho jaye
+    if (images.length + files.length > 20) {
+      toast.error("Maximum 20 images allowed per product");
+      return;
+    }
+
     const valid = Array.from(files).filter(
       (f) => f.type.startsWith("image/") && f.size < 10 * 1024 * 1024
     );
