@@ -13,7 +13,7 @@ export const createProduct = async (req, res) => {
       description,
       stock,
       brand,
-      // discount, not required
+      discount,
       isNew,
       keywords
     } = req.body;
@@ -38,7 +38,7 @@ export const createProduct = async (req, res) => {
       stock,
       brand,
       images,
-      discount,
+      // discount,
       isNew,
       keywords: parsedKeywords
     });
