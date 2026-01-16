@@ -102,6 +102,7 @@ const EditProduct = () => {
         brand: data.brand || "",
         discount: data.discount || 0,
         isNew: data.isNew || false,
+        keywords: data.keywords || [],
       });
 
       setKeywords(data.keywords || []);
