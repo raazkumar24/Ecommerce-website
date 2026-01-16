@@ -108,7 +108,6 @@ export const getSingleProduct = async (req, res) => {
       "name",
       "slug",
       "parent",
-      "keywords"
     );
 
     if (!product) {
