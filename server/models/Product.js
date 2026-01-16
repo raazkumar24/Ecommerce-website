@@ -44,6 +44,12 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    keywords: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
   },
   { timestamps: true }
 );

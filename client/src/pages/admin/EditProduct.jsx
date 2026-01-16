@@ -15,6 +15,7 @@ import {
   ChevronDown,
   Percent,
   Check,
+  X,
 } from "lucide-react";
 
 import { useImageHandling } from "../../hooks/useImageHandling";
