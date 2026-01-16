@@ -152,7 +152,13 @@ const EditProduct = () => {
     }
 
     const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+    Object.entries(form).forEach(([key, value]) => {
+      if (key !== "keywords") {
+        formData.append(key, value);
+      }
+    });
+
+    formData.append("keywords", JSON.stringify(keywords));
 
     images.forEach((img) => {
       if (img.type === "old" && img.url) {

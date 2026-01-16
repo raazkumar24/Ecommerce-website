@@ -15,7 +15,7 @@ export const createProduct = async (req, res) => {
       brand,
       discount,
       isNew,
-      keywords 
+      keywords
     } = req.body;
 
     if (!name || !price || !category) {
@@ -40,7 +40,7 @@ export const createProduct = async (req, res) => {
       images,
       discount,
       isNew,
-      keywords: parsedKeywords 
+      keywords: parsedKeywords
     });
 
     res.status(201).json(product);
@@ -72,21 +72,18 @@ export const getAllProducts = async (req, res) => {
 
     // --- 2. Keyword Search Logic (Fixed) ---
     if (keyword) {
-      // Step A: Pehle sirf un Categories ko dhundo jinka NAME search keyword se match ho
       const matchingCategories = await Category.find({
         name: { $regex: keyword, $options: "i" }
       }).select("_id");
 
       const categoryIds = matchingCategories.map(c => c._id);
 
-      // Step B: Ab Product collection mein $or query chalao
       filter.$or = [
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
         { brand: { $regex: keyword, $options: "i" } },
-        // Naya: Keywords array ke andar check karega
+        // FIX: Search inside keywords array correctly
         { keywords: { $regex: keyword, $options: "i" } }, 
-        // Category IDs match karega
         { category: { $in: categoryIds } }
       ];
     }
@@ -148,11 +145,15 @@ export const updateProduct = async (req, res) => {
     product.brand = brand ?? product.brand;
     product.discount = discount ?? product.discount;
     product.isNew = isNew ?? product.isNew;
-    product.keywords = keywords ?? product.keywords;
 
-    // Keywords update logic
+    // FIX: Keywords update logic (Frontend sends JSON string)
     if (keywords) {
-      product.keywords = JSON.parse(keywords);
+      try {
+        product.keywords = JSON.parse(keywords);
+      } catch (e) {
+        // Agar pehle se array hai toh directly assign karein
+        product.keywords = Array.isArray(keywords) ? keywords : [keywords];
+      }
     }
 
     // --- Image Handling Logic (Wahi purana wala hi rahega) ---
