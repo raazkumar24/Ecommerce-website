@@ -127,7 +127,7 @@ const About = () => {
 
               <div className="space-y-6 text-gray-600 text-lg leading-relaxed font-medium">
                 <p>
-                  E-Store began as a quest to redefine modern shopping. What started in 
+                  B-Store began as a quest to redefine modern shopping. What started in 
                   <span className="text-black font-bold"> Chandigarh, India</span> as a technical challenge 
                   has evolved into a sophisticated platform focused on the intersection of utility and design.
                 </p>

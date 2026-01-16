@@ -4,7 +4,7 @@ import slugify from "slugify";
 // CREATE CATEGORY (ADMIN)
 export const createCategory = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, parent } = req.body; // parent field add kiya
 
     if (!name) {
       return res.status(400).json({ message: "Category name is required" });
@@ -18,6 +18,7 @@ export const createCategory = async (req, res) => {
     const category = await Category.create({
       name,
       slug: slugify(name),
+      parent: parent || null, // Agar parent ID di hai toh save hogi, varna null
     });
 
     res.status(201).json(category);
@@ -26,10 +27,13 @@ export const createCategory = async (req, res) => {
   }
 };
 
-// GET ALL CATEGORIES (PUBLIC)
+// GET ALL CATEGORIES (Hierarchical fetch)
 export const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find().sort({ createdAt: -1 });
+    // populate('parent')
+    const categories = await Category.find()
+      .populate("parent", "name")
+      .sort({ createdAt: -1 });
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: error.message });

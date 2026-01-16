@@ -53,7 +53,7 @@ const Login = () => {
         <div className="bg-white border border-gray-100 shadow-xl shadow-gray-200/50 rounded-[3rem] p-8 md:p-12">
           <header className="text-center mb-10">
             <h2 className="text-4xl font-black tracking-tighter uppercase mb-2 italic">
-              E-Store
+              B-Store
             </h2>
             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">
               Identity Gateway

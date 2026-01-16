@@ -24,7 +24,7 @@ const Footer = () => {
             <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center">
               <ShoppingBag className="text-black w-6 h-6" />
             </div>
-            <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">E-Store</h2>
+            <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">B-Store</h2>
           </div>
           <div className="flex flex-wrap justify-center gap-6 text-white/50 text-[10px] font-bold uppercase tracking-[0.2em]">
              <span className="flex items-center gap-2"><Globe size={14}/> Pan India</span>
@@ -103,7 +103,7 @@ const Footer = () => {
         {/* --- BOTTOM SECTION --- */}
         <div className="mt-20 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest">
-            &copy; {currentYear} E-STOREL STUDIO. ALL RIGHTS RESERVED.
+            &copy; {currentYear} B-StoreL STUDIO. ALL RIGHTS RESERVED.
           </p>
           <div className="flex gap-6">
              <Link to="/terms" className="text-[10px] font-black uppercase tracking-widest text-gray-600 hover:text-black">Terms</Link>

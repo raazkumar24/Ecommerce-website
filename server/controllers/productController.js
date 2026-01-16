@@ -51,11 +51,22 @@ export const createProduct = async (req, res) => {
 ================================ */
 export const getAllProducts = async (req, res) => {
   try {
-    const { keyword, category } = req.query;
+    const { keyword, categoryId } = req.query;
     let filter = {};
 
-    if (category) {
-      filter.category = category;
+    if (categoryId) {
+      // Step 1: Check karein ki kya ye main category hai?
+      const subCategories = await Category.find({ parent: categoryId }).select("_id");
+      
+      if (subCategories.length > 0) {
+        // Agar sub-categories mili, toh main category + sub-categories dono ke products dikhao
+        const ids = subCategories.map(cat => cat._id);
+        ids.push(categoryId);
+        filter.category = { $in: ids };
+      } else {
+        // Agar koi sub-category nahi hai, toh sirf isi category ke products
+        filter.category = categoryId;
+      }
     }
 
     if (keyword) {
@@ -67,11 +78,7 @@ export const getAllProducts = async (req, res) => {
       ];
     }
 
-
-    const products = await Product.find(filter)
-      .populate("category", "name")
-      .sort({ createdAt: -1 });
-
+ const products = await Product.find(filter).populate("category", "name");
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

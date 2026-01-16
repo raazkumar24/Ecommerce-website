@@ -64,7 +64,7 @@ const Navbar = () => {
               <ShoppingBag className="text-white w-5 h-5" />
             </div>
             <span className="text-2xl font-black tracking-tighter uppercase hidden lg:block">
-              E-Shop
+              B-Store
             </span>
           </Link>
 
