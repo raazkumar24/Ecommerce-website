@@ -73,7 +73,8 @@ export const getAllProducts = async (req, res) => {
     // --- 2. Keyword Search Logic (Fixed) ---
     if (keyword) {
       const matchingCategories = await Category.find({
-        name: { $regex: keyword, $options: "i" }
+        name: { $regex: keyword, $options: "i" },
+        keywords: { $in: [new RegExp(keyword, "i")] }
       }).select("_id");
 
       const categoryIds = matchingCategories.map(c => c._id);
