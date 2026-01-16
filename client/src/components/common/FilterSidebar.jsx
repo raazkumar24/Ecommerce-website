@@ -26,10 +26,18 @@ const FilterSidebar = ({
     }));
   };
 
-  // Logic to separate Main Categories and Sub-categories
-  const mainCategories = categories.filter(c => !c.parent);
+  // --- LOGIC FIX: Check for both string and object for .parent ---
+  const mainCategories = categories.filter(c => {
+    // Agar parent null hai ya exist nahi karta, toh wo Main Category hai
+    return !c.parent;
+  });
+
   const getSubCategories = (parentId) => 
-    categories.filter(c => (c.parent?._id || c.parent) === parentId);
+    categories.filter(c => {
+      // Sub-category ka parent ID nikalne ke liye check karein string vs object
+      const currentParentId = typeof c.parent === 'object' ? c.parent?._id : c.parent;
+      return currentParentId === parentId;
+    });
 
   return (
     <div className="space-y-10">
@@ -49,7 +57,7 @@ const FilterSidebar = ({
         </div>
       </div>
 
-      {/* --- CATEGORY SECTION (WITH DROPDOWN HIERARCHY) --- */}
+      {/* --- CATEGORY SECTION (DROPDOWN HIERARCHY) --- */}
       <div>
         <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 mb-4 flex items-center gap-2">
           <Layers size={12} /> Collections
@@ -68,63 +76,67 @@ const FilterSidebar = ({
             Show All
           </button>
 
-          {/* Dropdown Hierarchical Categories */}
-          {mainCategories.map((main) => {
-            const subs = getSubCategories(main._id);
-            const hasSubs = subs.length > 0;
-            const isOpen = openMenus[main._id];
-            const isMainSelected = category === main._id;
+          {/* Render Categories */}
+          {mainCategories.length > 0 ? (
+            mainCategories.map((main) => {
+              const subs = getSubCategories(main._id);
+              const hasSubs = subs.length > 0;
+              const isOpen = openMenus[main._id];
+              const isMainSelected = category === main._id;
 
-            return (
-              <div key={main._id} className="space-y-1 mb-1">
-                {/* Parent Row (Clickable for Filter + Toggle for Sub) */}
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => onChange("category", main._id)}
-                    className={`flex-1 text-left px-5 py-3 rounded-xl text-xs font-black tracking-tight transition-all flex items-center justify-between ${
-                      isMainSelected
-                      ? "bg-black text-white shadow-md translate-x-1" 
-                      : "text-black hover:bg-gray-50"
-                    }`}
-                  >
-                    {main.name}
-                  </button>
-                  
-                  {hasSubs && (
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleMenu(main._id);
-                      }}
-                      className={`p-2.5 rounded-xl transition-colors ${isOpen ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+              return (
+                <div key={main._id} className="space-y-1 mb-1">
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => onChange("category", main._id)}
+                      className={`flex-1 text-left px-5 py-3 rounded-xl text-xs font-black tracking-tight transition-all flex items-center justify-between ${
+                        isMainSelected
+                        ? "bg-black text-white shadow-md translate-x-1" 
+                        : "text-black hover:bg-gray-50"
+                      }`}
                     >
-                      {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      {main.name}
                     </button>
+                    
+                    {hasSubs && (
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleMenu(main._id);
+                        }}
+                        className={`p-2.5 rounded-xl transition-colors ${isOpen ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+                      >
+                        {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </button>
+                    )}
+                  </div>
+
+                  {hasSubs && isOpen && (
+                    <div className="ml-4 border-l-2 border-gray-100 pl-2 space-y-1 animate-in slide-in-from-top-2 duration-300">
+                      {subs.map((sub) => (
+                        <button
+                          key={sub._id}
+                          onClick={() => onChange("category", sub._id)}
+                          className={`w-full text-left px-4 py-2 rounded-lg text-[11px] font-bold transition-all flex items-center gap-2 ${
+                            category === sub._id
+                            ? "text-black bg-gray-100 translate-x-1" 
+                            : "text-gray-400 hover:text-black hover:bg-gray-50"
+                          }`}
+                        >
+                          <ChevronRight size={10} className={category === sub._id ? "text-black" : "text-gray-300"} />
+                          {sub.name}
+                        </button>
+                      ))}
+                    </div>
                   )}
                 </div>
-
-                {/* Sub-categories Dropdown Content */}
-                {hasSubs && isOpen && (
-                  <div className="ml-4 border-l-2 border-gray-100 pl-2 space-y-1 animate-in slide-in-from-top-2 duration-300">
-                    {subs.map((sub) => (
-                      <button
-                        key={sub._id}
-                        onClick={() => onChange("category", sub._id)}
-                        className={`w-full text-left px-4 py-2 rounded-lg text-[11px] font-bold transition-all flex items-center gap-2 ${
-                          category === sub._id
-                          ? "text-black bg-gray-100 translate-x-1" 
-                          : "text-gray-400 hover:text-black hover:bg-gray-50"
-                        }`}
-                      >
-                        <ChevronRight size={10} className={category === sub._id ? "text-black" : "text-gray-300"} />
-                        {sub.name}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <p className="text-[10px] text-gray-400 text-center py-4 uppercase font-bold tracking-widest">
+              No Collections Found
+            </p>
+          )}
         </div>
       </div>
 

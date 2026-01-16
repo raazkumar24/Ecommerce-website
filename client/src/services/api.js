@@ -76,4 +76,6 @@ export const updateCartApi = (data) =>
 export const removeCartItemApi = (productId) =>
   api.delete(`/cart/remove/${productId}`);
 
+export const getCategories = () => api.get("/categories");
+
 export default api;
