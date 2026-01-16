@@ -15,7 +15,7 @@ export const createProduct = async (req, res) => {
       brand,
       discount,
       isNew,
-      keywords // 'keyword' ko 'keywords' kar diya
+      keywords 
     } = req.body;
 
     if (!name || !price || !category) {
@@ -40,7 +40,7 @@ export const createProduct = async (req, res) => {
       images,
       discount,
       isNew,
-      keywords: parsedKeywords // Correct field name as per model
+      keywords: parsedKeywords 
     });
 
     res.status(201).json(product);
@@ -50,9 +50,6 @@ export const createProduct = async (req, res) => {
   }
 };
 
-/* ===============================
-   GET ALL PRODUCTS (PUBLIC)
-================================ */
 /* ===============================
    GET ALL PRODUCTS (PUBLIC)
 ================================ */
@@ -111,7 +108,10 @@ export const getSingleProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate(
       "category",
-      "name"
+      "name",
+      "slug",
+      "parent",
+      "keywords"
     );
 
     if (!product) {
@@ -148,6 +148,7 @@ export const updateProduct = async (req, res) => {
     product.brand = brand ?? product.brand;
     product.discount = discount ?? product.discount;
     product.isNew = isNew ?? product.isNew;
+    product.keywords = keywords ?? product.keywords;
 
     // Keywords update logic
     if (keywords) {
