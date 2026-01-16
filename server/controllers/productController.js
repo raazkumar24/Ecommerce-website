@@ -1,4 +1,5 @@
 import Product from "../models/Product.js";
+import Category from "../models/Category.js";
 
 /* ===============================
    CREATE PRODUCT (ADMIN)
@@ -54,31 +55,38 @@ export const getAllProducts = async (req, res) => {
     const { keyword, categoryId } = req.query;
     let filter = {};
 
+    // --- 1. Category Filter Logic ---
     if (categoryId) {
-      // Step 1: Check karein ki kya ye main category hai?
       const subCategories = await Category.find({ parent: categoryId }).select("_id");
-      
       if (subCategories.length > 0) {
-        // Agar sub-categories mili, toh main category + sub-categories dono ke products dikhao
         const ids = subCategories.map(cat => cat._id);
         ids.push(categoryId);
         filter.category = { $in: ids };
       } else {
-        // Agar koi sub-category nahi hai, toh sirf isi category ke products
         filter.category = categoryId;
       }
     }
 
+    // --- 2. Keyword Search Logic (Fixed) ---
     if (keyword) {
+      const matchingCategories = await Category.find({
+        name: { $regex: keyword, $options: "i" }
+      }).select("_id");
+
+      const categoryIds = matchingCategories.map(c => c._id);
+
       filter.$or = [
         { name: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
-        { category: { $regex: keyword, $options: "i" } },
         { brand: { $regex: keyword, $options: "i" } },
+        { category: { $in: categoryIds } }
       ];
     }
 
- const products = await Product.find(filter).populate("category", "name");
+    const products = await Product.find(filter)
+      .populate("category", "name")
+      .sort({ createdAt: -1 });
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

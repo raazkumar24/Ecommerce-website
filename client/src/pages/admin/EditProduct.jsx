@@ -61,6 +61,12 @@ const EditProduct = () => {
     fetchCategories();
   }, [id]);
 
+  const mainCategories = categories.filter((c) => !c.parent);
+  const getSubCategories = (parentId) =>
+    categories.filter(
+      (c) => c.parent?._id === parentId || c.parent === parentId
+    );
+
   const fetchProduct = async () => {
     try {
       const { data } = await api.get(`/products/${id}`);
@@ -100,15 +106,15 @@ const EditProduct = () => {
     }
   };
 
-const handleChange = (e) => {
-  const { name, value, type, checked } = e.target;
-  
-  setForm((prev) => ({
-    ...prev,
-    // Agar type checkbox hai toh boolean (true/false) lo, warna string value
-    [name]: type === "checkbox" ? checked : value,
-  }));
-};
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      // Agar type checkbox hai toh boolean (true/false) lo, warna string value
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -239,6 +245,7 @@ const handleChange = (e) => {
               </div>
 
               {/* Category */}
+              {/* Category Section Update */}
               <div className="space-y-2 text-black">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-600 ml-4">
                   Category Node
@@ -256,10 +263,19 @@ const handleChange = (e) => {
                     required
                   >
                     <option value="">Select structure...</option>
-                    {categories.map((c) => (
-                      <option key={c._id} value={c._id}>
-                        {c.name}
-                      </option>
+
+                    {mainCategories.map((main) => (
+                      <optgroup key={main._id} label={main.name.toUpperCase()}>
+                        {/* Main category ko select karne ka option */}
+                        <option value={main._id}>{main.name} (Main)</option>
+
+                        {/* Uske andar ki Sub-categories */}
+                        {getSubCategories(main._id).map((sub) => (
+                          <option key={sub._id} value={sub._id}>
+                            &nbsp;&nbsp;&nbsp;↳ {sub.name}
+                          </option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                   <ChevronDown
