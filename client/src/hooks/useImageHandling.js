@@ -1,4 +1,3 @@
-// src/hooks/useImageHandling.js
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -7,18 +6,24 @@ export const useImageHandling = (generateId) => {
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverItem, setDragOverItem] = useState(null);
 
-  /* ========== ADD FILES ========== */
+  /* ========== ADD FILES (Updated with 20 Limit) ========== */
   const handleFiles = useCallback(
     (files) => {
       if (!files || files.length === 0) return;
 
+      // 1. Check karein ki total images (existing + new) 20 se zyada na ho
+      if (images.length + files.length > 20) {
+        toast.error("Maximum 20 images allowed per product");
+        return;
+      }
+
       const validFiles = Array.from(files).filter(
         (file) =>
-          file.type.startsWith("image/") && file.size < 10 * 1024 * 1024
+          file.type.startsWith("image/") && file.size < 10 * 1024 * 1024 // 10MB limit
       );
 
       if (validFiles.length === 0) {
-        toast.error("Invalid images (max 5MB)");
+        toast.error("Invalid images or file size too large (Max 10MB)");
         return;
       }
 
@@ -27,18 +32,19 @@ export const useImageHandling = (generateId) => {
         type: "new",
         file,
         url: null,
-        preview: URL.createObjectURL(file),
+        preview: URL.createObjectURL(file), // Memory preview create karna
       }));
 
       setImages((prev) => [...prev, ...newImages]);
     },
-    [generateId]
+    [generateId, images.length]
   );
 
-  /* ========== REMOVE ========== */
+  /* ========== REMOVE IMAGE ========== */
   const removeImage = useCallback((id) => {
     setImages((prev) => {
       const img = prev.find((i) => i.id === id);
+      // Memory leak se bachne ke liye URL revoke karein
       if (img?.preview?.startsWith("blob:")) {
         URL.revokeObjectURL(img.preview);
       }
@@ -46,10 +52,10 @@ export const useImageHandling = (generateId) => {
     });
   }, []);
 
-  /* ========== REPLACE (edit) ========== */
+  /* ========== REPLACE (Edit) IMAGE ========== */
   const replaceImage = useCallback((id, file) => {
     if (!file || !file.type.startsWith("image/")) {
-      toast.error("Invalid image");
+      toast.error("Invalid image format");
       return;
     }
 
@@ -59,6 +65,7 @@ export const useImageHandling = (generateId) => {
       prev.map((img) => {
         if (img.id !== id) return img;
 
+        // Purani preview memory se clear karein
         if (img.preview?.startsWith("blob:")) {
           URL.revokeObjectURL(img.preview);
         }
@@ -79,7 +86,8 @@ export const useImageHandling = (generateId) => {
     setDraggedItem(index);
   };
 
-  const handleDragOverReordering = (_, index) => {
+  const handleDragOverReordering = (e, index) => {
+    e.preventDefault();
     if (index !== draggedItem) {
       setDragOverItem(index);
     }
@@ -99,9 +107,10 @@ export const useImageHandling = (generateId) => {
     setDragOverItem(null);
   };
 
-  /* ========== CLEANUP ========== */
+  /* ========== CLEANUP ON UNMOUNT ========== */
   useEffect(() => {
     return () => {
+      // Jab component band ho, saare blob URLs clear karein taaki RAM free ho jaye
       images.forEach((img) => {
         if (img.preview?.startsWith("blob:")) {
           URL.revokeObjectURL(img.preview);
