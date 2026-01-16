@@ -14,7 +14,7 @@ export const useImageHandling = (generateId) => {
 
       const validFiles = Array.from(files).filter(
         (file) =>
-          file.type.startsWith("image/") && file.size < 5 * 1024 * 1024
+          file.type.startsWith("image/") && file.size < 10 * 1024 * 1024
       );
 
       if (validFiles.length === 0) {

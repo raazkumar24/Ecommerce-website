@@ -15,7 +15,7 @@ export const useProductImages = () => {
 
   const addFiles = (files) => {
     const valid = Array.from(files).filter(
-      (f) => f.type.startsWith("image/") && f.size < 5 * 1024 * 1024
+      (f) => f.type.startsWith("image/") && f.size < 10 * 1024 * 1024
     );
 
     const mapped = valid.map((file) => ({

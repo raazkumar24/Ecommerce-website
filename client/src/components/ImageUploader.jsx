@@ -21,7 +21,7 @@ const ImageUploader = ({
           Media Assets
         </label>
         <span className="text-[10px] font-bold text-gray-400 uppercase">
-          {images.length} / 10 Gallery Limit
+          {images.length} / 20 Gallery Limit
         </span>
       </div>
 
