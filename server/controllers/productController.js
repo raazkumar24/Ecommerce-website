@@ -13,7 +13,7 @@ export const createProduct = async (req, res) => {
       description,
       stock,
       brand,
-      discount,
+      // discount, not required
       isNew,
       keywords
     } = req.body;

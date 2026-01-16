@@ -30,7 +30,6 @@ const Products = () => {
   // 🧠 Apply filters
   const filteredProducts = useProductFilters(products, filters);
 
-// Products.jsx ke useEffect ko isse replace karein:
 useEffect(() => {
   const fetchData = async () => {
     setLoading(true);
@@ -42,7 +41,7 @@ useEffect(() => {
       // 2. FIXED: getCategories function use karein
       const { data: catData } = await getCategories();
       
-      console.log("DEBUG: Categories received:", catData); // Check karein array aa raha hai ya nahi
+      console.log("DEBUG: Categories received:", catData); 
       setCategories(catData || []); 
       
     } catch (err) {

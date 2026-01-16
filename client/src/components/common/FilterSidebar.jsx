@@ -151,6 +151,7 @@ const FilterSidebar = ({
             onChange={(e) => onChange("sortBy", e.target.value)}
             className="w-full bg-white border border-gray-100 py-4 px-5 rounded-2xl outline-none appearance-none text-xs font-bold cursor-pointer hover:border-black transition-colors shadow-sm"
           >
+          {/*  --- OPTIONS ---  */}
             <option value="newest">Latest Arrivals</option>
             <option value="price">Price: Low to High</option>
             <option value="-price">Price: High to Low</option>
